@@ -1,0 +1,16 @@
+options:
+  - title: Home
+    url: index.html
+
+  - title: Examples
+    url: examples.html
+
+  - title: Documentation
+    url: doc.html
+
+    nested_options:
+      - title: Creating Mails
+        url: doc/building.html
+
+      - title: Obtaining Mails
+        url: doc/reading.html
