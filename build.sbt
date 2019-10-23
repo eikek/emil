@@ -91,6 +91,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     ),
     micrositeName := "Emil",
     micrositeDescription := "Emil – E-Mail library for Scala",
+    micrositeFavicons := Seq(microsites.MicrositeFavicon("favicon.png", "96x96")),
     micrositeBaseUrl := "/emil",
     micrositeAuthor := "eikek",
     micrositeGithubOwner := "eikek",
