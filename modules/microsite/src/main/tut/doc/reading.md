@@ -20,7 +20,7 @@ A `SearchQuery` must be provided to the search operation. Using
 import emil._, emil.SearchQuery._
 import java.time._
 
-val q = (ReceivedDate >= Instant.now.minusSeconds(60)) && (Subject === "test") && !Flagged
+val q = (ReceivedDate >= Instant.now.minusSeconds(60)) && (Subject =*= "test") && !Flagged
 ```
 
 The subject test is a simple substring test. Look at `SearchQuery` to

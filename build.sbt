@@ -106,7 +106,7 @@ lazy val microsite = project.in(file("modules/microsite")).
         "-language:higherKinds"),
     micrositeCompilingDocsTool := WithTut
   ).
-  dependsOn(common, javamail)
+  dependsOn(common % "compile->compile;compile->test", javamail)
 
 val root = project.in(file(".")).
   settings(sharedSettings).

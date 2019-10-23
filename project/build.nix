@@ -2,7 +2,7 @@ with import <nixpkgs> { };
 let
   initScript = writeScript "emil-build-init" ''
      export LD_LIBRARY_PATH=
-     ${bash}/bin/bash -c sbt
+     sbt "$@"
   '';
 in
 buildFHSUserEnv {
