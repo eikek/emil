@@ -33,7 +33,7 @@ abstract class AbstractSendTest[A, C <: Connection] extends GreenmailTestSuite[A
     assertEquals(mail.header.subject, mail2.header.subject)
     assertEquals(mail.attachments.size, mail2.attachments.size)
     assertEquals(mail.body.htmlContent(identity).unsafeRunSync(), htmlBody)
-    assert(mail2.body.fold(_ => false, _ => false, _ => true))
+    assert(mail2.body.fold(_ => false, _ => false, _ => false, _ => true))
     assertEquals(mail2.body.htmlContent(identity).unsafeRunSync().replace("\r\n", "\n"),
       htmlBody)
     assertEquals(mail2.additionalHeaders.find("user-agent"), Some(Header("User-Agent", "my-email-client")))

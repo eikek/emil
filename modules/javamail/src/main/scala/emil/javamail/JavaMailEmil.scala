@@ -4,11 +4,11 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import java.nio.charset.StandardCharsets
 import java.util.Properties
 
-import cats.implicits._
 import cats.effect.{Blocker, ContextShift, Resource, Sync}
+import cats.implicits._
 import emil._
 import emil.javamail.conv.{Conv, MessageIdEncode, MsgConv}
-import emil.javamail.internal.{AccessImpl, ConnectionResource, JavaMailConnection, SendImpl}
+import emil.javamail.internal._
 import javax.mail.Session
 import javax.mail.internet.MimeMessage
 
@@ -32,7 +32,7 @@ object JavaMailEmil {
   def mailToString[F[_]: Sync](mail: Mail[F])(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[String] = {
       val session = Session.getInstance(new Properties())
       cm.convert(session, MessageIdEncode.Given, mail).
-        map(msg => {
+        map(msg => ThreadClassLoader {
           val out = new ByteArrayOutputStream()
           msg.writeTo(out)
           out.toString(StandardCharsets.UTF_8.name())
@@ -41,7 +41,9 @@ object JavaMailEmil {
 
   def mailFromString[F[_]: Sync](str: String)(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] = Sync[F].delay {
     val session = Session.getInstance(new Properties())
-    val msg = new MimeMessage(session, new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8)))
-    cm.convert(msg)
+    ThreadClassLoader {
+      val msg = new MimeMessage(session, new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8)))
+      cm.convert(msg)
+    }
   }
 }

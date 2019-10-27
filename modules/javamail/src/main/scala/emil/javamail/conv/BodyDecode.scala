@@ -51,7 +51,11 @@ trait BodyDecode {
       Util.withReadFolder(msg) { _ =>
         msg.getContent match {
           case str: String =>
-            BodyAttach(Body(text = Option(str), html = None), Attachments.empty[F])
+            val body =
+              if (msg.isMimeType(MimeType.textHtml.asString)) Body(text = None, html = Option(str))
+              else Body(text = Option(str), html = None)
+
+             BodyAttach(body, Attachments.empty[F])
 
           case mp: Multipart =>
             if (BodyDecode.isAlternative(mp)) {

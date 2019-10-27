@@ -28,6 +28,6 @@ final case class Mail[F[_]]( header: MailHeader
 object Mail {
 
   def empty[F[_]: Applicative]: Mail[F] =
-    Mail(MailHeader.empty, Headers.empty, MailBody.text(""), Attachments.empty[F])
+    Mail(MailHeader.empty, Headers.empty, MailBody.empty[F], Attachments.empty[F])
 
 }

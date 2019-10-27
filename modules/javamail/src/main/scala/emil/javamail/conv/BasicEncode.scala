@@ -4,7 +4,7 @@ import java.io.{ByteArrayInputStream, InputStream, OutputStream}
 import java.nio.charset.StandardCharsets
 import java.util.Date
 
-import cats.FlatMap
+import cats.Monad
 import cats.effect.Sync
 import cats.implicits._
 import emil._
@@ -55,15 +55,15 @@ trait BasicEncode {
         })
     })
 
-  implicit def bodyEncode[F[_]: FlatMap]: Conv[MailBody[F], F[MimeBodyPart]] = {
+  implicit def bodyEncode[F[_]: Monad]: Conv[MailBody[F], F[MimeBodyPart]] = {
     def mkTextPart(str: String): MimeBodyPart = {
       val part = new MimeBodyPart()
-      part.setText(str, StandardCharsets.UTF_8.name(), "plain")
+      part.setText(str, StandardCharsets.US_ASCII.name().toLowerCase(), "plain")
       part
     }
     def mkHtmlPart(str: String): MimeBodyPart = {
       val part = new MimeBodyPart()
-      part.setText(str, StandardCharsets.UTF_8.name(), "html")
+      part.setText(str, StandardCharsets.US_ASCII.name().toLowerCase(), "html")
       part
     }
     def mkAlternative(txt: String, html: String): MimeBodyPart = {
@@ -76,6 +76,8 @@ trait BasicEncode {
     }
 
     Conv({
+      case MailBody.Empty() =>
+        mkTextPart("").pure[F]
       case MailBody.Text(txt) =>
         txt.map(mkTextPart)
       case MailBody.Html(html) =>
@@ -129,7 +131,8 @@ trait BasicEncode {
         attachs.foreach(content.addBodyPart)
         msg.setContent(content)
       } else {
-        msg.setContent(body.getContent, body.getContentType)
+        val ct = Option(body.getDataHandler).map(_.getContentType).getOrElse(body.getContentType)
+        msg.setContent(body.getContent, ct)
       }
       // see https://javaee.github.io/javamail/FAQ#hdrs
       msg.saveChanges()
