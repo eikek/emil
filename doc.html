@@ -92,19 +92,19 @@ needs a corresponding connection to some imap server and the
 // import scala.concurrent.ExecutionContext
 </span>
 <span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: cats.effect.ContextShift[cats.effect.IO] = cats.effect.internals.IOContextShift@4270fd6e
+<span class="c1">// CS: cats.effect.ContextShift[cats.effect.IO] = cats.effect.internals.IOContextShift@64e85deb
 </span>
 <span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">fromExecutorService</span><span class="o">(</span><span class="nv">java</span><span class="o">.</span><span class="py">util</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">Executors</span><span class="o">.</span><span class="py">newCachedThreadPool</span><span class="o">()))</span>
-<span class="c1">// blocker: cats.effect.Blocker = cats.effect.Blocker@4925cd9e
+<span class="c1">// blocker: cats.effect.Blocker = cats.effect.Blocker@22b51c33
 </span>
 <span class="k">val</span> <span class="nv">emil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">blocker</span><span class="o">)</span>
-<span class="c1">// emil: emil.Emil[cats.effect.IO,emil.javamail.internal.JavaMailConnection] = emil.javamail.JavaMailEmil@1df1108e
+<span class="c1">// emil: emil.Emil[cats.effect.IO,emil.javamail.internal.JavaMailConnection] = emil.javamail.JavaMailEmil@5955322a
 </span>
 <span class="k">val</span> <span class="nv">imapConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"imap://devmail:143"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// imapConf: emil.MailConfig = MailConfig(imap://devmail:143, dev, ***, NoEncryption, 10 seconds)
 </span>
 <span class="k">val</span> <span class="nv">moveIO</span> <span class="k">=</span> <span class="nf">emil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nf">moveToTrash</span><span class="o">(</span><span class="nv">emil</span><span class="o">.</span><span class="py">access</span><span class="o">))</span>
-<span class="c1">// moveIO: cats.effect.IO[Unit] = IO$1990862942
+<span class="c1">// moveIO: cats.effect.IO[Unit] = IO$1549246201
 </span></code></pre></div></div>
 
 <p>First, we need to create a <code class="highlighter-rouge">ContextShift</code> instance and a
