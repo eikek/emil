@@ -109,18 +109,30 @@ package builder {
   }
 
   object AttachStream {
-    def apply[F[_]: Sync](data: Stream[F, Byte], filename: Option[String] = None, mimeType: MimeType = MimeType.octetStream): Attach[F] =
+    def apply[F[_]: Sync](
+        data: Stream[F, Byte],
+        filename: Option[String] = None,
+        mimeType: MimeType = MimeType.octetStream
+    ): Attach[F] =
       Attach(Attachment(filename, mimeType, data))
   }
 
-  case class AttachFile[F[_]: Sync: ContextShift]( file: Path
-                                                 , blocker: Blocker
-                                                 , mimeType: MimeType = MimeType.octetStream
-                                                 , filename: Option[String] = None
-                                                 , chunkSize: Int = 8 * 1024) extends Trans[F] {
+  case class AttachFile[F[_]: Sync: ContextShift](
+      file: Path,
+      blocker: Blocker,
+      mimeType: MimeType = MimeType.octetStream,
+      filename: Option[String] = None,
+      chunkSize: Int = 8 * 1024
+  ) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
-      Attach(Attachment(filename.orElse(Some(file.getFileName.toString)), mimeType,
-        readFile(file, blocker, chunkSize), Sync[F].delay(Files.size(file)))).apply(mail)
+      Attach(
+        Attachment(
+          filename.orElse(Some(file.getFileName.toString)),
+          mimeType,
+          readFile(file, blocker, chunkSize),
+          Sync[F].delay(Files.size(file))
+        )
+      ).apply(mail)
 
     def withFilename(name: String): AttachFile[F] =
       copy(filename = Some(name))
@@ -132,19 +144,22 @@ package builder {
       copy(chunkSize = size)
   }
 
-  case class AttachInputStream[F[_]: Sync: ContextShift](is: F[InputStream]
-                                                        , blocker: Blocker
-                                                        , filename: Option[String] = None
-                                                        , mimeType: MimeType = MimeType.octetStream
-                                                        , length: Option[F[Long]] = None
-                                                        , chunkSize: Int = 8 * 1024) extends Trans[F] {
+  case class AttachInputStream[F[_]: Sync: ContextShift](
+      is: F[InputStream],
+      blocker: Blocker,
+      filename: Option[String] = None,
+      mimeType: MimeType = MimeType.octetStream,
+      length: Option[F[Long]] = None,
+      chunkSize: Int = 8 * 1024
+  ) extends Trans[F] {
 
     def apply(mail: Mail[F]): Mail[F] = {
       val data = readInputStream(is, chunkSize, blocker)
-      Attach(length.
-        map(len => Attachment(filename, mimeType, data, len)).
-        getOrElse(Attachment(filename, mimeType, data))).
-        apply(mail)
+      Attach(
+        length
+          .map(len => Attachment(filename, mimeType, data, len))
+          .getOrElse(Attachment(filename, mimeType, data))
+      ).apply(mail)
     }
 
     def withFilename(name: String): AttachInputStream[F] =
@@ -164,14 +179,23 @@ package builder {
   }
 
   object AttachUrl {
-    def apply[F[_]: Sync: ContextShift]( url: URL
-                                       , blocker: Blocker
-                                       , filename: Option[String] = None
-                                       , mimeType: MimeType = MimeType.octetStream
-                                       , length: Option[F[Long]] = None
-                                       , chunkSize: Int = 16 * 1024): AttachInputStream[F] = {
+    def apply[F[_]: Sync: ContextShift](
+        url: URL,
+        blocker: Blocker,
+        filename: Option[String] = None,
+        mimeType: MimeType = MimeType.octetStream,
+        length: Option[F[Long]] = None,
+        chunkSize: Int = 16 * 1024
+    ): AttachInputStream[F] = {
       require(url != null, "Url must not be null")
-      AttachInputStream(Sync[F].delay(url.openStream()), blocker, filename, mimeType, length, chunkSize)
+      AttachInputStream(
+        Sync[F].delay(url.openStream()),
+        blocker,
+        filename,
+        mimeType,
+        length,
+        chunkSize
+      )
     }
   }
 

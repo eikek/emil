@@ -1,7 +1,6 @@
 package emil
 
-sealed trait SSLType {
-}
+sealed trait SSLType {}
 object SSLType {
 
   case object SSL extends SSLType

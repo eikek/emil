@@ -10,7 +10,7 @@ import javax.mail.{Flags, Folder, Message, MessagingException}
 import javax.mail.internet.MimeMessage
 
 object MoveMail {
-  private [this] val logger = Logger(getClass)
+  private[this] val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
     FindMail(mh).flatMap {

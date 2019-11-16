@@ -9,9 +9,8 @@ import emil.javamail.conv.codec._
 object syntax {
 
   implicit final class MailOps[F[_]: Sync](mail: Mail[F]) {
-    def serialize: F[String] = {
+    def serialize: F[String] =
       JavaMailEmil.mailToString[F](mail)
-    }
   }
 
   implicit final class MailTypeOps(mt: Mail.type) {
@@ -26,8 +25,7 @@ object syntax {
 
   implicit final class MailAddressTypeOps(mat: MailAddress.type) {
     def parse(str: String): Either[String, MailAddress] =
-      Either.catchNonFatal(mailAddressParse.convert(str)).
-        leftMap(_.getMessage)
+      Either.catchNonFatal(mailAddressParse.convert(str)).leftMap(_.getMessage)
   }
 
   implicit final class MailAddressOps(ma: MailAddress) {

@@ -5,7 +5,7 @@ import javax.mail.internet.MimeMessage
 
 object Util {
 
-  def withOpenFolder[A, B <: Folder](f: B, mode: Int)(code: B => A): A = {
+  def withOpenFolder[A, B <: Folder](f: B, mode: Int)(code: B => A): A =
     if (f.isOpen) {
       code(f)
     } else {
@@ -14,7 +14,6 @@ object Util {
         code(f)
       }
     }
-  }
 
   def withReadFolder[A, B <: Folder](f: B)(code: B => A): A =
     withOpenFolder(f, Folder.READ_ONLY)(code)
@@ -22,10 +21,7 @@ object Util {
   def withWriteFolder[A, B <: Folder](f: B)(code: B => A): A =
     withOpenFolder(f, Folder.READ_WRITE)(code)
 
-
   def withReadFolder[A](msg: MimeMessage)(code: MimeMessage => A): A =
-    Option(msg.getFolder).
-      map(f => withReadFolder(f)(_ => code(msg))).
-      getOrElse(code(msg))
+    Option(msg.getFolder).map(f => withReadFolder(f)(_ => code(msg))).getOrElse(code(msg))
 
 }

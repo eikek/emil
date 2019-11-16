@@ -8,15 +8,16 @@ import javax.mail.Folder
 import javax.mail.internet.MimeMessage
 
 object PutMail {
-  private [this] val logger = Logger(getClass)
+  private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](mail: Mail[F], target: MailFolder)
-                       (implicit cm: MsgConv[Mail[F], F[MimeMessage]]): MailOp[F, JavaMailConnection, Unit] =
+  def apply[F[_]: Sync](mail: Mail[F], target: MailFolder)(
+      implicit cm: MsgConv[Mail[F], F[MimeMessage]]
+  ): MailOp[F, JavaMailConnection, Unit] =
     for {
       folder <- mailOp(conn => MoveMail.expectTargetFolder(conn, target))
-      msg    <- mailOpF(conn => cm.convert(conn.session, MessageIdEncode.GivenOrRandom, mail))
-      _      <- mailOpF(_ => logger.debugF(s"Append mail ${mail.header.id} to folder ${target.id}"))
-      _       = appendMessage(msg, folder)
+      msg <- mailOpF(conn => cm.convert(conn.session, MessageIdEncode.GivenOrRandom, mail))
+      _ <- mailOpF(_ => logger.debugF(s"Append mail ${mail.header.id} to folder ${target.id}"))
+      _ = appendMessage(msg, folder)
     } yield ()
 
   private def appendMessage(msg: MimeMessage, folder: Folder): Unit =

@@ -29,7 +29,7 @@ object InternalId {
         InternalId.MessageId(msg.getMessageID)
     }
 
-  def readInternalId(str: String): Either[String, InternalId] = {
+  def readInternalId(str: String): Either[String, InternalId] =
     str.split(':').toList match {
       case p :: id :: Nil =>
         if (p == "uid") Either.catchNonFatal(InternalId.Uid(id.toLong)).leftMap(_.getMessage)
@@ -37,5 +37,4 @@ object InternalId {
       case _ =>
         Either.left(s"Invalid id: $str")
     }
-  }
 }

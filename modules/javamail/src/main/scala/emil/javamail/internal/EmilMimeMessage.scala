@@ -12,7 +12,7 @@ private[javamail] trait EmilMimeMessage extends MimeMessage {
 
   var messageId: Option[String] = None
 
-  override def updateMessageID(): Unit = {
+  override def updateMessageID(): Unit =
     messageIdEncode match {
       case MessageIdEncode.Given =>
         messageId.foreach(id => setHeader("Message-ID", id))
@@ -26,7 +26,6 @@ private[javamail] trait EmilMimeMessage extends MimeMessage {
             super.updateMessageID()
         }
     }
-  }
 }
 
 object EmilMimeMessage {

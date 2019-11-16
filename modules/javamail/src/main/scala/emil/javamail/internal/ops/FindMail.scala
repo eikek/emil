@@ -8,7 +8,7 @@ import javax.mail.internet.MimeMessage
 import javax.mail.search.MessageIDTerm
 
 object FindMail {
-  private [this] val logger = Logger(getClass)
+  private[this] val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mh: MailHeader): MailOp[F, JavaMailConnection, Option[MimeMessage]] =
     MailOp.of(conn => {
@@ -17,7 +17,11 @@ object FindMail {
       iid.toOption.flatMap(id => findByInternalId(conn, mh, id))
     })
 
-  private def findByInternalId(conn: JavaMailConnection, mh: MailHeader, id: InternalId): Option[MimeMessage] =
+  private def findByInternalId(
+      conn: JavaMailConnection,
+      mh: MailHeader,
+      id: InternalId
+  ): Option[MimeMessage] =
     id match {
       case InternalId.MessageId(id) =>
         findByMessageId(conn, mh, id)
@@ -25,7 +29,11 @@ object FindMail {
         findByUID(conn, mh, uid)
     }
 
-  private def findByUID(conn: JavaMailConnection, mh: MailHeader, uid: Long): Option[MimeMessage] = {
+  private def findByUID(
+      conn: JavaMailConnection,
+      mh: MailHeader,
+      uid: Long
+  ): Option[MimeMessage] = {
     val parent = mh.folder.map(_.id).getOrElse("INBOX");
     conn.store.getFolder(parent) match {
       case im: IMAPFolder if im.exists() =>
@@ -39,11 +47,15 @@ object FindMail {
     }
   }
 
-  private def findByMessageId(conn: JavaMailConnection, mh: MailHeader, mid: String): Option[MimeMessage] = {
+  private def findByMessageId(
+      conn: JavaMailConnection,
+      mh: MailHeader,
+      mid: String
+  ): Option[MimeMessage] = {
     val parent = mh.folder.map(_.id).getOrElse("INBOX");
-    Option(conn.store.getFolder(parent)).
-      filter(_.exists()).
-      flatMap(f => {
+    Option(conn.store.getFolder(parent))
+      .filter(_.exists())
+      .flatMap(f => {
         logger.debug(s"Looking for message '$mh' by MessageID '$mid'")
         val results = f.search(new MessageIDTerm(mid))
         results.headOption.map(_.asInstanceOf[MimeMessage])

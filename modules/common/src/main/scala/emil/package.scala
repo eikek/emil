@@ -1,4 +1,1 @@
-
-package object emil extends Ops {
-
-}
+package object emil extends Ops {}

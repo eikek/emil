@@ -9,7 +9,7 @@ import javax.mail.Folder
 import javax.mail.internet.MimeMessage
 
 object CopyMail {
-  private [this] val logger = Logger(getClass)
+  private[this] val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
     FindMail(mh).flatMap {
@@ -19,7 +19,9 @@ object CopyMail {
             MailOp.of(conn => copy(f, msg, MoveMail.expectTargetFolder(conn, target)))
           case _ =>
             lift(logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")) *>
-              MailOp.of(conn => MoveMail.expectTargetFolder(conn, target).appendMessages(Array(msg)))
+              MailOp.of(
+                conn => MoveMail.expectTargetFolder(conn, target).appendMessages(Array(msg))
+              )
         }
       case None =>
         MailOp.error("Mail to copy not found.")
@@ -27,7 +29,6 @@ object CopyMail {
 
   private def lift[F[_]](fa: F[Unit]): MailOp[F, JavaMailConnection, Unit] =
     Kleisli.liftF(fa)
-
 
   private def copy(source: Folder, msg: MimeMessage, target: Folder): Unit =
     Util.withWriteFolder(source) { _ =>

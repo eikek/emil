@@ -10,18 +10,24 @@ trait Access[F[_], C <: Connection] {
 
   def findFolder(parent: Option[MailFolder], name: String): MailOp[F, C, Option[MailFolder]]
 
-  def getOrCreateFolder(parent: Option[MailFolder], name: String)
-                       (implicit ev0: FlatMap[F], ev1: Applicative[F]): MailOp[F, C, MailFolder] =
+  def getOrCreateFolder(
+      parent: Option[MailFolder],
+      name: String
+  )(implicit ev0: FlatMap[F], ev1: Applicative[F]): MailOp[F, C, MailFolder] =
     findFolder(parent, name).flatMap {
       case Some(mf) => MailOp.pure(mf)
-      case None => createFolder(parent, name)
+      case None     => createFolder(parent, name)
     }
 
   def getMessageCount(folder: MailFolder): MailOp[F, C, Int]
 
-  def search(folder: MailFolder, max: Int)(query: SearchQuery): MailOp[F, C, SearchResult[MailHeader]]
+  def search(folder: MailFolder, max: Int)(
+      query: SearchQuery
+  ): MailOp[F, C, SearchResult[MailHeader]]
 
-  def searchAndLoad(folder: MailFolder, max: Int)(query: SearchQuery): MailOp[F, C, SearchResult[Mail[F]]]
+  def searchAndLoad(folder: MailFolder, max: Int)(
+      query: SearchQuery
+  ): MailOp[F, C, SearchResult[Mail[F]]]
 
   def loadMail(mh: MailHeader): MailOp[F, C, Option[Mail[F]]]
 
@@ -36,7 +42,8 @@ trait Access[F[_], C <: Connection] {
   def deleteMail(mh: MailHeader*): MailOp[F, C, DeleteResult] =
     deleteMails(mh)
 
-  def searchDelete(folder: MailFolder, max: Int)(query: SearchQuery)(implicit ev: FlatMap[F]): MailOp[F, C, DeleteResult] =
-    search(folder, max)(query).
-      flatMap(result => deleteMails(result.mails))
+  def searchDelete(folder: MailFolder, max: Int)(
+      query: SearchQuery
+  )(implicit ev: FlatMap[F]): MailOp[F, C, DeleteResult] =
+    search(folder, max)(query).flatMap(result => deleteMails(result.mails))
 }

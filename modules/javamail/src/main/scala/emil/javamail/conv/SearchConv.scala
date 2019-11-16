@@ -59,9 +59,9 @@ trait SearchConv {
   private def makeComparison(rel: Relation): Int =
     rel match {
       case Relation.Equal => ComparisonTerm.EQ
-      case Relation.Lt => ComparisonTerm.LT
-      case Relation.Gt => ComparisonTerm.GT
-      case Relation.Le => ComparisonTerm.LE
-      case Relation.Ge => ComparisonTerm.GE
+      case Relation.Lt    => ComparisonTerm.LT
+      case Relation.Gt    => ComparisonTerm.GT
+      case Relation.Le    => ComparisonTerm.LE
+      case Relation.Ge    => ComparisonTerm.GE
     }
 }

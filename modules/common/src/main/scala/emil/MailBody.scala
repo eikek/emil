@@ -9,16 +9,15 @@ sealed trait MailBody[F[_]] {
 
   def withHtml(html: F[String]): MailBody[F]
 
-  def fold[A](empty: MailBody.Empty[F] => A
-             , text: MailBody.Text[F] => A
-             , html: MailBody.Html[F] => A
-             , both: MailBody.HtmlAndText[F] => A): A
+  def fold[A](
+      empty: MailBody.Empty[F] => A,
+      text: MailBody.Text[F] => A,
+      html: MailBody.Html[F] => A,
+      both: MailBody.HtmlAndText[F] => A
+  ): A
 
   def htmlContent(txtToHtml: String => String)(implicit ev: Applicative[F]): F[String] =
-    fold(_ =>  "".pure[F]
-      , txt => txt.text.map(txtToHtml)
-      , html => html.html
-      , both => both.html)
+    fold(_ => "".pure[F], txt => txt.text.map(txtToHtml), html => html.html, both => both.html)
 }
 
 object MailBody {
@@ -28,10 +27,12 @@ object MailBody {
 
     def withHtml(html: F[String]): MailBody[F] = Html(html)
 
-    def fold[A](empty: MailBody.Empty[F] => A
-               , text: MailBody.Text[F] => A
-               , html: MailBody.Html[F] => A
-               , both: MailBody.HtmlAndText[F] => A): A = empty(this)
+    def fold[A](
+        empty: MailBody.Empty[F] => A,
+        text: MailBody.Text[F] => A,
+        html: MailBody.Html[F] => A,
+        both: MailBody.HtmlAndText[F] => A
+    ): A = empty(this)
 
   }
 
@@ -42,10 +43,12 @@ object MailBody {
     def withHtml(html: F[String]): MailBody[F] =
       HtmlAndText(text, html)
 
-    def fold[A]( empty: MailBody.Empty[F] => A
-               , text: MailBody.Text[F] => A
-               , html: MailBody.Html[F] => A
-               , both: MailBody.HtmlAndText[F] => A): A = text(this)
+    def fold[A](
+        empty: MailBody.Empty[F] => A,
+        text: MailBody.Text[F] => A,
+        html: MailBody.Html[F] => A,
+        both: MailBody.HtmlAndText[F] => A
+    ): A = text(this)
   }
 
   final case class Html[F[_]](html: F[String]) extends MailBody[F] {
@@ -55,10 +58,12 @@ object MailBody {
     def withHtml(other: F[String]): MailBody[F] =
       Html(other)
 
-    def fold[A]( empty: MailBody.Empty[F] => A
-               , txt: MailBody.Text[F] => A
-               , h: MailBody.Html[F] => A
-               , both: MailBody.HtmlAndText[F] => A): A = h(this)
+    def fold[A](
+        empty: MailBody.Empty[F] => A,
+        txt: MailBody.Text[F] => A,
+        h: MailBody.Html[F] => A,
+        both: MailBody.HtmlAndText[F] => A
+    ): A = h(this)
   }
 
   final case class HtmlAndText[F[_]](text: F[String], html: F[String]) extends MailBody[F] {
@@ -68,10 +73,12 @@ object MailBody {
     def withHtml(html: F[String]): MailBody[F] =
       HtmlAndText(text, html)
 
-    def fold[A]( empty: MailBody.Empty[F] => A
-               , txt: MailBody.Text[F] => A
-               , h: MailBody.Html[F] => A
-               , both: MailBody.HtmlAndText[F] => A): A = both(this)
+    def fold[A](
+        empty: MailBody.Empty[F] => A,
+        txt: MailBody.Text[F] => A,
+        h: MailBody.Html[F] => A,
+        both: MailBody.HtmlAndText[F] => A
+    ): A = both(this)
   }
 
   def empty[F[_]]: MailBody[F] =

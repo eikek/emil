@@ -1,8 +1,6 @@
 package emil
 
-final case class MailAddress private (name: Option[String], address: String) {
-
-}
+final case class MailAddress private (name: Option[String], address: String) {}
 
 object MailAddress {
 

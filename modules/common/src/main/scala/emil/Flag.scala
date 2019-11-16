@@ -1,8 +1,6 @@
 package emil
 
-sealed trait Flag {
-
-}
+sealed trait Flag {}
 
 object Flag {
 

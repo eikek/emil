@@ -2,7 +2,7 @@ package emil.javamail.conv
 
 import javax.mail.Session
 
-trait Conv[A,B] { self =>
+trait Conv[A, B] { self =>
 
   def convert(a: A): B
 
@@ -15,7 +15,6 @@ object Conv {
     (a: A) => f(a)
 }
 
-
 trait MsgConv[A, B] { self =>
 
   def convert(session: Session, messageIdEncode: MessageIdEncode, value: A): B
@@ -23,6 +22,6 @@ trait MsgConv[A, B] { self =>
 }
 
 object MsgConv {
-  def apply[A,B](f: (Session, MessageIdEncode, A) => B): MsgConv[A, B] =
+  def apply[A, B](f: (Session, MessageIdEncode, A) => B): MsgConv[A, B] =
     (session: Session, midEncode: MessageIdEncode, v: A) => f(session, midEncode, v)
 }

@@ -31,16 +31,16 @@ trait BasicEncode {
 
   implicit def attachmentEncode[F[_]: Sync]: Conv[Attachment[F], F[MimeBodyPart]] =
     Conv(attach => {
-      attach.content.compile.toVector.map(_.toArray).
-        map(inData => {
+      attach.content.compile.toVector
+        .map(_.toArray)
+        .map(inData => {
           val part = new MimeBodyPart()
           part.addHeader("Content-Type", attach.mimeType.asString)
           attach.filename.foreach(fn => part.setFileName(MimeUtility.encodeText(fn)))
           part.setDescription("attachment")
           part.setDataHandler(new DataHandler(new DataSource {
-            def getInputStream: InputStream = {
+            def getInputStream: InputStream =
               new ByteArrayInputStream(inData)
-            }
 
             def getOutputStream: OutputStream =
               sys.error("Not writable")
@@ -84,13 +84,16 @@ trait BasicEncode {
         html.map(mkHtmlPart)
       case MailBody.HtmlAndText(txt, html) =>
         for {
-          tp  <- txt
-          hp  <- html
+          tp <- txt
+          hp <- html
         } yield mkAlternative(tp, hp)
     })
   }
 
-  implicit def mailHeaderEncode(implicit ca: Conv[MailAddress, InternetAddress], cf: Conv[Flag, Flags.Flag]): MsgConv[MailHeader, MimeMessage] =
+  implicit def mailHeaderEncode(
+      implicit ca: Conv[MailAddress, InternetAddress],
+      cf: Conv[Flag, Flags.Flag]
+  ): MsgConv[MailHeader, MimeMessage] =
     MsgConv({ (session, midEncode, header) =>
       val msg = EmilMimeMessage(session, midEncode)
 
@@ -99,32 +102,43 @@ trait BasicEncode {
       msg.setSubject(header.subject)
       header.sentDate.foreach(i => msg.setSentDate(Date.from(i)))
       msg.messageId = header.messageId
-      msg.setRecipients(Message.RecipientType.TO, header.recipients.to.
-        map(ca.convert).map(a => a.asInstanceOf[Address]).toArray)
-      msg.setRecipients(Message.RecipientType.CC, header.recipients.cc.
-        map(ca.convert).map(a => a.asInstanceOf[Address]).toArray)
-      msg.setRecipients(Message.RecipientType.BCC, header.recipients.bcc.
-        map(ca.convert).map(a => a.asInstanceOf[Address]).toArray)
+      msg.setRecipients(
+        Message.RecipientType.TO,
+        header.recipients.to.map(ca.convert).map(a => a.asInstanceOf[Address]).toArray
+      )
+      msg.setRecipients(
+        Message.RecipientType.CC,
+        header.recipients.cc.map(ca.convert).map(a => a.asInstanceOf[Address]).toArray
+      )
+      msg.setRecipients(
+        Message.RecipientType.BCC,
+        header.recipients.bcc.map(ca.convert).map(a => a.asInstanceOf[Address]).toArray
+      )
 
       if (header.flags.nonEmpty) {
         val flags = new Flags()
-        header.flags.map(cf.convert).
-          foreach(flags.add)
+        header.flags.map(cf.convert).foreach(flags.add)
         msg.setFlags(flags, true)
       }
 
       msg
     })
 
+  implicit def mailEncode[F[_]: Sync](
+      implicit ch: MsgConv[MailHeader, MimeMessage],
+      cb: Conv[MailBody[F], F[MimeBodyPart]],
+      ca: Conv[Attachment[F], F[MimeBodyPart]]
+  ): MsgConv[Mail[F], F[MimeMessage]] = {
 
-  implicit def mailEncode[F[_]: Sync](implicit ch: MsgConv[MailHeader, MimeMessage]
-                                     , cb: Conv[MailBody[F], F[MimeBodyPart]]
-                                     , ca: Conv[Attachment[F], F[MimeBodyPart]]): MsgConv[Mail[F], F[MimeMessage]] = {
-
-    def assemble(mail: Mail[F], msg: MimeMessage, body: MimeBodyPart, attachs: Vector[MimeBodyPart]): Unit = {
-      mail.additionalHeaders.all.
-        filter(h => h.noneOf("Content-Type", "MIME-Version")).
-        foreach(h => h.value.toList.foreach(v => msg.addHeader(h.name, v)))
+    def assemble(
+        mail: Mail[F],
+        msg: MimeMessage,
+        body: MimeBodyPart,
+        attachs: Vector[MimeBodyPart]
+    ): Unit = {
+      mail.additionalHeaders.all
+        .filter(h => h.noneOf("Content-Type", "MIME-Version"))
+        .foreach(h => h.value.toList.foreach(v => msg.addHeader(h.name, v)))
       if (attachs.nonEmpty) {
         val content = new MimeMultipart()
         content.addBodyPart(body)
@@ -141,9 +155,9 @@ trait BasicEncode {
     MsgConv({ (session, midEncode, mail) =>
       for {
         attachs <- mail.attachments.all.traverse(ca.convert)
-        mbody   <- cb.convert(mail.body)
-        msg      = ch.convert(session, midEncode, mail.header)
-        _        = assemble(mail, msg, mbody, attachs)
+        mbody <- cb.convert(mail.body)
+        msg = ch.convert(session, midEncode, mail.header)
+        _ = assemble(mail, msg, mbody, attachs)
       } yield msg
     })
   }

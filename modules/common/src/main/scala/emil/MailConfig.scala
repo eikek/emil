@@ -7,12 +7,14 @@ import emil.MailConfig.UrlParts
 
 import scala.concurrent.duration.{Duration, FiniteDuration}
 
-case class MailConfig( url: String
-                     , user: String
-                     , password: String
-                     , sslType: SSLType
-                     , disableCertificateCheck: Boolean = false
-                     , timeout: Duration = FiniteDuration(10, TimeUnit.SECONDS)) {
+case class MailConfig(
+    url: String,
+    user: String,
+    password: String,
+    sslType: SSLType,
+    disableCertificateCheck: Boolean = false,
+    timeout: Duration = FiniteDuration(10, TimeUnit.SECONDS)
+) {
 
   val urlParts: UrlParts =
     MailConfig.readUrlParts(url, sslType).fold(sys.error, identity)
@@ -38,11 +40,11 @@ object MailConfig {
         val protocol =
           if (sslType == SSLType.SSL && !proto.endsWith("s")) proto + "s"
           else proto
-        Option(port).
-          map(_.substring(1).toInt.some).
-          map(s => Right(s)).
-          getOrElse(Right(None)).
-          map(op => UrlParts(protocol, host, op, path))
+        Option(port)
+          .map(_.substring(1).toInt.some)
+          .map(s => Right(s))
+          .getOrElse(Right(None))
+          .map(op => UrlParts(protocol, host, op, path))
       case _ =>
         Left(s"Invalid url: $url")
     }

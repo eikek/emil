@@ -21,14 +21,13 @@ abstract class GreenmailTestSuite[A] extends TestSuite[A] {
     context.server.start()
   }
 
-  override def tearDownSuite(): Unit = {
+  override def tearDownSuite(): Unit =
     if (context != null) {
       context.server.stop()
       context.executor.shutdown()
       context.executor.awaitTermination(15, TimeUnit.SECONDS)
       context = null
     }
-  }
 
   implicit val CS: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
@@ -44,7 +43,6 @@ abstract class GreenmailTestSuite[A] extends TestSuite[A] {
   def imapConf(user: MailAddress): MailConfig =
     server.imapConfig(user)
 
-
 }
 
 object GreenmailTestSuite {
@@ -53,9 +51,12 @@ object GreenmailTestSuite {
   case class Context(server: GreenmailServer, executor: ExecutorService)
 
   def createContext(users: List[MailAddress]): Context =
-    Context(GreenmailServer.randomPorts(users: _*), Executors.newCachedThreadPool((r: Runnable) => {
-      val t = Executors.defaultThreadFactory().newThread(r)
-      t.setName(s"test-blocker-${counter.getAndIncrement()}")
-      t
-    }))
+    Context(
+      GreenmailServer.randomPorts(users: _*),
+      Executors.newCachedThreadPool((r: Runnable) => {
+        val t = Executors.defaultThreadFactory().newThread(r)
+        t.setName(s"test-blocker-${counter.getAndIncrement()}")
+        t
+      })
+    )
 }

@@ -1,5 +1,3 @@
 package emil
 
-case class DeleteResult(count: Int) {
-
-}
+case class DeleteResult(count: Int) {}

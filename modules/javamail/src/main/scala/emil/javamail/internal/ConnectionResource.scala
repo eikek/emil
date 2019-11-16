@@ -11,22 +11,25 @@ import scala.concurrent.duration.Duration
 
 object ConnectionResource {
 
-  def apply[F[_]: Sync](mc: MailConfig, debug: Boolean = false): Resource[F, JavaMailConnection] = {
-    Resource.make(make(mc, debug))(conn => conn.mailStore match {
-      case Some(s) => Sync[F].delay(s.close())
-      case None => ().pure[F]
-    })
-  }
+  def apply[F[_]: Sync](mc: MailConfig, debug: Boolean = false): Resource[F, JavaMailConnection] =
+    Resource.make(make(mc, debug))(
+      conn =>
+        conn.mailStore match {
+          case Some(s) => Sync[F].delay(s.close())
+          case None    => ().pure[F]
+        }
+    )
 
-  def make[F[_]: Sync](mc: MailConfig, debug: Boolean = false): F[JavaMailConnection] = Sync[F].delay {
-    val session = createSession(mc, debug)
-    if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
-      val store = createImapStore(session, mc)
-      JavaMailConnection(mc, session, Some(store))
-    } else {
-      JavaMailConnection(mc, session, None)
+  def make[F[_]: Sync](mc: MailConfig, debug: Boolean = false): F[JavaMailConnection] =
+    Sync[F].delay {
+      val session = createSession(mc, debug)
+      if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
+        val store = createImapStore(session, mc)
+        JavaMailConnection(mc, session, Some(store))
+      } else {
+        JavaMailConnection(mc, session, None)
+      }
     }
-  }
 
   private def createImapStore(session: Session, mc: MailConfig): Store = {
     val store = session.getStore(mc.urlParts.protocol)
@@ -88,9 +91,8 @@ object ConnectionResource {
 
     if (mc.user.nonEmpty) {
       Session.getInstance(props, new Authenticator() {
-        override def getPasswordAuthentication: PasswordAuthentication = {
+        override def getPasswordAuthentication: PasswordAuthentication =
           new PasswordAuthentication(mc.user, mc.password)
-        }
       })
     } else {
       Session.getInstance(props)

@@ -16,9 +16,12 @@ object MailConvTest extends SimpleTestSuite {
       TextBody("This is text")
     )
 
-    val str = mail.serialize.unsafeRunSync().
-      replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
-    assertEquals(str, """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
+    val str = mail.serialize
+      .unsafeRunSync()
+      .replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
+    assertEquals(
+      str,
+      """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                         |From: test@test.com
                         |To: test@test.com
                         |Subject: Hello
@@ -26,7 +29,8 @@ object MailConvTest extends SimpleTestSuite {
                         |Content-Type: text/plain; charset=us-ascii
                         |Content-Transfer-Encoding: 7bit
                         |
-                        |This is text""".stripMargin.replace("\n", "\r\n"))
+                        |This is text""".stripMargin.replace("\n", "\r\n")
+    )
   }
 
   test("write html mail") {
@@ -37,9 +41,12 @@ object MailConvTest extends SimpleTestSuite {
       HtmlBody("<p>This is html</p>")
     )
 
-    val str = mail.serialize.unsafeRunSync().
-      replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
-    assertEquals(str, """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
+    val str = mail.serialize
+      .unsafeRunSync()
+      .replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
+    assertEquals(
+      str,
+      """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                         |From: test@test.com
                         |To: test@test.com
                         |Subject: Hello
@@ -47,19 +54,23 @@ object MailConvTest extends SimpleTestSuite {
                         |Content-Type: text/html; charset=us-ascii
                         |Content-Transfer-Encoding: 7bit
                         |
-                        |<p>This is html</p>""".stripMargin.replace("\n", "\r\n"))
+                        |<p>This is html</p>""".stripMargin.replace("\n", "\r\n")
+    )
   }
 
   test("write empty mail") {
     val mail = MailBuilder.build[IO](
       From("test@test.com"),
       To("test@test.com"),
-      Subject("Hello"),
+      Subject("Hello")
     )
 
-    val str = mail.serialize.unsafeRunSync().
-      replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
-    assertEquals(str, """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
+    val str = mail.serialize
+      .unsafeRunSync()
+      .replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
+    assertEquals(
+      str,
+      """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                         |From: test@test.com
                         |To: test@test.com
                         |Subject: Hello
@@ -67,7 +78,8 @@ object MailConvTest extends SimpleTestSuite {
                         |Content-Type: text/plain; charset=us-ascii
                         |Content-Transfer-Encoding: 7bit
                         |
-                        |""".stripMargin.replace("\n", "\r\n"))
+                        |""".stripMargin.replace("\n", "\r\n")
+    )
   }
 
   test("write alternative mail") {
@@ -79,15 +91,16 @@ object MailConvTest extends SimpleTestSuite {
       TextBody("This is html as text")
     )
 
-    val str = mail.serialize.unsafeRunSync().
-      replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
+    val str = mail.serialize
+      .unsafeRunSync()
+      .replaceAll("Date:.*", "Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)")
 
-    val partChars = str.lines.
-      find(_.contains("boundary")).
-      map(_.trim.drop(10).dropRight(1)).
-      getOrElse(sys.error("no part boundary found"))
+    val partChars = str.lines
+      .find(_.contains("boundary"))
+      .map(_.trim.drop(10).dropRight(1))
+      .getOrElse(sys.error("no part boundary found"))
 
-    val expected =  s"""Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
+    val expected = s"""Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                        |From: test@test.com
                        |To: test@test.com
                        |Subject: Hello
@@ -120,9 +133,11 @@ object MailConvTest extends SimpleTestSuite {
     )
 
     val str = mail.serialize.unsafeRunSync()
-    val mail2 = Mail.deserialize[IO](str).unsafeRunSync().
-      copy(additionalHeaders = Headers.empty).
-      mapMailHeader(_.copy(id = "").copy(sentDate = None))
+    val mail2 = Mail
+      .deserialize[IO](str)
+      .unsafeRunSync()
+      .copy(additionalHeaders = Headers.empty)
+      .mapMailHeader(_.copy(id = "").copy(sentDate = None))
     assertEquals(mail, mail2)
   }
 
@@ -135,9 +150,11 @@ object MailConvTest extends SimpleTestSuite {
     )
 
     val str = mail.serialize.unsafeRunSync()
-    val mail2 = Mail.deserialize[IO](str).unsafeRunSync().
-      copy(additionalHeaders = Headers.empty).
-      mapMailHeader(_.copy(id = "").copy(sentDate = None))
+    val mail2 = Mail
+      .deserialize[IO](str)
+      .unsafeRunSync()
+      .copy(additionalHeaders = Headers.empty)
+      .mapMailHeader(_.copy(id = "").copy(sentDate = None))
     assertEquals(mail, mail2)
   }
 
@@ -151,9 +168,11 @@ object MailConvTest extends SimpleTestSuite {
     )
 
     val str = mail.serialize.unsafeRunSync()
-    val mail2 = Mail.deserialize[IO](str).unsafeRunSync().
-      copy(additionalHeaders = Headers.empty).
-      mapMailHeader(_.copy(id = "").copy(sentDate = None))
+    val mail2 = Mail
+      .deserialize[IO](str)
+      .unsafeRunSync()
+      .copy(additionalHeaders = Headers.empty)
+      .mapMailHeader(_.copy(id = "").copy(sentDate = None))
     assertEquals(mail, mail2)
   }
 }

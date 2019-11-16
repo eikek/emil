@@ -25,14 +25,13 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
     gm
   }
 
-  def start(): Unit = {
+  def start(): Unit =
     if (started.compareAndSet(false, true)) {
       logger.info("Starting local greenmail mail servers: imap:{} smtp:{}", imapPort, smtpPort)
       greenMail.start()
     } else {
       logger.warn("GreenMail already started. Check your test code.")
     }
-  }
 
   def stop(): Unit = {
     logger.info("Stopping local greenmail mail servers: imap:{} smtp{}", imapPort, smtpPort)
@@ -46,9 +45,12 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
     MailConfig(s"imap://localhost:$imapPort", user.address, user.address, SSLType.NoEncryption)
 
   def waitForReceive(mails: Int, timeout: FiniteDuration = 10.seconds): Unit =
-    assert(greenMail.waitForIncomingEmail(timeout.toMillis, mails), "Timeout reached while waiting for mails")
+    assert(
+      greenMail.waitForIncomingEmail(timeout.toMillis, mails),
+      "Timeout reached while waiting for mails"
+    )
 
-  def removeAllMails():Unit =
+  def removeAllMails(): Unit =
     greenMail.purgeEmailFromAllMailboxes()
 
   def imapManager: ImapHostManager =
@@ -58,9 +60,8 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
 
 object GreenmailServer {
 
-  def randomPorts(users: MailAddress*): GreenmailServer = {
+  def randomPorts(users: MailAddress*): GreenmailServer =
     new GreenmailServer(randomPort(10), randomPort(10), users.toList)
-  }
 
   private def randomPort(tries: Int): Int = {
     if (tries == 0) {
@@ -72,7 +73,7 @@ object GreenmailServer {
       val socket = new Socket(null: String, port)
       socket.close()
       randomPort(tries - 1);
-    } catch  {
+    } catch {
       case _: Exception => port;
     }
   }

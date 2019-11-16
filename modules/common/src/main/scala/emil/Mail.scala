@@ -3,11 +3,12 @@ package emil
 import cats.Applicative
 import emil.builder.MailBuilder
 
-final case class Mail[F[_]]( header: MailHeader
-                     , additionalHeaders: Headers
-                     , body: MailBody[F]
-                     , attachments: Attachments[F]
-                     ) {
+final case class Mail[F[_]](
+    header: MailHeader,
+    additionalHeaders: Headers,
+    body: MailBody[F],
+    attachments: Attachments[F]
+) {
 
   def mapMailHeader(f: MailHeader => MailHeader): Mail[F] =
     copy(header = f(header))

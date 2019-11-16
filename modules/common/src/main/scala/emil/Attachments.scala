@@ -11,7 +11,7 @@ final case class Attachments[F[_]](all: Vector[Attachment[F]]) {
 
   def size: Int = all.size
 
-  def ++ (next: Attachments[F]): Attachments[F] =
+  def ++(next: Attachments[F]): Attachments[F] =
     Attachments(all ++ next.all)
 }
 
