@@ -14,10 +14,10 @@
 <span class="c1">// import emil.javamail._
 </span>
 <span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">scala</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: cats.effect.ContextShift[cats.effect.IO] = cats.effect.internals.IOContextShift@41d1b545
+<span class="c1">// CS: cats.effect.ContextShift[cats.effect.IO] = cats.effect.internals.IOContextShift@5e053f10
 </span>
 <span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">scala</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// blocker: cats.effect.Blocker = cats.effect.Blocker@34245a00
+<span class="c1">// blocker: cats.effect.Blocker = cats.effect.Blocker@4a2bbd5d
 </span></code></pre></div></div>
 
 <h2 id="sending-mails">Sending Mails</h2>
@@ -46,7 +46,7 @@
 necessary and a concrete emil:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">emil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">blocker</span><span class="o">)</span>
-<span class="c1">// emil: emil.Emil[cats.effect.IO,emil.javamail.internal.JavaMailConnection] = emil.javamail.JavaMailEmil@625a0466
+<span class="c1">// emil: emil.Emil[cats.effect.IO,emil.javamail.internal.JavaMailConnection] = emil.javamail.JavaMailEmil@7c0470e8
 </span>
 <span class="k">val</span> <span class="nv">smtpConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"smtp://devmail:25"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// smtpConf: emil.MailConfig = MailConfig(smtp://devmail:25, dev, ***, NoEncryption, 10 seconds)
@@ -55,7 +55,7 @@ necessary and a concrete emil:</p>
 <p>Finally, create a program that sends the mail:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">sendIO</span> <span class="k">=</span> <span class="nf">emil</span><span class="o">(</span><span class="n">smtpConf</span><span class="o">).</span><span class="py">send</span><span class="o">(</span><span class="n">mail</span><span class="o">)</span>
-<span class="c1">// sendIO: cats.effect.IO[Unit] = IO$1027786285
+<span class="c1">// sendIO: cats.effect.IO[Unit] = IO$2116317674
 </span></code></pre></div></div>
 
 <h2 id="accessing-mails">Accessing Mails</h2>
@@ -70,7 +70,7 @@ connection to an imap server is necessary:</p>
 <p>Then run an operation from the <code class="highlighter-rouge">email.access</code> interface:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">readIO</span> <span class="k">=</span> <span class="nf">emil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nv">emil</span><span class="o">.</span><span class="py">access</span><span class="o">.</span><span class="py">getInbox</span><span class="o">)</span>
-<span class="c1">// readIO: cats.effect.IO[emil.MailFolder] = IO$672608617
+<span class="c1">// readIO: cats.effect.IO[emil.MailFolder] = IO$187508122
 </span></code></pre></div></div>
 </div></div></section><section class="technologies"><div class="container"><div class="row"></div></div></section></main><footer id="site-footer"><div class="container"><div class="row"><div class="col-xs-6"><p>Emil is designed and developed by <a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer">eikek</a></p></div><div class="col-xs-6"><p class="text-right"><a href="https://github.com/eikek/emil"><span class="fa fa-github"></span>View on GitHub</a></p></div></div><div class="row"><div class="col-xs-6">
 <p>&copy; 2019 <a href="https://github.com/eikek/emil">Emil, v0.1.0</a></p>

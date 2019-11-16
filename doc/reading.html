@@ -19,7 +19,7 @@ using the <code class="highlighter-rouge">loadMail</code> operation.</p>
 <span class="c1">// import java.time._
 </span>
 <span class="k">val</span> <span class="nv">q</span> <span class="k">=</span> <span class="o">(</span><span class="nc">ReceivedDate</span> <span class="o">&gt;=</span> <span class="nv">Instant</span><span class="o">.</span><span class="py">now</span><span class="o">.</span><span class="py">minusSeconds</span><span class="o">(</span><span class="mi">60</span><span class="o">))</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="nc">Subject</span> <span class="o">=*=</span> <span class="s">"test"</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nc">Flagged</span>
-<span class="c1">// q: emil.SearchQuery.And = And(List(Not(Flagged), ReceivedDate(2019-11-16T12:30:12.936Z,Ge), Subject(test)))
+<span class="c1">// q: emil.SearchQuery.And = And(List(Not(Flagged), ReceivedDate(2019-11-16T13:09:43.483Z,Ge), Subject(test)))
 </span></code></pre></div></div>
 
 <p>The subject test is a simple substring test. Look at <code class="highlighter-rouge">SearchQuery</code> to
