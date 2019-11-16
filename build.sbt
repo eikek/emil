@@ -34,11 +34,11 @@ val sharedSettings = Seq(
   scalacOptions in Test := Seq(),
   scalacOptions in (Compile, console) := Seq(),
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
-  homepage := Some(url("https://github.com/eikek/emil")),
-  publishTo := sonatypePublishToBundle.value
-)
+  homepage := Some(url("https://github.com/eikek/emil"))
+) ++ publishSettings
 
 lazy val publishSettings = Seq(
+  publishTo := sonatypePublishToBundle.value,
   publishMavenStyle := true,
   scmInfo := Some(
     ScmInfo(
@@ -57,7 +57,6 @@ lazy val publishSettings = Seq(
   publishArtifact in Test := false,
   releaseCrossBuild := true,
   releaseProcess := Seq[ReleaseStep](
-    releaseStepTask(scalafmtCheck),
     checkSnapshotDependencies,
     inquireVersions,
     runClean,
@@ -65,7 +64,7 @@ lazy val publishSettings = Seq(
     setReleaseVersion,
     commitReleaseVersion,
     tagRelease,
-    // For non cross-build projects, use releaseStepCommand("publishSigned")
+    //For non cross-build projects, use releaseStepCommand("publishSigned")
     releaseStepCommandAndRemaining("+publishSigned"),
     releaseStepCommand("sonatypeBundleRelease"),
     setNextVersion,
@@ -100,7 +99,6 @@ val buildInfoSettings = Seq(
 lazy val common = project.in(file("modules/common")).
   settings(sharedSettings).
   settings(testSettings).
-  settings(publishSettings).
   settings(
     name := "emil-common",
     libraryDependencies ++=
@@ -111,7 +109,6 @@ lazy val common = project.in(file("modules/common")).
 lazy val javamail = project.in(file("modules/javamail")).
   settings(sharedSettings).
   settings(testSettings).
-  settings(publishSettings).
   settings(
     name := "emil-javamail",
     libraryDependencies ++=
