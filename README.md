@@ -6,8 +6,8 @@
 </a>
 
 
-Emil is a library for dealing with E-Mail in Scala. The api builds on
-[Cats](https://github.com/typelevel/cats) and
+`[\/]` Emil is a library for dealing with E-Mail in Scala. The api
+builds on [Cats](https://github.com/typelevel/cats) and
 [FS2](https://github.com/functional-streams-for-scala/fs2). It comes
 with a backend implementation that is based on the well known [Java
 Mail](https://github.com/eclipse-ee4j/mail) library. As such it is

@@ -1,4 +1,6 @@
 import com.typesafe.sbt.SbtGit.GitKeys._
+import xerial.sbt.Sonatype._
+import ReleaseTransformations._
 
 val scala212 = "2.12.10"
 val scala213 = "2.13.1"
@@ -32,7 +34,51 @@ val sharedSettings = Seq(
   scalacOptions in Test := Seq(),
   scalacOptions in (Compile, console) := Seq(),
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
-  homepage := Some(url("https://github.com/eikek/bitpeace"))
+  homepage := Some(url("https://github.com/eikek/emil")),
+  publishTo := sonatypePublishToBundle.value
+)
+
+lazy val publishSettings = Seq(
+  publishMavenStyle := true,
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/eikek/emil.git"),
+      "scm:git:git@github.com:eikek/emil.git"
+    )
+  ),
+  developers := List(
+    Developer(
+      id = "eikek",
+      name = "Eike Kettner",
+      url = url("https://github.com/eikek"),
+      email = ""
+    )
+  ),
+  publishArtifact in Test := false,
+  releaseCrossBuild := true,
+  releaseProcess := Seq[ReleaseStep](
+    releaseStepTask(scalafmtCheck),
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    // For non cross-build projects, use releaseStepCommand("publishSigned")
+    releaseStepCommandAndRemaining("+publishSigned"),
+    releaseStepCommand("sonatypeBundleRelease"),
+    setNextVersion,
+    commitNextVersion,
+    pushChanges
+  ),
+  sonatypeProjectHosting := Some(GitHubHosting("eikek", "emil", "eike.kettner@posteo.de"))
+)
+
+lazy val noPublish = Seq(
+  publish := {},
+  publishLocal := {},
+  publishArtifact := false
 )
 
 val testSettings = Seq(
@@ -54,6 +100,7 @@ val buildInfoSettings = Seq(
 lazy val common = project.in(file("modules/common")).
   settings(sharedSettings).
   settings(testSettings).
+  settings(publishSettings).
   settings(
     name := "emil-common",
     libraryDependencies ++=
@@ -64,6 +111,7 @@ lazy val common = project.in(file("modules/common")).
 lazy val javamail = project.in(file("modules/javamail")).
   settings(sharedSettings).
   settings(testSettings).
+  settings(publishSettings).
   settings(
     name := "emil-javamail",
     libraryDependencies ++=
@@ -77,7 +125,9 @@ lazy val javamail = project.in(file("modules/javamail")).
 
 lazy val microsite = project.in(file("modules/microsite")).
   enablePlugins(MicrositesPlugin).
+  disablePlugins(ReleasePlugin).
   settings(sharedSettings).
+  settings(noPublish).
   settings(
     name := "emil-microsite",
     crossScalaVersions := Seq(),
@@ -111,6 +161,7 @@ lazy val microsite = project.in(file("modules/microsite")).
 
 val root = project.in(file(".")).
   settings(sharedSettings).
+  settings(noPublish).
   settings(
     name := "emil-root"
   ).
