@@ -1,3 +1,4 @@
+
 import com.typesafe.sbt.SbtGit.GitKeys._
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
@@ -7,7 +8,7 @@ val scala213 = "2.13.1"
 
 val sharedSettings = Seq(
   organization := "com.github.eikek",
-  scalaVersion := scala212,
+  scalaVersion := scala213,
   scalacOptions ++=
     Seq("-feature",
       "-deprecation",
@@ -127,10 +128,8 @@ lazy val microsite = project.in(file("modules/microsite")).
   settings(noPublish).
   settings(
     name := "emil-microsite",
-    crossScalaVersions := Seq(),
     publishArtifact := false,
     skip in publish := true,
-    scalaVersion := scala212,
     micrositeFooterText := Some(
       """
         |<p>&copy; 2019 <a href="https://github.com/eikek/emil">Emil, v{{site.version}}</a></p>
@@ -145,14 +144,9 @@ lazy val microsite = project.in(file("modules/microsite")).
     micrositeGithubRepo := "emil",
     micrositeGitterChannel := false,
     micrositeShareOnSocial := false,
-    fork in tut := true,
-    scalacOptions in Tut ++=
-      Seq("-feature",
-        "-deprecation",
-        "-unchecked",
-        "-encoding", "UTF-8",
-        "-language:higherKinds"),
-    micrositeCompilingDocsTool := WithTut
+    fork in run := true,
+    micrositeCompilingDocsTool := WithMdoc,
+    mdocIn := tutSourceDirectory.value
   ).
   dependsOn(common % "compile->compile;compile->test", javamail)
 

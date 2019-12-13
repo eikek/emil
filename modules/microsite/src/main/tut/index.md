@@ -23,7 +23,8 @@ just another wrapper library, but also a bit different:
   list of attachments.
 - The data structures and api are in a separate module, that doesn't
   depend on a concrete implementation library, like Java Mail. An
-  implementation based on [fs2-mail]() or even
+  implementation based on
+  [fs2-mail](https://github.com/Spinoco/fs2-mail) or even
   [EWS](https://github.com/OfficeDev/ews-java-api) can be created
   without affecting the user code of this library.
 

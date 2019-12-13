@@ -84,8 +84,9 @@ val mail4 = mail3.asBuilder.add(
 ```
 
 Emil creates a `Stream[F, Byte]` from the `java.net.URL` using the
-[fs2-io]() api, that requires a `Blocker` and a `ContextShift`. The
-same applies when attaching files and `java.io.InputStream`s.
+[fs2-io](https://github.com/functional-streams-for-scala/fs2/tree/master/io/src)
+api, that requires a `Blocker` and a `ContextShift`. The same applies
+when attaching files and `java.io.InputStream`s.
 
 Attaching any given `Stream[F, Byte]` is the same. It doesn't require
 `Blocker` or `ContextShift` then.
