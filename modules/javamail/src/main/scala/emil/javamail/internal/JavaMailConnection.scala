@@ -2,20 +2,13 @@ package emil.javamail.internal
 
 import cats.effect.{Resource, Sync}
 import emil.{Connection, MailConfig}
-import javax.mail.{Folder, Session, Store, Transport}
+import javax.mail.{Folder, Session, Store}
 
 final case class JavaMailConnection(config: MailConfig, session: Session, mailStore: Option[Store])
     extends Connection {
 
   def store: Store =
     mailStore.getOrElse(sys.error(s"No store available for connection: ${config.url}"))
-
-  def transport[F[_]: Sync]: Resource[F, Transport] =
-    Resource.make(Sync[F].delay {
-      val t = session.getTransport
-      t.connect()
-      t
-    })(trans => Sync[F].delay(trans.close()))
 
   def folder[F[_]: Sync](name: String, mode: Int = Folder.READ_ONLY): Resource[F, Folder] =
     Resource

@@ -6,6 +6,7 @@ import emil._
 import emil.javamail.conv.{MessageIdEncode, MsgConv}
 import emil.javamail.internal.{JavaMailConnection, Logger, ThreadClassLoader}
 import javax.mail.internet.MimeMessage
+import javax.mail.Transport
 
 object SendMail {
   private[this] val logger = Logger(getClass)
@@ -15,25 +16,25 @@ object SendMail {
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): MailOp[F, JavaMailConnection, Unit] =
     MailOp(
       conn =>
-        conn
-          .transport[F]
-          .use(trans => {
-
-            mails.toList.traverse(
-              mail =>
-                cm.convert(conn.session, MessageIdEncode.Random, mail)
-                  .flatMap({ msg =>
-                    Sync[F].delay({
-                      logger.debug(s"Sending message: ${infoLine(mail.header)}")
-                      ThreadClassLoader {
-                        // this can be required if the mailcap file is not found
-                        trans.sendMessage(msg, msg.getAllRecipients)
+        mails.toList
+          .traverse(
+            mail =>
+              cm.convert(conn.session, MessageIdEncode.Random, mail)
+                .flatMap({ msg =>
+                  Sync[F].delay({
+                    logger.debug(s"Sending message: ${infoLine(mail.header)}")
+                    // this can be required if the mailcap file is not found
+                    ThreadClassLoader {
+                      if (conn.config.user.nonEmpty) {
+                        Transport
+                          .send(msg, msg.getAllRecipients, conn.config.user, conn.config.password)
+                      } else {
+                         Transport.send(msg, msg.getAllRecipients)
                       }
-                    })
+                    }
                   })
-            )
-
-          })
+                })
+          )
           .map(_ => ())
     )
 

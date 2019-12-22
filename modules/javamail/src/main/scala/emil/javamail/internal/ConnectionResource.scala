@@ -10,6 +10,7 @@ import javax.mail.{Authenticator, PasswordAuthentication, Session, Store}
 import scala.concurrent.duration.Duration
 
 object ConnectionResource {
+  private[this] val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mc: MailConfig, debug: Boolean = false): Resource[F, JavaMailConnection] =
     Resource.make(make(mc, debug))(
@@ -90,11 +91,13 @@ object ConnectionResource {
     props.put("mail.mime.multipart.ignoremissingboundaryparameter", "true")
 
     if (mc.user.nonEmpty) {
+      logger.trace(s"Creating session with authenticator and props: $props")
       Session.getInstance(props, new Authenticator() {
         override def getPasswordAuthentication: PasswordAuthentication =
           new PasswordAuthentication(mc.user, mc.password)
       })
     } else {
+      logger.trace(s"Creating session without authenticator and props: $props")
       Session.getInstance(props)
     }
   }
