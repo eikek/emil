@@ -9,7 +9,7 @@ title: Examples
 
 First, some imports and setup:
 
-```tut:book
+```scala mdoc
 import cats.effect._
 import emil._, emil.builder._
 
@@ -24,7 +24,7 @@ val blocker = Blocker.liftExecutionContext(scala.concurrent.ExecutionContext.glo
 
 Create a simple mail:
 
-```tut:book
+```scala mdoc
 val mail: Mail[IO] = MailBuilder.build(
   From("me@test.com"),
   To("test@test.com"),
@@ -41,15 +41,15 @@ val mail: Mail[IO] = MailBuilder.build(
 In order to do something with it, a connection to a server is
 necessary and a concrete emil:
 
-```tut:book
-val emil = JavaMailEmil[IO](blocker)
+```scala mdoc
+val myemil = JavaMailEmil[IO](blocker)
 val smtpConf = MailConfig("smtp://devmail:25", "dev", "dev", SSLType.NoEncryption)
 ```
 
 Finally, create a program that sends the mail:
 
-```tut:book
-val sendIO = emil(smtpConf).send(mail)
+```scala mdoc
+val sendIO = myemil(smtpConf).send(mail)
 ```
 
 ## Accessing Mails
@@ -57,12 +57,12 @@ val sendIO = emil(smtpConf).send(mail)
 The JavaMail backend implements IMAP access to mailboxes. First, a
 connection to an imap server is necessary:
 
-```tut:book
+```scala mdoc
 val imapConf = MailConfig("imap://devmail:143", "dev", "dev", SSLType.NoEncryption)
 ```
 
 Then run an operation from the `email.access` interface:
 
-```tut:book
-val readIO = emil(imapConf).run(emil.access.getInbox)
+```scala mdoc
+val readIO = myemil(imapConf).run(myemil.access.getInbox)
 ```

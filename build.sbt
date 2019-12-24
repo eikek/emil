@@ -137,7 +137,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     ),
     micrositeName := "Emil",
     micrositeDescription := "Emil – E-Mail library for Scala",
-    micrositeFavicons := Seq(microsites.MicrositeFavicon("favicon.png", "96x96")),
+    micrositeFavicons := Seq(microsites.MicrositeFavicon("favicon.png", "35x35")),
     micrositeBaseUrl := "/emil",
     micrositeAuthor := "eikek",
     micrositeGithubOwner := "eikek",
@@ -145,10 +145,14 @@ lazy val microsite = project.in(file("modules/microsite")).
     micrositeGitterChannel := false,
     micrositeShareOnSocial := false,
     fork in run := true,
+    scalacOptions := Seq(),
     micrositeCompilingDocsTool := WithMdoc,
+    mdocVariables := Map(
+      "VERSION" -> version.value
+    ),
     mdocIn := tutSourceDirectory.value
   ).
-  dependsOn(common % "compile->compile;compile->test", javamail)
+  dependsOn(common % "compile->compile,test", javamail)
 
 val root = project.in(file(".")).
   settings(sharedSettings).

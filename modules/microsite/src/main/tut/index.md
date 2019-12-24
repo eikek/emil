@@ -36,8 +36,8 @@ execute.
 With [sbt](https://scala-sbt.org), add the dependencies:
 
 ```
-"com.github.eikek" %% "emil-common" % "{{site.version}}"  // the core library
-"com.github.eikek" %% "emil-javamail" % "{{site.version}}" // implementation module
+"com.github.eikek" %% "emil-common" % "@VERSION@"  // the core library
+"com.github.eikek" %% "emil-javamail" % "@VERSION@" // implementation module
 ```
 
 Emil is provided for Scala 2.12 and 2.13.

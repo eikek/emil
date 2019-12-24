@@ -50,7 +50,7 @@ without depending on a concrete implementation module.
 For example, this is an operation that moves the first mail in INBOX
 into the Trash folder:
 
-```tut:book
+```scala mdoc
 import cats.implicits._, cats.effect._, emil._
 
 def moveToTrash[F[_]: Sync, C <: Connection](a: Access[F, C]): MailOp[F, C, Unit] = {
@@ -92,16 +92,16 @@ For example, to execute the *"moveToTrash"* operation from above, one
 needs a corresponding connection to some imap server and the
 `JavaMailEmil`.
 
-```tut:book
+```scala mdoc
 import emil.javamail._, scala.concurrent.ExecutionContext
 
 implicit val CS = IO.contextShift(ExecutionContext.global)
 val blocker = Blocker.liftExecutionContext(ExecutionContext.fromExecutorService(java.util.concurrent.Executors.newCachedThreadPool()))
 
-val emil = JavaMailEmil[IO](blocker)
+val myemil = JavaMailEmil[IO](blocker)
 val imapConf = MailConfig("imap://devmail:143", "dev", "dev", SSLType.NoEncryption)
 
-val moveIO = emil(imapConf).run(moveToTrash(emil.access))
+val moveIO = myemil(imapConf).run(moveToTrash(myemil.access))
 ```
 
 First, we need to create a `ContextShift` instance and a

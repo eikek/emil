@@ -17,7 +17,7 @@ your own easily, too.
 
 Creating mails without attachments:
 
-```tut:book
+```scala mdoc
 import cats.effect._, emil._, emil.builder._
 
 val mail: Mail[IO] = MailBuilder.build(
@@ -37,7 +37,7 @@ transformations and yields the final `Mail` instance. Using the
 which can be further modified. It is also possible to go from an
 existing `Mail` to a `MailBuilder` to change certain parts:
 
-```tut:book
+```scala mdoc
 val builder = mail.asBuilder
 val mail2 = builder.
   clearRecipients.
@@ -51,7 +51,7 @@ transfomations. Both names exists for better reading; i.e. a recipient
 is by default appended, but the subject is not. The methods accept a
 list of transformations, too.
 
-```tut:book
+```scala mdoc
 val mail3 = mail2.asBuilder.
   clearRecipients.
   add(
@@ -70,7 +70,7 @@ coming from. Emil defines transformations to add attachments from
 files, urls and java's `InputStream` easily. Otherwise you need to get
 a `Stream[F, Byte]` from somewhere else.
 
-```tut:book
+```scala mdoc
 import scala.concurrent.ExecutionContext
 
 implicit val CS = IO.contextShift(ExecutionContext.global)
@@ -91,7 +91,7 @@ when attaching files and `java.io.InputStream`s.
 Attaching any given `Stream[F, Byte]` is the same. It doesn't require
 `Blocker` or `ContextShift` then.
 
-```tut:book
+```scala mdoc
 import fs2.Stream
 
 val mydata: Stream[IO, Byte] = Stream.empty.covary[IO]
@@ -112,7 +112,7 @@ Customs transformations can be easily created. It's only a function
 `Mail[F] => Mail[F]`. This can be handy, if there is a better way to
 retrieve attachments, or just to create common headers.
 
-```tut:book
+```scala mdoc
 object MyHeader {
   def apply[F[_]](value: String): Trans[F] =
     CustomHeader("X-My-Header", value)

@@ -15,7 +15,7 @@ reading/writing e-mail.
 
 ## Parsing MimeType from String
 
-```tut:book
+```scala mdoc
 import emil.javamail.syntax._
 import emil._
 
@@ -26,7 +26,7 @@ MimeType.parse("text/html; charset=utf-8")
 
 Parse a string into an e-mail address:
 
-```tut:book
+```scala mdoc
 MailAddress.parse("John Doe <jdoe@gmail.com>")
 MailAddress.parse("John Doe doe@com")
 ```
@@ -34,7 +34,7 @@ MailAddress.parse("John Doe doe@com")
 Write the mail address as unicode or ascii-only string:
 
 
-```tut:book
+```scala mdoc
 val ma = MailAddress.parse("Örtlich <über.uns@test.com>").toOption.get
 val ascii = ma.asAsciiString
 MailAddress.parse(ascii)
@@ -46,7 +46,7 @@ val unicode = ma.asUnicodeString
 
 E-Mail as string:
 
-```tut:book
+```scala mdoc
 import cats.effect._
 import emil._, emil.builder._
 
@@ -64,7 +64,7 @@ val mailStr = mail.serialize.unsafeRunSync
 
 Deserialize:
 
-```tut:book
+```scala mdoc
 val mail2 = Mail.deserialize[IO](mailStr).unsafeRunSync
 
 ```

@@ -16,7 +16,7 @@ using the `loadMail` operation.
 A `SearchQuery` must be provided to the search operation. Using
 `import emil.SearchQuery._` allows for conveniently defining these:
 
-```tut:book
+```scala mdoc
 import emil._, emil.SearchQuery._
 import java.time._
 
@@ -28,7 +28,7 @@ find out what is possible.
 
 Searching inbox may look like this:
 
-```tut:book
+```scala mdoc
 import cats.effect._
 
 def searchInbox[C <: Connection](a: Access[IO, C], q: SearchQuery) =
@@ -45,10 +45,10 @@ Returning mail headers only from a search saves bandwith and is
 fast. If you really want to load all mails found, use the
 `searchAndLoad` operation.
 
-```tut:book
+```scala mdoc
 import cats.effect._
 
-def searchInbox[C <: Connection](a: Access[IO, C], q: SearchQuery) =
+def searchLoadInbox[C <: Connection](a: Access[IO, C], q: SearchQuery) =
   for {
     inbox  <- a.getInbox
     mails  <- a.searchAndLoad(inbox, 20)(q)
