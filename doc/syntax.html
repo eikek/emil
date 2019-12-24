@@ -1,4 +1,4 @@
-<html><head><title>Emil: Syntax Utilities</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="eikek" /><meta name="description" content="Emil – E-Mail library for Scala" /><meta name="og:image" content="/emil/img/poster.png" /><meta name="image" property="og:image" content="/emil/img/poster.png" /><meta name="og:title" content="Emil: Syntax Utilities" /><meta name="title" property="og:title" content="Emil: Syntax Utilities" /><meta name="og:site_name" content="Emil" /><meta name="og:url" content="https://github.com/eikek/emil" /><meta name="og:type" content="website" /><meta name="og:description" content="Emil – E-Mail library for Scala" /><link rel="icon" type="image/png" href="/emil/img/favicon.png" /><meta name="twitter:title" content="Emil: Syntax Utilities" /><meta name="twitter:image" content="/emil/img/poster.png" /><meta name="twitter:description" content="Emil – E-Mail library for Scala" /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="96x96" href="/emil/img/favicon.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/emil/highlight/styles/vs.css" /><link rel="stylesheet" href="/emil/css/light-style.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><div id="sidebar-brand"><a href="/emil/" class="brand"><div class="brand-wrapper"></div><span>Emil</span></a><button id="main-toggle" class="sidebar-toggle"><span class="close"></span></button></div><div class="sidebar-nav"> <div class="sidebar-nav-item  "><a href="/emil/index.html" title="Home" class="">Home</a></div> <div class="sidebar-nav-item  "><a href="/emil/examples.html" title="Examples" class="">Examples</a></div> <div class="sidebar-nav-item  open"><a href="/emil/doc.html" title="Documentation" class="drop-nested">Documentation</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/doc/building.html" title="Creating Mails" class="">Creating Mails</a> <a href="/emil/doc/reading.html" title="Obtaining Mails" class="">Obtaining Mails</a> <a href="/emil/doc/syntax.html" title="Syntax Utilities" class="active">Syntax Utilities</a></div></div></div></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-eye"></i><span>Watchers<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-star-o"></i><span>Stars<span id="stars" class="label label-default">--</span></span></a></li></ul></div></div></div></div><div id="content" data-github-owner="eikek" data-github-repo="emil"><div class="content-wrapper"><section><h1 id="syntax-utilities">Syntax Utilities</h1>
+<html><head><title>Emil: Syntax Utilities</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="eikek" /><meta name="description" content="Emil – E-Mail library for Scala" /><meta name="og:image" content="/emil/img/poster.png" /><meta name="image" property="og:image" content="/emil/img/poster.png" /><meta name="og:title" content="Emil: Syntax Utilities" /><meta name="title" property="og:title" content="Emil: Syntax Utilities" /><meta name="og:site_name" content="Emil" /><meta name="og:url" content="https://github.com/eikek/emil" /><meta name="og:type" content="website" /><meta name="og:description" content="Emil – E-Mail library for Scala" /><link rel="icon" type="image/png" href="/emil/img/favicon.png" /><meta name="twitter:title" content="Emil: Syntax Utilities" /><meta name="twitter:image" content="/emil/img/poster.png" /><meta name="twitter:description" content="Emil – E-Mail library for Scala" /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="35x35" href="/emil/img/favicon.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/emil/highlight/styles/vs.css" /><link rel="stylesheet" href="/emil/css/light-style.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><div id="sidebar-brand"><a href="/emil/" class="brand"><div class="brand-wrapper"></div><span>Emil</span></a><button id="main-toggle" class="sidebar-toggle"><span class="close"></span></button></div><div class="sidebar-nav"> <div class="sidebar-nav-item  "><a href="/emil/index.html" title="Home" class="">Home</a></div> <div class="sidebar-nav-item  "><a href="/emil/examples.html" title="Examples" class="">Examples</a></div> <div class="sidebar-nav-item  open"><a href="/emil/doc.html" title="Documentation" class="drop-nested">Documentation</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/doc/building.html" title="Creating Mails" class="">Creating Mails</a> <a href="/emil/doc/reading.html" title="Obtaining Mails" class="">Obtaining Mails</a> <a href="/emil/doc/syntax.html" title="Syntax Utilities" class="active">Syntax Utilities</a></div></div></div></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-eye"></i><span>Watchers<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-star-o"></i><span>Stars<span id="stars" class="label label-default">--</span></span></a></li></ul></div></div></div></div><div id="content" data-github-owner="eikek" data-github-repo="emil"><div class="content-wrapper"><section><h1 id="syntax-utilities">Syntax Utilities</h1>
 
 <p>The <code class="highlighter-rouge">emil-common</code> module doesn’t provide utilities for parsing mails
 or mail addresses from text. This is provided by the <code class="highlighter-rouge">emil-javamail</code>
@@ -9,52 +9,123 @@ reading/writing e-mail.</p>
 
 <h2 id="parsing-mimetype-from-string">Parsing MimeType from String</h2>
 
-<pre><code class="language-tut:book">import emil.javamail.syntax._
-import emil._
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
+<span class="k">import</span> <span class="nn">emil._</span>
 
-MimeType.parse("text/html; charset=utf-8")
-</code></pre>
+<span class="nv">MimeType</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"text/html; charset=utf-8"</span><span class="o">)</span>
+<span class="c1">// res0: Either[String, MimeType] = Right(
+//   MimeType("text", "html", Map("charset" -&gt; "utf-8"))
+// )
+</span></code></pre></div></div>
 
 <h2 id="readingwriting-e-mail-addresses">Reading/Writing E-Mail addresses</h2>
 
 <p>Parse a string into an e-mail address:</p>
 
-<pre><code class="language-tut:book">MailAddress.parse("John Doe &lt;jdoe@gmail.com&gt;")
-MailAddress.parse("John Doe doe@com")
-</code></pre>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"John Doe &lt;jdoe@gmail.com&gt;"</span><span class="o">)</span>
+<span class="c1">// res1: Either[String, MailAddress] = Right(
+//   MailAddress(Some("John Doe"), "jdoe@gmail.com")
+// )
+</span><span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"John Doe doe@com"</span><span class="o">)</span>
+<span class="c1">// res2: Either[String, MailAddress] = Left(
+//   "Local address contains control or whitespace"
+// )
+</span></code></pre></div></div>
 
 <p>Write the mail address as unicode or ascii-only string:</p>
 
-<pre><code class="language-tut:book">val ma = MailAddress.parse("Örtlich &lt;über.uns@test.com&gt;").toOption.get
-val ascii = ma.asAsciiString
-MailAddress.parse(ascii)
-val unicode = ma.asUnicodeString
-</code></pre>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">ma</span> <span class="k">=</span> <span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"Örtlich &lt;über.uns@test.com&gt;"</span><span class="o">).</span><span class="py">toOption</span><span class="o">.</span><span class="py">get</span>
+<span class="c1">// ma: MailAddress = MailAddress(
+//   Some("\u00d6rtlich"),
+//   "\u00fcber.uns@test.com"
+// )
+</span><span class="k">val</span> <span class="nv">ascii</span> <span class="k">=</span> <span class="nv">ma</span><span class="o">.</span><span class="py">asAsciiString</span>
+<span class="c1">// ascii: String = "=?UTF-8?Q?=C3=96rtlich?= &lt;\u00fcber.uns@test.com&gt;"
+</span><span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="n">ascii</span><span class="o">)</span>
+<span class="c1">// res3: Either[String, MailAddress] = Right(
+//   MailAddress(Some("\u00d6rtlich"), "\u00fcber.uns@test.com")
+// )
+</span><span class="k">val</span> <span class="nv">unicode</span> <span class="k">=</span> <span class="nv">ma</span><span class="o">.</span><span class="py">asUnicodeString</span>
+<span class="c1">// unicode: String = "\"\u00d6rtlich\" &lt;\u00fcber.uns@test.com&gt;"
+</span></code></pre></div></div>
 
 <h2 id="e-mail-fromto-string">E-Mail from/to String</h2>
 
 <p>E-Mail as string:</p>
 
-<pre><code class="language-tut:book">import cats.effect._
-import emil._, emil.builder._
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">cats.effect._</span>
+<span class="k">import</span> <span class="nn">emil._</span><span class="o">,</span> <span class="nv">emil</span><span class="o">.</span><span class="py">builder</span><span class="o">.</span><span class="py">_</span>
 
-val mail = MailBuilder.build[IO](
-  From("test@test.com"),
-  To("test@test.com"),
-  Subject("Hello"),
-  HtmlBody("&lt;p&gt;This is html&lt;/p&gt;")
-)
+<span class="k">val</span> <span class="nv">mail</span> <span class="k">=</span> <span class="nv">MailBuilder</span><span class="o">.</span><span class="py">build</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span>
+  <span class="nc">From</span><span class="o">(</span><span class="s">"test@test.com"</span><span class="o">),</span>
+  <span class="nc">To</span><span class="o">(</span><span class="s">"test@test.com"</span><span class="o">),</span>
+  <span class="nc">Subject</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">),</span>
+  <span class="nc">HtmlBody</span><span class="o">(</span><span class="s">"&lt;p&gt;This is html&lt;/p&gt;"</span><span class="o">)</span>
+<span class="o">)</span>
+<span class="c1">// mail: Mail[IO] = Mail(
+//   MailHeader(
+//     "",
+//     None,
+//     None,
+//     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),
+//     None,
+//     Some(MailAddress(None, "test@test.com")),
+//     None,
+//     None,
+//     None,
+//     "Hello",
+//     Set()
+//   ),
+//   Headers(List()),
+//   Html(Pure("&lt;p&gt;This is html&lt;/p&gt;")),
+//   Attachments(Vector())
+// )
+</span>
+<span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
 
-import emil.javamail.syntax._
-
-val mailStr = mail.serialize.unsafeRunSync
-</code></pre>
+<span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span>
+<span class="c1">// mailStr: String = """Date: Tue, 24 Dec 2019 21:27:40 +0000 (GMT)
+// From: test@test.com
+// To: test@test.com
+// Subject: Hello
+// MIME-Version: 1.0
+// Content-Type: text/html; charset=us-ascii
+// Content-Transfer-Encoding: 7bit
+// 
+// &lt;p&gt;This is html&lt;/p&gt;"""
+</span></code></pre></div></div>
 
 <p>Deserialize:</p>
 
-<pre><code class="language-tut:book">val mail2 = Mail.deserialize[IO](mailStr).unsafeRunSync
-
-</code></pre>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span>
+<span class="c1">// mail2: Mail[IO] = Mail(
+//   MailHeader(
+//     "messageId:null",
+//     None,
+//     None,
+//     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),
+//     None,
+//     Some(MailAddress(None, "test@test.com")),
+//     None,
+//     None,
+//     Some(2019-12-24T21:27:40Z),
+//     "Hello",
+//     Set()
+//   ),
+//   Headers(
+//     List(
+//       Header("MIME-Version", NonEmptyList("1.0", List())),
+//       Header(
+//         "Content-Type",
+//         NonEmptyList("text/html; charset=us-ascii", List())
+//       ),
+//       Header("Content-Transfer-Encoding", NonEmptyList("7bit", List()))
+//     )
+//   ),
+//   Html(Pure("&lt;p&gt;This is html&lt;/p&gt;")),
+//   Attachments(Vector())
+// )
+</span></code></pre></div></div>
 </section></div></div></div></div><script src="/emil/highlight/highlight.pack.js"></script><script>hljs.configure({languages:['scala','java','bash']});
 hljs.initHighlightingOnLoad();
               </script><script>console.info('\x57\x65\x62\x73\x69\x74\x65\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x3a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x5f\x5f\x0a\x20\x20\x20\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x5f\x20\x20\x2f\x20\x2f\x5f\x20\x20\x20\x20\x20\x20\x5f\x5f\x5f\x5f\x20\x5f\x5f\x5f\x20\x20\x28\x5f\x29\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x28\x5f\x29\x20\x2f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x0a\x20\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x60\x5f\x5f\x20\x5c\x2f\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x20\x2f\x20\x5f\x5f\x2f\x20\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x0a\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x5f\x2f\x20\x2f\x20\x2f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x5f\x5f\x2f\x20\x2f\x20\x20\x2f\x20\x2f\x5f\x2f\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x20\x2f\x5f\x2f\x20\x20\x5f\x5f\x28\x5f\x5f\x20\x20\x29\x0a\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2e\x5f\x5f\x5f\x2f\x5c\x5f\x5f\x2f\x20\x20\x20\x20\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x2f\x20\x20\x20\x5c\x5f\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x0a\x0a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x34\x37\x64\x65\x67\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x62\x74\x2d\x6d\x69\x63\x72\x6f\x73\x69\x74\x65\x73')</script><script src="/emil/js/docs.js"></script></body></html>
