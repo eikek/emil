@@ -1,6 +1,7 @@
 package emil
 
 import cats.effect.{Bracket, Resource}
+import cats.data.NonEmptyList
 
 trait Emil[F[_]] { self =>
 
@@ -18,8 +19,8 @@ trait Emil[F[_]] { self =>
       def run[A](op: MailOp[F, C, A]): F[A] =
         self.connection(mc).use(op.run)
 
-      def send(mails: Mail[F]*): F[Unit] =
-        run(sender.sendMails(mails))
+      def send(mail: Mail[F], mails: Mail[F]*): F[NonEmptyList[String]] =
+        run(sender.sendMails(NonEmptyList.of(mail, mails: _*)))
     }
 }
 
@@ -29,6 +30,6 @@ object Emil {
 
     def run[A](op: MailOp[F, C, A]): F[A]
 
-    def send(mails: Mail[F]*): F[Unit]
+    def send(mail: Mail[F], mails: Mail[F]*): F[NonEmptyList[String]]
   }
 }

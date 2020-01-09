@@ -16,6 +16,14 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
 
   def user1Imap = emil(imapConf(user1))
 
+  def makeMail(n: Int): Mail[IO] =
+    MailBuilder.build[IO](
+      From(user2),
+      To(user1),
+      Subject(s"Hello $n!"),
+      TextBody(s"This is text $n.")
+    )
+
   override def tearDown(env: A): Unit =
     server.removeAllMails()
 
@@ -64,17 +72,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assertEquals(n, 0)
 
     emil(smtpConf(user2))
-      .send(
-        (1 to 5).map(
-          n =>
-            MailBuilder.build[IO](
-              From(user2),
-              To(user1),
-              Subject(s"Hello $n!"),
-              TextBody(s"This is text $n.")
-            )
-        ): _*
-      )
+      .send(makeMail(1), (2 to 5).map(makeMail): _*)
       .unsafeRunSync()
     server.waitForReceive(5)
 
@@ -84,17 +82,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
 
   test("search message") { _ =>
     emil(smtpConf(user2))
-      .send(
-        (1 to 5).map(
-          n =>
-            MailBuilder.build[IO](
-              From(user2),
-              To(user1),
-              Subject(s"Hello $n!"),
-              TextBody(s"This is text $n.")
-            )
-        ): _*
-      )
+      .send(makeMail(1), (2 to 5).map(makeMail): _*)
       .unsafeRunSync()
     server.waitForReceive(5)
 
@@ -223,17 +211,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
 
   test("search delete") { _ =>
     emil(smtpConf(user2))
-      .send(
-        (1 to 5).map(
-          n =>
-            MailBuilder.build[IO](
-              From(user2),
-              To(user1),
-              Subject(s"Hello $n!"),
-              TextBody(s"This is text $n.")
-            )
-        ): _*
-      )
+      .send(makeMail(1), (2 to 5).map(makeMail): _*)
       .unsafeRunSync()
     server.waitForReceive(5)
 
