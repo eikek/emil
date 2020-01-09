@@ -4,13 +4,13 @@ import cats.effect._
 import emil._
 import emil.javamail.internal.JavaMailConnection
 
-object SendMailTest extends AbstractSendTest[Unit, JavaMailConnection] {
+object SendMailTest extends AbstractSendTest[Unit] {
 
   override def setup(): Unit = ()
 
   override def tearDown(env: Unit): Unit = ()
 
-  def emil: Emil[IO, JavaMailConnection] =
+  lazy val emil: Emil[IO] =
     JavaMailEmil[IO](blocker)
 
 }

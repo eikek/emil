@@ -6,8 +6,8 @@ import cats.effect._
 import emil.builder._
 import emil.test.GreenmailTestSuite
 
-abstract class AbstractAccessTest[A, C <: Connection] extends GreenmailTestSuite[A] {
-  def emil: Emil[IO, C]
+abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
+  val emil: Emil[IO]
 
   val user1 = MailAddress.unsafe(None, "joe@test.com")
   val user2 = MailAddress.unsafe(None, "joan@test.com")
@@ -20,7 +20,8 @@ abstract class AbstractAccessTest[A, C <: Connection] extends GreenmailTestSuite
     server.removeAllMails()
 
   test("get inbox") { _ =>
-    val inbox = emil(imapConf(user1)).run(emil.access.getInbox).unsafeRunSync()
+    val op: MailOp[IO, emil.C, MailFolder] = emil.access.getInbox
+    val inbox = user1Imap.run(op).unsafeRunSync()
     assertEquals(inbox, MailFolder("INBOX", "INBOX"))
   }
 

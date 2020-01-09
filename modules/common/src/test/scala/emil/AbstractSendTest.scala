@@ -5,8 +5,8 @@ import cats.effect.IO
 import emil.test.GreenmailTestSuite
 import emil.builder._
 
-abstract class AbstractSendTest[A, C <: Connection] extends GreenmailTestSuite[A] {
-  def emil: Emil[IO, C]
+abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
+  val emil: Emil[IO]
 
   val user1 = MailAddress.unsafe(None, "joe@test.com")
   val user2 = MailAddress.unsafe(None, "joan@test.com")
@@ -40,7 +40,7 @@ abstract class AbstractSendTest[A, C <: Connection] extends GreenmailTestSuite[A
     )
   }
 
-  def findFirstMail(a: Access[IO, C]): MailOp[IO, C, Mail[IO]] =
+  def findFirstMail[C <: Connection](a: Access[IO, C]): MailOp[IO, C, Mail[IO]] =
     a.getInbox
       .flatMap(in => a.search(in, 1)(SearchQuery.All))
       .map(_.mails.headOption.toRight(new Exception("No mail found.")))

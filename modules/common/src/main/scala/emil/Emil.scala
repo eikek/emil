@@ -2,7 +2,9 @@ package emil
 
 import cats.effect.{Bracket, Resource}
 
-trait Emil[F[_], C <: Connection] { self =>
+trait Emil[F[_]] { self =>
+
+  type C <: Connection
 
   def connection(mc: MailConfig): Resource[F, C]
 
@@ -12,6 +14,7 @@ trait Emil[F[_], C <: Connection] { self =>
 
   def apply(mc: MailConfig)(implicit F: Bracket[F, Throwable]): Emil.Run[F, C] =
     new Emil.Run[F, C] {
+
       def run[A](op: MailOp[F, C, A]): F[A] =
         self.connection(mc).use(op.run)
 
@@ -23,6 +26,7 @@ trait Emil[F[_], C <: Connection] { self =>
 object Emil {
 
   trait Run[F[_], C <: Connection] {
+
     def run[A](op: MailOp[F, C, A]): F[A]
 
     def send(mails: Mail[F]*): F[Unit]
