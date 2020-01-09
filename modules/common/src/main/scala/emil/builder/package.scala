@@ -37,17 +37,32 @@ package builder {
   }
   object To extends MailAddressHelper[To]
 
+  case class Tos[F[_]](mas: Seq[MailAddress]) extends Trans[F] {
+    def apply(mail: Mail[F]): Mail[F] =
+      mail.mapMailHeader(_.mapRecipients(_.addTos(mas)))
+  }
+
   case class Cc[F[_]](ma: MailAddress) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapMailHeader(_.mapRecipients(_.addCc(ma)))
   }
   object Cc extends MailAddressHelper[Cc]
 
+  case class Ccs[F[_]](mas: Seq[MailAddress]) extends Trans[F] {
+    def apply(mail: Mail[F]): Mail[F] =
+      mail.mapMailHeader(_.mapRecipients(_.addCcs(mas)))
+  }
+
   case class Bcc[F[_]](ma: MailAddress) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapMailHeader(_.mapRecipients(_.addBcc(ma)))
   }
   object Bcc extends MailAddressHelper[Bcc]
+
+  case class Bccs[F[_]](mas: Seq[MailAddress]) extends Trans[F] {
+    def apply(mail: Mail[F]): Mail[F] =
+      mail.mapMailHeader(_.mapRecipients(_.addBccs(mas)))
+  }
 
   case class Subject[F[_]](text: String) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
@@ -93,8 +108,14 @@ package builder {
     def withMimeType(mimeType: MimeType): Attach[F] =
       copy(attach = attach.copy(mimeType = mimeType))
 
+    def withMimeType(mimeType: Option[MimeType]): Attach[F] =
+      copy(attach = attach.copy(mimeType = mimeType.getOrElse(MimeType.octetStream)))
+
     def withFilename(name: String): Attach[F] =
       copy(attach = attach.copy(filename = Some(name)))
+
+    def withFilename(name: Option[String]): Attach[F] =
+      copy(attach = attach.copy(filename = name))
 
     def withLength(len: Long)(implicit ev: Applicative[F]): Attach[F] =
       copy(attach = attach.copy(length = len.pure[F]))
@@ -200,6 +221,7 @@ package builder {
   }
 
   trait MailAddressHelper[A[_[_]]] {
+
     def apply[F[_]](ma: MailAddress): A[F]
 
     def apply[F[_]](address: String): A[F] =

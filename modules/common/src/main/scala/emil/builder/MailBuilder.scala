@@ -3,10 +3,13 @@ package emil.builder
 import cats.Applicative
 import emil._
 
-class MailBuilder[F[_]](parts: Vector[Trans[F]], initial: Mail[F]) {
+final class MailBuilder[F[_]](parts: Vector[Trans[F]], initial: Mail[F]) {
 
   def add(p0: Trans[F], ps: Trans[F]*): MailBuilder[F] =
     new MailBuilder[F]((parts :+ p0) ++ ps.toVector, initial)
+
+  def addAll(ps: Seq[Trans[F]]): MailBuilder[F] =
+    new MailBuilder(parts ++ ps.toVector, initial)
 
   def set(p0: Trans[F], ps: Trans[F]*): MailBuilder[F] =
     add(p0, ps: _*)
@@ -28,6 +31,9 @@ class MailBuilder[F[_]](parts: Vector[Trans[F]], initial: Mail[F]) {
 }
 
 object MailBuilder {
+
+  def fromSeq[F[_]: Applicative](parts: Seq[Trans[F]]): MailBuilder[F] =
+    new MailBuilder[F](parts.toVector, Mail.empty[F])
 
   def apply[F[_]: Applicative](parts: Trans[F]*): MailBuilder[F] =
     new MailBuilder[F](parts.toVector, Mail.empty[F])
