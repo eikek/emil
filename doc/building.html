@@ -60,7 +60,7 @@ which can be further modified. It is also possible to go from an
 existing <code class="highlighter-rouge">Mail</code> to a <code class="highlighter-rouge">MailBuilder</code> to change certain parts:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">builder</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">asBuilder</span>
-<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@76ac8c3d
+<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@27aa0720
 </span><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="n">builder</span><span class="o">.</span>
   <span class="n">clearRecipients</span><span class="o">.</span>
   <span class="nf">add</span><span class="o">(</span><span class="nc">To</span><span class="o">(</span><span class="s">"me2@test.com"</span><span class="o">)).</span>
@@ -153,9 +153,9 @@ a <code class="highlighter-rouge">Stream[F, Byte]</code> from somewhere else.</p
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext</span>
 
 <span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@6b5c4b75
+<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@179cdf4f
 </span><span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">fromExecutorService</span><span class="o">(</span><span class="nv">java</span><span class="o">.</span><span class="py">util</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">Executors</span><span class="o">.</span><span class="py">newCachedThreadPool</span><span class="o">()))</span>
-<span class="c1">// blocker: Blocker = cats.effect.Blocker@453de9d0
+<span class="c1">// blocker: Blocker = cats.effect.Blocker@6a0d47e8
 </span>
 <span class="k">val</span> <span class="nv">mail4</span> <span class="k">=</span> <span class="nv">mail3</span><span class="o">.</span><span class="py">asBuilder</span><span class="o">.</span><span class="py">add</span><span class="o">(</span>
   <span class="nc">AttachUrl</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="nv">getClass</span><span class="o">.</span><span class="py">getResource</span><span class="o">(</span><span class="s">"/files/Test.pdf"</span><span class="o">),</span> <span class="n">blocker</span><span class="o">).</span>
@@ -200,10 +200,10 @@ a <code class="highlighter-rouge">Stream[F, Byte]</code> from somewhere else.</p
 //         Stream(..),
 //         Map(
 //           Bind(
-//             Delay(fs2.Stream$CompileOps$$Lambda$1306/1919451866@3c8c5513),
-//             fs2.Stream$Compiler$$anon$3$$Lambda$1308/19496184@3502b614
+//             Delay(fs2.Stream$CompileOps$$Lambda$1308/294485518@3f69b166),
+//             fs2.Stream$Compiler$$anon$3$$Lambda$1310/1376105442@4e7e7763
 //           ),
-//           fs2.Stream$CompileOps$$Lambda$1307/252570530@1fdbba0d,
+//           fs2.Stream$CompileOps$$Lambda$1309/973030433@4ecc4b43,
 //           0
 //         )
 //       )
@@ -270,10 +270,10 @@ when attaching files and <code class="highlighter-rouge">java.io.InputStream</co
 //         Stream(..),
 //         Map(
 //           Bind(
-//             Delay(fs2.Stream$CompileOps$$Lambda$1306/1919451866@2ef5df8f),
-//             fs2.Stream$Compiler$$anon$3$$Lambda$1308/19496184@708f238f
+//             Delay(fs2.Stream$CompileOps$$Lambda$1308/294485518@6f8281e6),
+//             fs2.Stream$Compiler$$anon$3$$Lambda$1310/1376105442@1d12eff1
 //           ),
-//           fs2.Stream$CompileOps$$Lambda$1307/252570530@1fdbba0d,
+//           fs2.Stream$CompileOps$$Lambda$1309/973030433@4ecc4b43,
 //           0
 //         )
 //       )

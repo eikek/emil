@@ -86,12 +86,12 @@ needs a corresponding connection to some imap server and the
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">emil.javamail._</span><span class="o">,</span> <span class="nv">scala</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">ExecutionContext</span>
 
 <span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@6829ec81
+<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@15516e5a
 </span><span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">fromExecutorService</span><span class="o">(</span><span class="nv">java</span><span class="o">.</span><span class="py">util</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">Executors</span><span class="o">.</span><span class="py">newCachedThreadPool</span><span class="o">()))</span>
-<span class="c1">// blocker: Blocker = cats.effect.Blocker@6c9dd79d
+<span class="c1">// blocker: Blocker = cats.effect.Blocker@28336feb
 </span>
 <span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">blocker</span><span class="o">)</span>
-<span class="c1">// myemil: Emil[IO, internal.JavaMailConnection] = emil.javamail.JavaMailEmil@1ecd979e
+<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@3035b9e6
 </span><span class="k">val</span> <span class="nv">imapConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"imap://devmail:143"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// imapConf: MailConfig = MailConfig(
 //   "imap://devmail:143",
@@ -104,7 +104,7 @@ needs a corresponding connection to some imap server and the
 </span>
 <span class="k">val</span> <span class="nv">moveIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nf">moveToTrash</span><span class="o">(</span><span class="nv">myemil</span><span class="o">.</span><span class="py">access</span><span class="o">))</span>
 <span class="c1">// moveIO: IO[Unit] = Async(
-//   cats.effect.internals.IOBracket$$$Lambda$1328/1363229954@691fa716,
+//   cats.effect.internals.IOBracket$$$Lambda$1330/540054373@f75843e,
 //   false
 // )
 </span></code></pre></div></div>
