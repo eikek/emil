@@ -18,6 +18,7 @@ object SendMail {
       implicit cm: MsgConv[Mail[F], F[MimeMessage]]
   ): MailOp[F, JavaMailConnection, NonEmptyList[String]] =
     MailOp(conn =>
+      Sync[F].delay(logger.debug(s"Sending ${mails.size} mail(s) using ${conn.config}")) *>
       mails.traverse(mail =>
         cm.convert(conn.session, MessageIdEncode.Random, mail)
           .flatMap({ msg =>
