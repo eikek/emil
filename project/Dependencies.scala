@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
 
-  val fs2Version = "2.1.0"
+  val fs2Version = "2.2.0"
   val greenmailVersion = "1.5.11"
   val javaxMailVersion = "1.6.4"
   val log4sVersion = "1.8.2"
