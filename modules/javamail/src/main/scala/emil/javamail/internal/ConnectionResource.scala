@@ -80,9 +80,7 @@ object ConnectionResource {
     }
 
     props.put(s"mail.$proto.host", host)
-    port.foreach { p =>
-      props.put(s"mail.$proto.port", Integer.toString(p))
-    }
+    port.foreach(p => props.put(s"mail.$proto.port", Integer.toString(p)))
     if (mc.timeout.isFinite && mc.timeout > Duration.Zero) {
       val value = mc.timeout.toMillis.toString
       props.put(s"mail.$proto.connectiontimeout", value)

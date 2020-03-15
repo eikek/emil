@@ -26,7 +26,7 @@ import emil.javamail.internal.EnumerationConverter._
 trait BodyDecode {
 
   implicit def attachmentDecode[F[_]: Sync]: Conv[Part, Attachments[F]] =
-    Conv({ bp =>
+    Conv { bp =>
       if (bp.isMimeType("multipart/*")) {
         val mp = bp.getContent.asInstanceOf[Multipart]
         (0 until mp.getCount).toVector
@@ -40,83 +40,80 @@ trait BodyDecode {
         val (len, dataAsStream) = BodyDecode.loadInputStream(data)
         Attachments(Attachment(filename, mt, dataAsStream, len.pure[F]))
       }
-    })
+    }
 
   implicit def mailBodyDecode[F[_]: Sync](
       implicit ca: Conv[Part, Attachments[F]]
   ): Conv[MimeMessage, BodyAttach[F]] =
-    Conv({ msg =>
-      Util.withReadFolder(msg) {
-        _ =>
-          msg.getContent match {
-            case str: String =>
-              val body =
-                if (msg.isMimeType(MimeType.textHtml.asString))
-                  Body(text = None, html = Option(str))
-                else Body(text = Option(str), html = None)
+    Conv { msg =>
+      Util.withReadFolder(msg) { _ =>
+        msg.getContent match {
+          case str: String =>
+            val body =
+              if (msg.isMimeType(MimeType.textHtml.asString))
+                Body(text = None, html = Option(str))
+              else Body(text = Option(str), html = None)
 
-              BodyAttach(body, Attachments.empty[F])
+            BodyAttach(body, Attachments.empty[F])
 
-            case mp: Multipart =>
-              if (BodyDecode.isAlternative(mp)) {
-                BodyDecode.getAlternativeBody[F](BodyAttach.empty[F], mp)(ca)
-              } else {
-                (0 until mp.getCount)
-                  .map(mp.getBodyPart)
-                  .foldLeft(BodyAttach.empty[F]) {
-                    (result, part) =>
-                      if (BodyDecode.maySetTextBody(result.body.text, MimeType.textPlain, part)) {
-                        result.copy(
-                          body = result.body.copy(text = BodyDecode.getTextContent(part).some)
-                        )
-                      } else if (BodyDecode
-                                   .maySetTextBody(result.body.html, MimeType.textHtml, part)) {
-                        result.copy(
-                          body = result.body.copy(html = BodyDecode.getTextContent(part).some)
-                        )
-                      } else if (part.isMimeType("multipart/alternative") && result.body.isEmpty) {
-                        val mp = part.getContent.asInstanceOf[Multipart]
-                        BodyDecode.getAlternativeBody(result, mp)(ca)
-                      } else {
-                        result.copy(attachments = result.attachments ++ ca.convert(part))
-                      }
+          case mp: Multipart =>
+            if (BodyDecode.isAlternative(mp)) {
+              BodyDecode.getAlternativeBody[F](BodyAttach.empty[F], mp)(ca)
+            } else {
+              (0 until mp.getCount)
+                .map(mp.getBodyPart)
+                .foldLeft(BodyAttach.empty[F]) { (result, part) =>
+                  if (BodyDecode.maySetTextBody(result.body.text, MimeType.textPlain, part)) {
+                    result.copy(
+                      body = result.body.copy(text = BodyDecode.getTextContent(part).some)
+                    )
+                  } else if (BodyDecode
+                               .maySetTextBody(result.body.html, MimeType.textHtml, part)) {
+                    result.copy(
+                      body = result.body.copy(html = BodyDecode.getTextContent(part).some)
+                    )
+                  } else if (part.isMimeType("multipart/alternative") && result.body.isEmpty) {
+                    val mp = part.getContent.asInstanceOf[Multipart]
+                    BodyDecode.getAlternativeBody(result, mp)(ca)
+                  } else {
+                    result.copy(attachments = result.attachments ++ ca.convert(part))
                   }
-              }
+                }
+            }
 
-            case _ =>
-              BodyAttach(Body(None, None), ca.convert(msg))
+          case _ =>
+            BodyAttach(Body(None, None), ca.convert(msg))
 
-          }
+        }
       }
-    })
+    }
 
   implicit def mailDecode[F[_]: Sync](
       implicit cb: Conv[MimeMessage, BodyAttach[F]],
       ch: Conv[MimeMessage, MailHeader]
   ): Conv[MimeMessage, Mail[F]] =
-    Conv({ msg =>
+    Conv { msg =>
       ThreadClassLoader {
-        Util.withReadFolder(msg) {
-          _ =>
-            val additionalHeaders = msg
-              .getNonMatchingHeaders(MailHeader.headerNames.toArray)
-              .asScalaList
-              .foldLeft(Headers.empty) { (hds, h) =>
-                hds.add(
-                  Header(MimeUtility.decodeText(h.getName), MimeUtility.decodeText(h.getValue))
-                )
-              }
-            val bodyAttach = cb.convert(msg)
-            val mailHeader = ch.convert(msg)
-            emil.Mail(
-              mailHeader,
-              additionalHeaders,
-              bodyAttach.body.toMailBody[F],
-              bodyAttach.attachments
-            )
+        Util.withReadFolder(msg) { _ =>
+          val additionalHeaders = msg
+            .getNonMatchingHeaders(MailHeader.headerNames.toArray)
+            .asScalaList
+            .foldLeft(Headers.empty) { (hds, h) =>
+              hds.add(
+                Header(MimeUtility.decodeText(h.getName), MimeUtility.decodeText(h.getValue))
+              )
+            }
+          val bodyAttach = cb.convert(msg)
+          val mailHeader = ch.convert(msg)
+          emil.Mail(
+            mailHeader,
+            additionalHeaders,
+            bodyAttach.body.toMailBody[F],
+            bodyAttach.attachments
+          )
         }
       }
-    })
+    }
 }
 
 object BodyDecode {
@@ -168,9 +165,7 @@ object BodyDecode {
       .flatMap(cs => Either.catchNonFatal(Charset.forName(cs)).toOption)
       .getOrElse(StandardCharsets.UTF_8)
 
-    Using.resource(p.getInputStream) { in =>
-      Source.fromInputStream(in, charset.name()).mkString
-    }
+    Using.resource(p.getInputStream)(in => Source.fromInputStream(in, charset.name()).mkString)
   }
 
   private def maySetTextBody(current: Option[String], mimetype: MimeType, part: BodyPart) =

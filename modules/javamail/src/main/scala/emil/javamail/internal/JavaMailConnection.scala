@@ -27,11 +27,11 @@ final case class JavaMailConnection(
         }
         (f, doOpen)
       })(t =>
-        Sync[F].delay({
+        Sync[F].delay {
           if (t._2 && t._1.isOpen) {
             t._1.close(true)
           }
-        })
+        }
       )
       .map(_._1)
 }

@@ -30,10 +30,10 @@ trait BasicEncode {
     })
 
   implicit def attachmentEncode[F[_]: Sync]: Conv[Attachment[F], F[MimeBodyPart]] =
-    Conv(attach => {
+    Conv { attach =>
       attach.content.compile.toVector
         .map(_.toArray)
-        .map(inData => {
+        .map { inData =>
           val part = new MimeBodyPart()
           part.addHeader("Content-Type", attach.mimeType.asString)
           attach.filename.foreach(fn => part.setFileName(MimeUtility.encodeText(fn)))
@@ -52,8 +52,8 @@ trait BasicEncode {
               attach.filename.orNull
           }))
           part
-        })
-    })
+        }
+    }
 
   implicit def bodyEncode[F[_]: Monad]: Conv[MailBody[F], F[MimeBodyPart]] = {
     def mkTextPart(str: String): MimeBodyPart = {
@@ -94,7 +94,7 @@ trait BasicEncode {
       implicit ca: Conv[MailAddress, InternetAddress],
       cf: Conv[Flag, Flags.Flag]
   ): MsgConv[MailHeader, MimeMessage] =
-    MsgConv({ (session, midEncode, header) =>
+    MsgConv { (session, midEncode, header) =>
       val msg = EmilMimeMessage(session, midEncode)
 
       header.from.map(ca.convert).foreach(msg.setFrom)
@@ -122,7 +122,7 @@ trait BasicEncode {
       }
 
       msg
-    })
+    }
 
   implicit def mailEncode[F[_]: Sync](
       implicit ch: MsgConv[MailHeader, MimeMessage],
@@ -152,13 +152,13 @@ trait BasicEncode {
       msg.saveChanges()
     }
 
-    MsgConv({ (session, midEncode, mail) =>
+    MsgConv { (session, midEncode, mail) =>
       for {
         attachs <- mail.attachments.all.traverse(ca.convert)
         mbody <- cb.convert(mail.body)
         msg = ch.convert(session, midEncode, mail.header)
         _ = assemble(mail, msg, mbody, attachs)
       } yield msg
-    })
+    }
   }
 }

@@ -15,11 +15,11 @@ object SSLType {
 
   def fromString(str: String): Either[String, SSLType] =
     str.toLowerCase match {
-      case "ssl"  => Right(SSL)
-      case "starttls" => Right(StartTLS)
-      case "noencryption"    => Right(NoEncryption)
-      case "none"  => Right(NoEncryption)
-      case _            => Left(s"Invalid ssl type: $str")
+      case "ssl"          => Right(SSL)
+      case "starttls"     => Right(StartTLS)
+      case "noencryption" => Right(NoEncryption)
+      case "none"         => Right(NoEncryption)
+      case _              => Left(s"Invalid ssl type: $str")
     }
 
   def unsafe(str: String): SSLType =

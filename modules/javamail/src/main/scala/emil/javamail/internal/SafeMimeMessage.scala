@@ -14,8 +14,7 @@ final private[javamail] class SafeMimeMessage(msg: MimeMessage) {
     getOption("flags", msg.getFlags)
 
   def getHeader(name: String, delimiter: String): Option[String] =
-    getOption(s"getHeader($name, $delimiter)",
-      msg.getHeader(name, delimiter))
+    getOption(s"getHeader($name, $delimiter)", msg.getHeader(name, delimiter))
 
   def getHeader(name: String): List[String] =
     getOption(s"getHeader($name)", msg.getHeader(name))

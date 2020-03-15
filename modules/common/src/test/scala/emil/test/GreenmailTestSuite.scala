@@ -53,10 +53,10 @@ object GreenmailTestSuite {
   def createContext(users: List[MailAddress]): Context =
     Context(
       GreenmailServer.randomPorts(users: _*),
-      Executors.newCachedThreadPool((r: Runnable) => {
+      Executors.newCachedThreadPool { (r: Runnable) =>
         val t = Executors.defaultThreadFactory().newThread(r)
         t.setName(s"test-blocker-${counter.getAndIncrement()}")
         t
-      })
+      }
     )
 }

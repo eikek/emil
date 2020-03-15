@@ -33,18 +33,17 @@ object ReceivedTest extends SimpleTestSuite {
   }
 
   test("parse4") {
-    val rc = List("""from exim by atxc.org with sa-checked (Exim 4.89)
+    val rc = List(
+      """from exim by atxc.org with sa-checked (Exim 4.89)
   (envelope-from <bounces+2693180-247c-yeye.anteelg+lists.clojure=atxc.org@m.dripemail2.com>)
   id 1d03ZV-0000Q6-Ja
   for yeye+lists.clojure@atxc.org; Mon, 17 Apr 2017 10:07:50 +0000""",
-
       """from o2.m.dripemail2.com ([167.89.40.107])
   by atxc.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
   (Exim 4.89)
   (envelope-from <bounces+2693180-247c-yeye.anteelg+lists.clojure=atxc.org@m.dripemail2.com>)
   id 1d03ZT-0000Q1-Da
   for yeye.anteelg+lists.clojure@atxc.org; Mon, 17 Apr 2017 10:07:49 +0000""",
-
       """from MjY5MzE4MA (ec2-54-174-109-188.compute-1.amazonaws.com [54.174.109.188])
   by ismtpd0004p1iad1.sendgrid.net (SG) with HTTP id UWOuw45HReqNnw4G3tI8cA
   for <yeye.anteelg+lists.clojure@atxc.org>; Mon, 17 Apr 2017 10:07:30.967 +0000 (UTC)"""

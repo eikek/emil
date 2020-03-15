@@ -11,11 +11,11 @@ object FindMail {
   private[this] val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mh: MailHeader): MailOp[F, JavaMailConnection, Option[MimeMessage]] =
-    MailOp.of(conn => {
+    MailOp.of { conn =>
       val iid = InternalId.readInternalId(mh.id)
       logger.debug(s"About to find mail with internal id: $iid")
       iid.toOption.flatMap(id => findByInternalId(conn, mh, id))
-    })
+    }
 
   private def findByInternalId(
       conn: JavaMailConnection,
@@ -58,10 +58,10 @@ object FindMail {
     val parent = mh.folder.map(_.id).getOrElse("INBOX");
     Option(conn.store.getFolder(parent))
       .filter(_.exists())
-      .flatMap(f => {
+      .flatMap { f =>
         logger.debug(s"Looking for message '$mh' by MessageID '$mid'")
         val results = f.search(new MessageIDTerm(mid))
         results.headOption.map(_.asInstanceOf[MimeMessage])
-      })
+      }
   }
 }

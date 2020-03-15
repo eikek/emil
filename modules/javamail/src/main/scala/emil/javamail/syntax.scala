@@ -28,14 +28,14 @@ object syntax {
         .lastOrError
 
     def fromURL[F[_]: Sync: ContextShift](url: URL, blocker: Blocker): F[Mail[F]] =
-      fs2.io.readInputStream(Sync[F].delay(url.openStream), 8192, blocker, true)
+      fs2.io
+        .readInputStream(Sync[F].delay(url.openStream), 8192, blocker, true)
         .through(readBytes[F])
         .compile
         .lastOrError
 
     def readBytes[F[_]: Sync]: Pipe[F, Byte, Mail[F]] =
-      _.through(fs2.text.utf8Decode)
-        .foldMonoid
+      _.through(fs2.text.utf8Decode).foldMonoid
         .evalMap(deserialize[F])
   }
 

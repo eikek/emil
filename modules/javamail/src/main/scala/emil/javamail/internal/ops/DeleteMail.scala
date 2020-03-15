@@ -11,12 +11,11 @@ object DeleteMail {
   private[this] val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mh: MailHeader): MailOp[F, JavaMailConnection, Int] =
-    FindMail(mh).andThen(
-      opt =>
-        opt match {
-          case Some(msg) => delete(msg, mh)
-          case _         => logger.infoF(s"Cannot delete message '$mh', it was not found.") *> 0.pure[F]
-        }
+    FindMail(mh).andThen(opt =>
+      opt match {
+        case Some(msg) => delete(msg, mh)
+        case _         => logger.infoF(s"Cannot delete message '$mh', it was not found.") *> 0.pure[F]
+      }
     )
 
   private def delete[F[_]: Sync](msg: MimeMessage, mh: MailHeader): F[Int] = Sync[F].delay {

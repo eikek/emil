@@ -19,8 +19,8 @@ object CopyMail {
             MailOp.of(conn => copy(f, msg, MoveMail.expectTargetFolder(conn, target)))
           case _ =>
             lift(logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")) *>
-              MailOp.of(
-                conn => MoveMail.expectTargetFolder(conn, target).appendMessages(Array(msg))
+              MailOp.of(conn =>
+                MoveMail.expectTargetFolder(conn, target).appendMessages(Array(msg))
               )
         }
       case None =>

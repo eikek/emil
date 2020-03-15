@@ -13,12 +13,11 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
   def getInbox: MailOp[F, JavaMailConnection, MailFolder] =
     FindFolder(None, "INBOX")
       .blockOn(blocker)
-      .andThen(
-        optMf =>
-          optMf match {
-            case Some(mf) => mf.pure[F]
-            case None     => Sync[F].raiseError(new Exception("Folder INBOX doesn't exist."))
-          }
+      .andThen(optMf =>
+        optMf match {
+          case Some(mf) => mf.pure[F]
+          case None     => Sync[F].raiseError(new Exception("Folder INBOX doesn't exist."))
+        }
       )
 
   def createFolder(
@@ -34,12 +33,7 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     FindFolder[F](parent, name).blockOn(blocker)
 
   def getMessageCount(folder: MailFolder): MailOp[F, JavaMailConnection, Int] =
-    MailOp(
-      conn =>
-        conn.folder[F](folder.id).use { f =>
-          Sync[F].delay(f.getMessageCount)
-        }
-    )
+    MailOp(conn => conn.folder[F](folder.id).use(f => Sync[F].delay(f.getMessageCount)))
 
   def search(folder: MailFolder, max: Int)(
       query: SearchQuery
