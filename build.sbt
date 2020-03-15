@@ -112,6 +112,9 @@ lazy val javamail = project.in(file("modules/javamail")).
   settings(testSettings).
   settings(
     name := "emil-javamail",
+// consider this option, if there are non-deterministic test outcomes
+//    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
+    Test / fork := true,
     libraryDependencies ++=
       Dependencies.fs2 ++
       Dependencies.fs2io ++
