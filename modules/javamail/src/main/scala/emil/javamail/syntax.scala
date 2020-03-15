@@ -5,7 +5,9 @@ import cats.effect._
 import emil._
 import emil.javamail.conv.MimeTypeDecode
 import emil.javamail.conv.codec._
+import fs2.Pipe
 import java.nio.file.Path
+import java.net.URL
 
 object syntax {
 
@@ -21,11 +23,20 @@ object syntax {
     def fromFile[F[_]: Sync: ContextShift](file: Path, blocker: Blocker): F[Mail[F]] =
       fs2.io.file
         .readAll(file, blocker, 8192)
-        .through(fs2.text.utf8Decode)
-        .foldMonoid
-        .evalMap(deserialize[F])
+        .through(readBytes[F])
         .compile
         .lastOrError
+
+    def fromURL[F[_]: Sync: ContextShift](url: URL, blocker: Blocker): F[Mail[F]] =
+      fs2.io.readInputStream(Sync[F].delay(url.openStream), 8192, blocker, true)
+        .through(readBytes[F])
+        .compile
+        .lastOrError
+
+    def readBytes[F[_]: Sync]: Pipe[F, Byte, Mail[F]] =
+      _.through(fs2.text.utf8Decode)
+        .foldMonoid
+        .evalMap(deserialize[F])
   }
 
   implicit final class MimeTypeTypeOps(mt: MimeType.type) {

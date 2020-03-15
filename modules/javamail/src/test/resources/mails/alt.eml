@@ -1,0 +1,80 @@
+Return-Path: <tiffany.willi2013@gmail.com>
+Delivered-To: gaul.rwgiitc@maite.de
+Received: from proxy02.maite.name ([127.0.0.1])
+  by dovecot07.maite.name (Dovecot) with LMTP id XjxEKvyAbF5ruQIACjXI6Q
+  for <gaul.rwgiitc@maite.de>; Sat, 14 Mar 2020 08:55:58 +0100
+Received: from proxy02.maite.de ([127.0.0.1])
+  by proxy02.maite.name (Dovecot) with LMTP id 83QSOxCBbF5WswMAGFAyLg
+  ; Sat, 14 Mar 2020 08:55:58 +0100
+Received: from mailin03.maite.de (unknown [10.0.0.63])
+  by proxy02.maite.de (Postfix) with ESMTPS id 48fZct5Mxfz11fm
+  for <gaul.rwgiitc@maite.de>; Sat, 14 Mar 2020 08:55:58 +0100 (CET)
+Received: from mx03.maite.de (mailin03.maite.de [127.0.0.1])
+  by mailin03.maite.de (Postfix) with ESMTPS id AB31120F41
+  for <gaul.rwgiitc@maite.de>; Sat, 14 Mar 2020 08:55:58 +0100 (CET)
+X-Virus-Scanned: amavisd-new at maite.de
+X-Spam-Flag: NO
+X-Spam-Score: 1.752
+X-Spam-Level: *
+X-Spam-Status: No, score=1.752 tagged_above=-1000 required=8
+  tests=[ALL_TRUSTED=-1, DATE_IN_FUTURE_12_24=2.489,
+  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+  HTML_MESSAGE=0.001, LOTS_OF_MONEY=0.001, T_HK_NAME_FM_MR_MRS=0.01]
+  autolearn=disabled
+Authentication-Results: mailin03.maite.de (amavisd-new);
+  dkim=pass (2048-bit key) header.d=gmail.com
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+  by mx03.maite.de (Postfix) with ESMTPS id 48fZct0HmNz10qj
+  for <gaul.rwgiitc@maite.de>; Sat, 14 Mar 2020 08:55:58 +0100 (CET)
+Authentication-Results: mx03.maite.de; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: mx03.maite.de;
+  dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eUcMNTCO;
+  dkim-atps=neutral
+Received: by mail-ot1-f66.google.com with SMTP id g15so12656146otr.0
+        for <gaul.rwgiitc@maite.de>; Sat, 14 Mar 2020 00:55:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=XCTuLvOZzjQutSfxhQ77Vv2LUNgp7wl/apOWAwGlis8=;
+        b=eUcMNTCOmCT+ajrbaUx+QLbqtweuiEgSIqPjCZxd4FiU0bN+cM1M4rTjEw6euS+kik
+         QAX1Ie50FSP2fj41CfdYSzZH+iOW8AIB0lWP/vZCLuV5RkUpsyVD0lA+25aXHxFRvEqy
+         z3W5BfPILdhzdqw3WZa+8vyMBIA80OgdoDXKW1nEl+OzDdkjN+o9RVGEhcX0eziAUq2v
+         8gnvb9cMT1W5/bdIZq8VkaNtx0bfEYWeHfnuH+kyjjvTfD/Rb024hzVjYJPa0MCxk0FX
+         XAsNI0etZp82BVz8V0YieNvjzYxGm2B9muhUV2/6EhYtJ0YRgN48y75a9eZs75GLltXZ
+         wDeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=XCTuLvOZzjQutSfxhQ77Vv2LUNgp7wl/apOWAwGlis8=;
+        b=mhqsZdbhfRNXJ43q0PR+8IOwZBW8SYNHEIL3+7SxKpyJcIwqQFT+pQERCGjo5GVaIp
+         ijZAYytlu6RtxhSCE1EKOdRakXIC/apAlPrP0YlaBS0aJeKDVTdAs2DcBdbOXI1TVST7
+         XEpHRSc4k98MhsiPy+MFjP7K8Oq4HaPe0fsZqlv1uk5NkhLzZb9Kt2mcVfgP3NhkNgbA
+         m1ykURs3q7fGOZjS7Sv+1MWfPWrlcQSJRZqjk1TxFAtfnuzF1j6OdZYJzyN6K7LMg1eg
+         i+tApD8qIfiZ1TNEUWsAm230uZTb5S7a18nIxtbAZToZ2n2FSQSE6Z32FkrdfBlhHvD8
+         P2wg==
+X-Gm-Message-State: ANhLgQ3kWY8nCgAnsoT1YvkyFD0xRUq82FQyMBh7aJ2A89XZqyBU3xnX
+  Of9iefr3TXNjcOQzoUnvlJR7dJAoz5nVnjSGEsY=
+X-Google-Smtp-Source: ADFU+vvN88cXtVjA9JLW/q/BCckZF46xYqEL9UnP5rZm89YC1Rl6kkgbY64ecNn0MXMO35wOsLTYgA8UyfnMEnrRwSA=
+X-Received: by 2002:a9d:7617:: with SMTP id k23mr13580866otl.329.1584172556940;
+ Sat, 14 Mar 2020 00:55:56 -0700 (PDT)
+MIME-Version: 1.0
+From: "Mrs.Theresa Rolland" <mrstheresarolland22@gmail.com>
+Date: Sun, 15 Mar 2019 07:46:58 +0100
+Message-ID: <CA+pc2AhmJR_5xmvOq2YPBhbxApFO0AQ7f-Y_aSW7FssckN-hsQ@mail.gmail.com>
+Subject: Donation
+To: undisclosed-recipients:;
+Content-Type: multipart/alternative; boundary="00000000000084fb1e05a0cbea02"
+
+--00000000000084fb1e05a0cbea02
+Content-Type: text/plain; charset="UTF-8"
+
+I am Mrs.Theresa Rolland from London United Kingdom i have A Charity
+Donation Project of 2.5 Million British Pounds for you in good faith kindly
+reply back for more details.
+
+--00000000000084fb1e05a0cbea02
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr">I am Mrs.Theresa Rolland from London United Kingdom i have A Charity Donation Project of 2.5 Million British Pounds for you in good faith kindly reply back for more details.<br></div>
+
+--00000000000084fb1e05a0cbea02--

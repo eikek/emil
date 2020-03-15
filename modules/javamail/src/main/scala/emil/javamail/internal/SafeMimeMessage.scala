@@ -17,6 +17,11 @@ final private[javamail] class SafeMimeMessage(msg: MimeMessage) {
     getOption(s"getHeader($name, $delimiter)",
       msg.getHeader(name, delimiter))
 
+  def getHeader(name: String): List[String] =
+    getOption(s"getHeader($name)", msg.getHeader(name))
+      .map(_.toList)
+      .getOrElse(Nil)
+
   def getSentDate: Option[Instant] =
     getOption("Sent-Date", msg.getSentDate).map(_.toInstant)
 

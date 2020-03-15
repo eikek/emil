@@ -114,7 +114,7 @@ object ConnectionResource {
     props.put("mail.mime.multipart.ignoreexistingboundaryparameter", "true")
     props.put("mail.mime.multipart.ignoremissingboundaryparameter", "true")
 
-    settings.props(proto).foreachEntry((k, v) => props.put(k, v))
+    settings.props(proto).foreach({ case (k, v) => props.put(k, v) })
 
     if (mc.user.nonEmpty) {
       logger.debug(s"Creating session with authenticator and props: $props")

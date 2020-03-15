@@ -1,19 +1,23 @@
 package emil.javamail
 
-import cats.effect.IO
+import cats.effect._
 import emil._
 import emil.builder._
 import emil.javamail.syntax._
 import minitest._
+import scala.concurrent.ExecutionContext
 
 object MailConvTest extends SimpleTestSuite {
+  implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
+  val blocker = Blocker.liftExecutionContext(ExecutionContext.global)
 
   test("write text mail") {
     val mail = MailBuilder.build[IO](
       From("test@test.com"),
       To("test@test.com"),
       Subject("Hello"),
-      TextBody("This is text")
+      TextBody("This is text"),
+      MessageID("<bla>")
     )
 
     val str = mail.serialize
@@ -24,6 +28,7 @@ object MailConvTest extends SimpleTestSuite {
       """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                         |From: test@test.com
                         |To: test@test.com
+                        |Message-ID: <bla>
                         |Subject: Hello
                         |MIME-Version: 1.0
                         |Content-Type: text/plain; charset=utf-8
@@ -38,7 +43,8 @@ object MailConvTest extends SimpleTestSuite {
       From("test@test.com"),
       To("test@test.com"),
       Subject("Hello"),
-      HtmlBody("<p>This is html</p>")
+      HtmlBody("<p>This is html</p>"),
+      MessageID("<bla>")
     )
 
     val str = mail.serialize
@@ -49,6 +55,7 @@ object MailConvTest extends SimpleTestSuite {
       """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                         |From: test@test.com
                         |To: test@test.com
+                        |Message-ID: <bla>
                         |Subject: Hello
                         |MIME-Version: 1.0
                         |Content-Type: text/html; charset=utf-8
@@ -62,7 +69,8 @@ object MailConvTest extends SimpleTestSuite {
     val mail = MailBuilder.build[IO](
       From("test@test.com"),
       To("test@test.com"),
-      Subject("Hello")
+      Subject("Hello"),
+      MessageID("<bla>")
     )
 
     val str = mail.serialize
@@ -73,6 +81,7 @@ object MailConvTest extends SimpleTestSuite {
       """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                         |From: test@test.com
                         |To: test@test.com
+                        |Message-ID: <bla>
                         |Subject: Hello
                         |MIME-Version: 1.0
                         |Content-Type: text/plain; charset=utf-8
@@ -88,7 +97,8 @@ object MailConvTest extends SimpleTestSuite {
       To("test@test.com"),
       Subject("Hello"),
       HtmlBody("<p>This is html</p>"),
-      TextBody("This is html as text")
+      TextBody("This is html as text"),
+      MessageID("<bla>")
     )
 
     val str = mail.serialize
@@ -103,6 +113,7 @@ object MailConvTest extends SimpleTestSuite {
     val expected = s"""Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
                        |From: test@test.com
                        |To: test@test.com
+                       |Message-ID: <bla>
                        |Subject: Hello
                        |MIME-Version: 1.0
                        |Content-Type: multipart/alternative;[]
@@ -137,7 +148,7 @@ object MailConvTest extends SimpleTestSuite {
       .deserialize[IO](str)
       .unsafeRunSync()
       .copy(additionalHeaders = Headers.empty)
-      .mapMailHeader(_.copy(id = "").copy(sentDate = None))
+      .mapMailHeader(_.copy(id = "").copy(originationDate = None).copy(messageId = None))
     assertEquals(mail, mail2)
   }
 
@@ -154,7 +165,7 @@ object MailConvTest extends SimpleTestSuite {
       .deserialize[IO](str)
       .unsafeRunSync()
       .copy(additionalHeaders = Headers.empty)
-      .mapMailHeader(_.copy(id = "").copy(sentDate = None))
+      .mapMailHeader(_.copy(id = "").copy(originationDate = None).copy(messageId = None))
     assertEquals(mail, mail2)
   }
 
@@ -172,7 +183,33 @@ object MailConvTest extends SimpleTestSuite {
       .deserialize[IO](str)
       .unsafeRunSync()
       .copy(additionalHeaders = Headers.empty)
-      .mapMailHeader(_.copy(id = "").copy(sentDate = None))
+      .mapMailHeader(_.copy(id = "").copy(originationDate = None).copy(messageId = None))
     assertEquals(mail, mail2)
+  }
+
+  test("read test mail 1") {
+    val url = getClass.getResource("/mails/test.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assertEquals(mail.header.received.size, 7)
+    assertEquals(mail.attachments.size, 1)
+    assert(mail.body.nonEmpty)
+  }
+
+  test("read test mail 2") {
+    val url = getClass.getResource("/mails/test2.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assertEquals(mail.header.received.size, 3)
+    assertEquals(mail.attachments.size, 0)
+    assert(mail.body.nonEmpty)
+  }
+
+  test("read alternative mail") {
+    val url = getClass.getResource("/mails/alt.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assertEquals(mail.attachments.size, 0)
+    assert(mail.body.nonEmpty)
+    assert(mail.body.textPart.unsafeRunSync.isDefined)
+    assert(mail.body.htmlPart.unsafeRunSync.isDefined)
+    assertEquals(mail.header.received.size, 6)
   }
 }

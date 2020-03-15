@@ -1,0 +1,105 @@
+Return-path: <emacs-orgmode-bounces+abc=def.org@gnu.org>
+Envelope-to: abc@def.org
+Delivery-date: Fri, 03 Mar 2017 08:18:09 +0000
+Received: from exim by def.org with sa-checked (Exim 4.87)
+  (envelope-from <emacs-orgmode-bounces+abc=def.org@gnu.org>)
+  id 1cjiPg-00087h-LS
+  for abc@def.org; Fri, 03 Mar 2017 08:18:09 +0000
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on skyros
+X-Spam-Level:
+X-Spam-Status: No, score=-3.2 required=5.2 tests=BAYES_00,
+  HEADER_FROM_DIFFERENT_DOMAINS,RP_MATCHES_RCVD autolearn=ham
+  autolearn_force=no version=3.4.1
+Received: from lists.gnu.org ([208.118.235.17])
+  by def.org with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:256)
+  (Exim 4.87)
+  (envelope-from <emacs-orgmode-bounces+abc=def.org@gnu.org>)
+  id 1cjiPf-00087d-Bn
+  for abc@def.org; Fri, 03 Mar 2017 08:18:08 +0000
+Received: from localhost ([::1]:56691 helo=lists.gnu.org)
+  by lists.gnu.org with esmtp (Exim 4.71)
+  (envelope-from <emacs-orgmode-bounces+abc=def.org@gnu.org>)
+  id 1cjiPe-0003mO-80
+  for abc@def.org; Fri, 03 Mar 2017 03:18:06 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:40401)
+  by lists.gnu.org with esmtp (Exim 4.71)
+  (envelope-from <xyzn.vvvmvvv@poly111111111.org>) id 1cjiPC-0003lB-3q
+  for emacs-orgmode@gnu.org; Fri, 03 Mar 2017 03:17:38 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+  (envelope-from <xyzn.vvvmvvv@poly111111111.org>) id 1cjiP8-0008At-1r
+  for emacs-orgmode@gnu.org; Fri, 03 Mar 2017 03:17:37 -0500
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:15217)
+  by eggs.gnu.org with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+  (Exim 4.71) (envelope-from <xyzn.vvvmvvv@poly111111111.org>)
+  id 1cjiP7-000883-Lj
+  for emacs-orgmode@gnu.org; Fri, 03 Mar 2017 03:17:33 -0500
+X-IronPort-AV: E=Sophos;i="5.35,236,1484002800";
+  d="asc'?scan'208";a="215409107"
+Received: from charm-ecran.irisa.fr ([131.254.101.83])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-GCM-SHA384;
+  03 Mar 2017 09:17:18 +0100
+From: Xyzn vvvmvvv <xyzn.vvvmvvv@poly111111111.org>
+To: abcdef@internet.com
+References:
+Date: Fri, 03 Mar 2017 09:17:17 +0100
+In-Reply-To: 1111111111-1111111111-11111111@INC_SMTP_SERVER
+  (abcdef@internet.com's message of "Wed, 01 Mar 2017 13:28:01 +0100")
+Message-ID: <m2tw7awz8y.fsf@charm-ecran.irisa.fr>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.2 (darwin)
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-=";
+  micalg=pgp-sha512; protocol="application/pgp-signature"
+X-detected-operating-system: by eggs.gnu.org: Genre and OS details not
+  recognized.
+X-Received-From: 192.134.164.104
+Subject: Re: [O] jumping from Agenda/Timeline to .org source file
+X-BeenThere: emacs-orgmode@gnu.org
+X-Mailman-Version: 2.1.21
+Precedence: list
+List-Id: "General discussions about Org-mode." <emacs-orgmode.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/emacs-orgmode>,
+  <mailto:emacs-orgmode-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/emacs-orgmode/>
+List-Post: <mailto:emacs-orgmode@gnu.org>
+List-Help: <mailto:emacs-orgmode-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/emacs-orgmode>,
+  <mailto:emacs-orgmode-request@gnu.org?subject=subscribe>
+Cc: emacs-orgmode@gnu.org
+Errors-To: emacs-orgmode-bounces+abc=def.org@gnu.org
+Sender: "Emacs-orgmode" <emacs-orgmode-bounces+abc=def.org@gnu.org>
+
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+On 2017-03-01 13:28, abcdef@internet.com writes:
+
+> When I jump from the Agenda-Timeline view to the source .org file,
+> ...
+
+
+Best,
+
+Xyzn
+
+=2D-=20
+OpenPGP Key ID : AAAAAAAAAAAAAAAA
+Monthly Athmospheric CO=E2=82=82, Tunun Nea Obs. 2017-01: 406.13, 2016-01: =
+402.52
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEwrkRSzSYORXauFJoT4FdXWa1kGYFAl5tCokACgkQT4FdXWa1
+kGb/mxAAk0S11Rpf0xSDIvxW9P79/5Fdl33Sj8+t6/7ZXPaJgz49RPB8uwd9abus
+6THMpNp3ESzcyNk403aKvybHDYK8pFuRo/T2xta6kf+qAaE1zkyBEQZqrtd5MCfA
+Qj5IGS1rhkaDyGrIGoA4lNP5pRh3oDbm2rv1Lvck0qoJNoqOKA/L1NjUdDy++gOF
+WMUiEGQEXFc/5cyrDfw0VTMHLZlS/hnNmIrPqU60c6V91strhVzSAogKoMMflBH0
+R8hkK7+lqBlY0nL5U0FLGHmPeFBZqMYGD+I4b/qFGNCz113fuOc3pYlK/TdFjXc=
+=gUBv
+-----END PGP SIGNATURE-----
+--=-=-=--

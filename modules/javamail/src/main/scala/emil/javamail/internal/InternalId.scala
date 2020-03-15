@@ -12,10 +12,13 @@ sealed trait InternalId {
 object InternalId {
 
   case class MessageId(id: String) extends InternalId {
-    def asString = s"messageId:$id"
+    val asString = s"messageId:$id"
   }
   case class Uid(n: Long) extends InternalId {
-    def asString = s"uid:$n"
+    val asString = s"uid:$n"
+  }
+  case object NoId extends InternalId {
+    val asString = "no-id:no-id"
   }
 
   def makeInternalId(msg: SafeMimeMessage): InternalId =
@@ -32,7 +35,8 @@ object InternalId {
     str.split(':').toList match {
       case p :: id :: Nil =>
         if (p == "uid") Either.catchNonFatal(InternalId.Uid(id.toLong)).leftMap(_.getMessage)
-        else Either.right(InternalId.MessageId(id))
+        else if (p == "messageId") Either.right(InternalId.MessageId(id))
+        else Right(NoId)
       case _ =>
         Either.left(s"Invalid id: $str")
     }

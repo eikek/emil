@@ -59,7 +59,7 @@ trait BodyDecode {
 
             case mp: Multipart =>
               if (BodyDecode.isAlternative(mp)) {
-                BodyDecode.getAlternativeBody(BodyAttach.empty[F], mp)
+                BodyDecode.getAlternativeBody[F](BodyAttach.empty[F], mp)(ca)
               } else {
                 (0 until mp.getCount)
                   .map(mp.getBodyPart)
@@ -76,7 +76,7 @@ trait BodyDecode {
                         )
                       } else if (part.isMimeType("multipart/alternative") && result.body.isEmpty) {
                         val mp = part.getContent.asInstanceOf[Multipart]
-                        BodyDecode.getAlternativeBody(result, mp)
+                        BodyDecode.getAlternativeBody(result, mp)(ca)
                       } else {
                         result.copy(attachments = result.attachments ++ ca.convert(part))
                       }

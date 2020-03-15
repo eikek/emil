@@ -41,7 +41,7 @@ object JavaMailEmil {
       mail: Mail[F]
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[String] = ThreadClassLoader {
     val session = Session.getInstance(new Properties())
-    cm.convert(session, MessageIdEncode.Given, mail)
+    cm.convert(session, MessageIdEncode.GivenOrRandom, mail)
       .map(msg =>
         ThreadClassLoader {
           val out = new ByteArrayOutputStream()

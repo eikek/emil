@@ -61,9 +61,9 @@ trait BasicDecode {
             // msg.getReplyTo method calls getFrom if there is no ReplyTo header
             sm.getHeader("Reply-To", ",").map(cs.convert)
           },
-          receivedDate = Option(msg.getReceivedDate).map(_.toInstant),
           originationDate = sm.getSentDate,
           subject = sm.getSubject.getOrElse(""),
+          sm.getHeader("Received").flatMap(r => Received.parse(r).toOption),
           flags =
             if (sm.getFlags.exists(_.contains(Flags.Flag.FLAGGED))) Set(Flag.Flagged) else Set.empty
         )

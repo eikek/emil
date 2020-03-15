@@ -27,6 +27,9 @@ object FindMail {
         findByMessageId(conn, mh, id)
       case InternalId.Uid(uid) =>
         findByUID(conn, mh, uid)
+      case InternalId.NoId =>
+        logger.warn(s"No id present. Cannot find mail")
+        None
     }
 
   private def findByUID(

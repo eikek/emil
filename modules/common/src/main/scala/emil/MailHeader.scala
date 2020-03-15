@@ -10,9 +10,9 @@ final case class MailHeader(
     sender: Option[MailAddress],
     from: Option[MailAddress],
     replyTo: Option[MailAddress],
-    receivedDate: Option[Instant],
     originationDate: Option[Instant],
     subject: String,
+    received: List[Received],
     flags: Set[Flag]
 ) {
 
@@ -31,5 +31,5 @@ object MailHeader {
     List("Subject", "Message-Id", "From", "To", "Cc", "Bcc", "Reply-To", "Date")
 
   val empty: MailHeader =
-    MailHeader("", None, None, Recipients.empty, None, None, None, None, None, "", Set.empty)
+    MailHeader("", None, None, Recipients.empty, None, None, None, None, "", Nil, Set.empty)
 }

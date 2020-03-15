@@ -1,0 +1,455 @@
+Return-path: <bounces+2693180-247c-yeye.anteelg+lists.clojure=atxc.org@m.dripemail2.com>
+Envelope-to: yeye+lists.clojure@atxc.org
+Delivery-date: Mon, 17 Apr 2017 10:07:50 +0000
+Received: from exim by atxc.org with sa-checked (Exim 4.89)
+  (envelope-from <bounces+2693180-247c-yeye.anteelg+lists.clojure=atxc.org@m.dripemail2.com>)
+  id 1d03ZV-0000Q6-Ja
+  for yeye+lists.clojure@atxc.org; Mon, 17 Apr 2017 10:07:50 +0000
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on skyros
+X-Spam-Level:
+X-Spam-Status: No, score=0.0 required=5.2 tests=DKIM_SIGNED,DKIM_VALID,
+  HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,RP_MATCHES_RCVD,URI_TRY_3LD
+  autolearn=ham autolearn_force=no version=3.4.1
+Received: from o2.m.dripemail2.com ([167.89.40.107])
+  by atxc.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+  (Exim 4.89)
+  (envelope-from <bounces+2693180-247c-yeye.anteelg+lists.clojure=atxc.org@m.dripemail2.com>)
+  id 1d03ZT-0000Q1-Da
+  for yeye.anteelg+lists.clojure@atxc.org; Mon, 17 Apr 2017 10:07:49 +0000
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=dripemail2.com;
+  h=content-type:from:mime-version:subject:to; s=s1;
+  bh=UVoatNZ2JKKfY5XCPcrSKus4h0E=; b=egJi000QWjiYkkAp4h/7KDjJEWlXt
+  TThPUJDbgC0/34jq09Oj1+YCmvvEHr8cA3pjNJsfoeMzlhUaWj/qEVcXeUCN8KmY
+  308WoIkz4zfsOMXj9kOxUUcvgKjOFfen7SrlgRIpcEETWngrI7oqj6FXJpTHkiG1
+  6CIwJ0/eSYYGog=
+Received: by filter0464p1mdw1.sendgrid.net with SMTP id filter0464p1mdw1-23236-58F493E2-79
+        2017-04-17 10:07:31.018977349 +0000 UTC
+Received: from MjY5MzE4MA (ec2-54-174-109-188.compute-1.amazonaws.com [54.174.109.188])
+  by ismtpd0004p1iad1.sendgrid.net (SG) with HTTP id UWOuw45HReqNnw4G3tI8cA
+  for <yeye.anteelg+lists.clojure@atxc.org>; Mon, 17 Apr 2017 10:07:30.967 +0000 (UTC)
+Content-Type: multipart/alternative; boundary=2e38e5a89f597940b54eaa90cd60710d21276162b4b60fedd2b7c46a9c6a
+Date: Mon, 17 Apr 2017 10:07:30 +0000
+From: "Eric at PurelyFunctional.tv" <eric@purelyfunctional.tv>
+Mime-Version: 1.0
+Subject: Trampolines, Typing, and Feeling Good
+To: yeye.anteelg+lists.clojure@atxc.org
+Message-ID: <UWOuw45HReqNnw4G3tI8cA@ismtpd0004p1iad1.sendgrid.net>
+X-SG-EID: NPVg8ttNCj8kzlcs/KnQgQepjfmtHPZSf4yHauxsh+CkpqkeQAvIQFkWSDUeluMeixaiIIFVrfFLfy
+ z8H70yP+jT19EAnxZRFIoOxDiZzBNboSykllQI8GymDn2dP8csu4LIiauShhBwmPezwx8t0vTgdZIM
+ ZcQo80lHvQp6DS7HZDjhlPiqt4y8u4Dp9LWu40bAxbxmvVIDZwpq82I27IpZmxfA/No7AFFErqgnm3
+ gFfiILvXDswIFNFLiB3KJiT7bRLwj6WIdprIPtTRAAXQ==
+X-SG-ID: 6l1ICXxVk1U2NQBE+KPgxz2nY+pD1a8d68l2cuPTHbEM2y3t8ntGljXTU2YFqZlpWgGK2O4ljg82Uz
+ iHUw2mMA==
+
+--2e38e5a89f597940b54eaa90cd60710d21276162b4b60fedd2b7c46a9c6a
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+
+Issue 221 - April 17, 2017
+
+Read Online ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImR=
+lbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsLn=
+R2Lz9wPTc3MzFcdTAwMjZfX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ ) =C2=B7 Archives =
+( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2l=
+kIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsLnR2L25ld3NsZX=
+R0ZXItYXJjaGl2ZXMvP19fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9 ) =C2=B7 Subscribe (=
+ http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lk=
+IjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsLnR2L25ld3NsZXR=
+0ZXIvP19fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9 )
+
+Hi Clojurers,
+
+Please enjoy the issue.
+
+Rock on!
+
+Eric Normand ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cDovL3R3aXR0ZXIuY29tL2VyaWNub=
+3JtYW5kP19fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9 )
+<eric@purelyfunctional.tv ( eric@purelyfunctional.tv )>
+
+PS Want to get this in your email? Subscribe ( http://t.dripemail2.com/c/ey=
+JhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoia=
+HR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsLnR2Lz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ )!
+
+-----------------------------------------------------------------
+On Recursion, Continuations and Trampolines ( http://t.dripemail2.com/c/eyJ=
+hY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaH=
+R0cDovL2VsaS50aGVncmVlbnBsYWNlLm5ldC8yMDE3L29uLXJlY3Vyc2lvbi1jb250aW51YXRpb=
+25zLWFuZC10cmFtcG9saW5lcy8_X19zPWhvZ2ZzcmhwZmhzdzc2a3NhcmZiIn0 )
+-----------------------------------------------------------------
+
+A nice walkthrough of Continuation Passing Style in multiple
+languages.
+
+-----------------------------------------------------------------
+Typing the Technical Interview ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lk=
+IjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9hcGh=
+5ci5jb20vcG9zdHMvMzQyLXR5cGluZy10aGUtdGVjaG5pY2FsLWludGVydmlldz9fX3M9aG9nZn=
+NyaHBmaHN3NzZrc2FyZmIifQ )
+-----------------------------------------------------------------
+
+Aphyr has written three short stories featuring magical beings
+working through a technical interview (1 ( http://t.dripemail2.com/c/eyJhY2=
+NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0c=
+HM6Ly9hcGh5ci5jb20vcG9zdHMvMzQwLXJldmVyc2luZy10aGUtdGVjaG5pY2FsLWludGVydmll=
+dz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ ),
+2 ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X=
+2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9hcGh5ci5jb20vcG9zdHMvMzQxLWhleGlu=
+Zy10aGUtdGVjaG5pY2FsLWludGVydmlldz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ ),
+3 ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X=
+2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9hcGh5ci5jb20vcG9zdHMvMzQyLXR5cGlu=
+Zy10aGUtdGVjaG5pY2FsLWludGVydmlldz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ )). =
+The problems are obviously well-beneath the candidates'
+skills, and their solutions are over the heads of the
+interviewers.
+
+I like this format. It insults the technical interview and
+condescends the interviewers, but not by showing how impractical
+they are. Instead, the candidates are using completely
+impractical techniques, but they are overblown and mystical. In
+the one I linked to above, the candidate uses Haskell's type
+system as a logic programming system to solve the Eight Queens
+Puzzle ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2=
+ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2k=
+vRWlnaHRfcXVlZW5zX3B1enpsZT9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ ). The
+mystical setting allows the author to enlighten his readers with
+approaches to solving problems that would otherwise be dismissed
+in our current climate of hyper-practicality.
+
+-----------------------------------------------------------------
+Descriptive Variables Names: A Code Smell ( http://t.dripemail2.com/c/eyJhY=
+2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0=
+cDovL2RlZ29lcy5uZXQvYXJ0aWNsZXMvaW5zdWZmaWNpZW50bHktcG9seW1vcnBoaWM_X19zPWh=
+vZ2ZzcmhwZmhzdzc2a3NhcmZiIn0 )
+-----------------------------------------------------------------
+
+I'm really digging John De Goes' post about the danger of
+descriptive variable names. I have heard many times that
+functional programming is all about data transformation. And
+while that's not an untrue statement, it indicates that the
+speaker is at a specific stage in their development as a
+functional programmer ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1M=
+TcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5j=
+dGlvbmFsLnR2L2Z1bmN0aW9uYWwtcHJvZ3JhbW1pbmctY2FyZWVyLWd1aWRlL3lvdXItZnVuY3R=
+pb25hbC1qb3VybmV5Lz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ ). We want to be bu=
+ilding reusable higher-order functions and
+modeling our systems with algebras. The examples in this article
+are in Haskell, but the principle applies equally well in
+Clojure.
+
+-----------------------------------------------------------------
+Your App Is Good And You Should Feel Good ( http://t.dripemail2.com/c/eyJhY=
+2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0=
+cDovL21ldGFsYmF0LmNvbS9mZWVsLWdvb2QvaW5kZXguaHRtbD9fX3M9aG9nZnNyaHBmaHN3NzZ=
+rc2FyZmIifQ )
+-----------------------------------------------------------------
+
+A wonderful slide deck with transcript about why people complain
+on the internet and why you should feel good about your work,
+despite complaints. It touches on modern Psychology and 90s pop
+culture.
+
+-----------------------------------------------------------------
+Techniques for Efficiently Learning Programming Languages ( http://t.dripem=
+ail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQx=
+IiwidXJsIjoiaHR0cDovL3d3dy5mbHlpbmdtYWNoaW5lc3R1ZGlvcy5jb20vcHJvZ3JhbW1pbmc=
+vbGVhcm4tcHJvZ3JhbW1pbmctbGFuZ3VhZ2VzLWVmZmljaWVudGx5Lz9fX3M9aG9nZnNyaHBmaH=
+N3NzZrc2FyZmIifQ )
+-----------------------------------------------------------------
+
+Good advice from Daniel Higginbotham about how to learn
+programming languages.
+
+-----------------------------------------------------------------
+Power to the (Mobile) People: Clojure and GraphQL ( http://t.dripemail2.com=
+/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJs=
+IjoiaHR0cHM6Ly95b3V0dS5iZS9JMHZWa1FmbXk5dz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmI=
+ifQ ) YouTube
+-----------------------------------------------------------------
+
+Howard Lewis Ship explains the reasons to use GraphQL and
+presents Walmart's GraphQL implementation in Clojure, called
+Lacinia ( http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl=
+2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9naXRodWIuY29tL3dhbG1hcnRsYW=
+JzL2xhY2luaWE_X19zPWhvZ2ZzcmhwZmhzdzc2a3NhcmZiIn0 ).
+
+-----------------------------------------------------------------
+With Great Composition Comes Great Responsibility ( http://t.dripemail2.com=
+/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJs=
+IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g_dj1QVE15VHlNY3hrVVx1MDAyNl9fcz1=
+ob2dmc3JocGZoc3c3NmtzYXJmYiJ9 ) YouTube
+-----------------------------------------------------------------
+
+Elizabeth Engelman dives deep into Datomic queries, how best to
+structure entities, and refactoring queries to be useful over the
+evolution of your software.
+
+---------------------
+To make sure you keep getting these emails, please add
+eric@purelyfunctional.tv to your address book or whitelist us. Want out of
+the loop? http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl=
+2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly93d3cuZ2V0ZHJpcC5jb20vc3Vic2=
+NyaWJlcnMvaG9nZnNyaHBmaHN3NzZrc2FyZmIvdW5zdWJzY3JpYmU_YnJvYWRjYXN0PTY3OTYzN=
+jc0XHUwMDI2ZD15cWJ2cGtocXFjamt3eTVuMm5ycVx1MDAyNmV4Y2x1ZGVfY2xpY2s9MVx1MDAy=
+Nl9fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9.
+
+LispCast 2659 Iberville St New Orleans, LA 70119
+
+--2e38e5a89f597940b54eaa90cd60710d21276162b4b60fedd2b7c46a9c6a
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+Mime-Version: 1.0
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+<html lang=3D"en">
+<head>
+<meta content=3D"text/html; charset=3DUTF-8" http-equiv=3D"Content-Type">
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1" name=3D"viewport">
+<meta content=3D"IE=3Dedge" http-equiv=3D"X-UA-Compatible">
+<meta content=3D"telephone=3Dno" name=3D"format-detection">
+<title>Issue 221</title>
+</head>
+<body bgcolor=3D"#ffffff" leftmargin=3D"0" marginheight=3D"0" marginwidth=
+=3D"0" style=3D"-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;=
+ margin: 0; padding: 0" topmargin=3D"0">
+<style type=3D"text/css">
+body {
+margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust=
+: 100%;
+}
+.ExternalClass {
+width: 100%;
+}
+.ExternalClass {
+line-height: 100%;
+}
+.ReadMsgBody {
+width: 100%; background-color: #ffffff;
+}
+img {
+-ms-interpolation-mode: bicubic;
+}
+@media screen and (max-width: 599px) {
+  table[class=3D"force-row"] {
+    width: 100% !important; max-width: 100% !important;
+  }
+  table[class=3D"container"] {
+    width: 100% !important; max-width: 100% !important;
+  }
+}
+@media screen and (max-width: 400px) {
+  td[class*=3D"container-padding"] {
+    padding-left: 12px !important; padding-right: 12px !important;
+  }
+}
+</style>
+<table bgcolor=3D"#ffffff" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ height=3D"100%" width=3D"100%" style=3D"border-spacing: 0; mso-table-lspac=
+e: 0pt; mso-table-rspace: 0pt"><tr><td align=3D"center" bgcolor=3D"#ffffff"=
+ style=3D"background: #ffffff; border-collapse: collapse" valign=3D"top">
+<br><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"contai=
+ner" style=3D"border-spacing: 0; max-width: 600px; mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; width: 600px" width=3D"600">
+<tr><td align=3D"left" class=3D"container-padding header" style=3D"border-c=
+ollapse: collapse; padding: 12px 24px 24px">
+<!--[if mso]>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+  <tr><td width=3D"50%" valign=3D"top"><![endif]--><img align=3D"none" alt=
+=3D"PurelyFunctional.tv" height=3D"136" src=3D"https://getdrip.s3.amazonaws=
+.com/uploads/image_upload/image/34040/embeddable_bd75b6ad-c0ae-408e-9fb1-89=
+d9f5735f11.png" style=3D"-ms-interpolation-mode: bicubic; height: 136px; ma=
+rgin: 0px; width: 600px" width=3D"600">
+</td></tr>
+=20=20
+  <tr><td align=3D"left" class=3D"container-padding content" style=3D"backg=
+round: #ffffff; border-collapse: collapse; padding: 12px 24px" bgcolor=3D"#=
+ffffff"><div class=3D"body-text" style=3D"color: #002b36; font-family: Helv=
+etica, Arial, sans-serif; font-size: 14px; line-height: 20px; text-align: l=
+eft" align=3D"left">
+  <table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+class=3D"force-row" width=3D"600" style=3D"border-spacing: 0; mso-table-lsp=
+ace: 0pt; mso-table-rspace: 0pt">
+  <tbody>
+    <tr>
+      <td align=3D"center" class=3D"col" style=3D"border-collapse: collapse; f=
+ont-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,mo=
+nospace; line-height: 42px" valign=3D"top">Issue 221 - April 17, 2017</td>
+    </tr>
+    <tr>
+      <td align=3D"center" class=3D"col" style=3D"border-collapse: collapse; f=
+ont-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16p=
+x" valign=3D"top">
+<a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbG=
+l2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsLnR2L=
+z9wPTc3MzFcdTAwMjZfX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ">Read Online</a> =C2=
+=B7 <a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsL=
+nR2L25ld3NsZXR0ZXItYXJjaGl2ZXMvP19fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9">Archiv=
+es</a> =C2=B7 <a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1=
+MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5=
+jdGlvbmFsLnR2L25ld3NsZXR0ZXIvP19fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9" title=3D=
+"Thanks, Jeff!">Subscribe</a>
+</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Hi Clojurers,</p>
+
+<p>Please enjoy the issue.</p>
+
+<p>Rock on!<br>
+<a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbG=
+l2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cDovL3R3aXR0ZXIuY29tL2VyaWNub3JtY=
+W5kP19fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9" style=3D"color: #268bd2">Eric Norm=
+and</a> &lt;<a href=3D"mailto:eric@purelyfunctional.tv?__s=3Dhogfsrhpfhsw76=
+ksarfb" style=3D"color: #268bd2">eric@purelyfunctional.tv</a>&gt;</p>
+
+<p>PS Want to get this in your email? <a href=3D"http://t.dripemail2.com/c/=
+eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjo=
+iaHR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsLnR2Lz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ=
+" style=3D"color: #268bd2">Subscribe</a>!</p>
+
+<hr>
+<h2><a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cDovL2VsaS50aGVncmVlbnBsYWNlL=
+m5ldC8yMDE3L29uLXJlY3Vyc2lvbi1jb250aW51YXRpb25zLWFuZC10cmFtcG9saW5lcy8_X19z=
+PWhvZ2ZzcmhwZmhzdzc2a3NhcmZiIn0" style=3D"color: #268bd2">On Recursion, Con=
+tinuations and Trampolines</a></h2>
+
+<p>A nice walkthrough of Continuation Passing Style in multiple languages.<=
+/p>
+
+<hr>
+<h2><a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9hcGh5ci5jb20vcG9zdHMvM=
+zQyLXR5cGluZy10aGUtdGVjaG5pY2FsLWludGVydmlldz9fX3M9aG9nZnNyaHBmaHN3NzZrc2Fy=
+ZmIifQ" style=3D"color: #268bd2">Typing the Technical Interview</a></h2>
+
+<p>Aphyr has written three short stories featuring magical beings working t=
+hrough a technical interview (<a href=3D"http://t.dripemail2.com/c/eyJhY2Nv=
+dW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM=
+6Ly9hcGh5ci5jb20vcG9zdHMvMzQwLXJldmVyc2luZy10aGUtdGVjaG5pY2FsLWludGVydmlldz=
+9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ" style=3D"color: #268bd2" title=3D"">1=
+</a>, <a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIs=
+ImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9hcGh5ci5jb20vcG9zdHM=
+vMzQxLWhleGluZy10aGUtdGVjaG5pY2FsLWludGVydmlldz9fX3M9aG9nZnNyaHBmaHN3NzZrc2=
+FyZmIifQ" style=3D"color: #268bd2" title=3D"">2</a>, <a href=3D"http://t.dr=
+ipemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2=
+OTQxIiwidXJsIjoiaHR0cHM6Ly9hcGh5ci5jb20vcG9zdHMvMzQyLXR5cGluZy10aGUtdGVjaG5=
+pY2FsLWludGVydmlldz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ" style=3D"color: #2=
+68bd2" title=3D"">3</a>). The problems are obviously well-beneath the candi=
+dates' skills, and their solutions are over the heads of the interviewers.<=
+/p>
+
+<p>I like this format. It insults the technical interview and condescends t=
+he interviewers, but not by showing how impractical they are. Instead, the =
+candidates are using completely impractical techniques, but they are overbl=
+own and mystical. In the one I linked to above, the candidate uses Haskell'=
+s type system as a logic programming system to solve the <a href=3D"http://=
+t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQw=
+MDA2OTQxIiwidXJsIjoiaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvRWlnaHRfcXVlZW5=
+zX3B1enpsZT9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ" style=3D"color: #268bd2" t=
+itle=3D"">Eight Queens Puzzle</a>. The mystical setting allows the author t=
+o enlighten his readers with approaches to solving problems that would othe=
+rwise be dismissed in our current climate of hyper-practicality.</p>
+
+<hr>
+<h2><a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cDovL2RlZ29lcy5uZXQvYXJ0aWNsZ=
+XMvaW5zdWZmaWNpZW50bHktcG9seW1vcnBoaWM_X19zPWhvZ2ZzcmhwZmhzdzc2a3NhcmZiIn0"=
+ style=3D"color: #268bd2">Descriptive Variables Names: A Code Smell</a></h2>
+
+<p>I'm really digging John De Goes' post about the danger of descriptive va=
+riable names. I have heard many times that functional programming is all ab=
+out data transformation. And while that's not an untrue statement, it indic=
+ates that the speaker is at a specific stage in their <a href=3D"http://t.d=
+ripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA=
+2OTQxIiwidXJsIjoiaHR0cHM6Ly9wdXJlbHlmdW5jdGlvbmFsLnR2L2Z1bmN0aW9uYWwtcHJvZ3=
+JhbW1pbmctY2FyZWVyLWd1aWRlL3lvdXItZnVuY3Rpb25hbC1qb3VybmV5Lz9fX3M9aG9nZnNya=
+HBmaHN3NzZrc2FyZmIifQ" style=3D"color: #268bd2" title=3D"">development as a=
+ functional programmer</a>. We want to be building reusable higher-order fu=
+nctions and modeling our systems with algebras. The examples in this articl=
+e are in Haskell, but the principle applies equally well in Clojure.</p>
+
+<hr>
+<h2><a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cDovL21ldGFsYmF0LmNvbS9mZWVsL=
+Wdvb2QvaW5kZXguaHRtbD9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ" style=3D"color: =
+#268bd2">Your App Is Good And You Should Feel Good</a></h2>
+
+<p>A wonderful slide deck with transcript about why people complain on the =
+internet and why you should feel good about your work, despite complaints. =
+It touches on modern Psychology and 90s pop culture.</p>
+
+<hr>
+<h2><a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cDovL3d3dy5mbHlpbmdtYWNoaW5lc=
+3R1ZGlvcy5jb20vcHJvZ3JhbW1pbmcvbGVhcm4tcHJvZ3JhbW1pbmctbGFuZ3VhZ2VzLWVmZmlj=
+aWVudGx5Lz9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ" style=3D"color: #268bd2">Te=
+chniques for Efficiently Learning Programming Languages</a></h2>
+
+<p>Good advice from Daniel Higginbotham about how to learn programming lang=
+uages.</p>
+
+<hr>
+<h2>
+<a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbG=
+l2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly95b3V0dS5iZS9JMHZWa1FmbXk5d=
+z9fX3M9aG9nZnNyaHBmaHN3NzZrc2FyZmIifQ" style=3D"color: #268bd2">Power to th=
+e (Mobile) People: Clojure and GraphQL</a> YouTube</h2>
+
+<p>Howard Lewis Ship explains the reasons to use GraphQL and presents Walma=
+rt's GraphQL implementation in Clojure, called <a href=3D"http://t.dripemai=
+l2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIi=
+widXJsIjoiaHR0cHM6Ly9naXRodWIuY29tL3dhbG1hcnRsYWJzL2xhY2luaWE_X19zPWhvZ2Zzc=
+mhwZmhzdzc2a3NhcmZiIn0" style=3D"color: #268bd2" title=3D"">Lacinia</a>.</p>
+
+<hr>
+<h2>
+<a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsImRlbG=
+l2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y=
+2g_dj1QVE15VHlNY3hrVVx1MDAyNl9fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9" style=3D"c=
+olor: #268bd2">With Great Composition Comes Great Responsibility</a> YouTub=
+e</h2>
+
+<p>Elizabeth Engelman dives deep into Datomic queries, how best to structur=
+e entities, and refactoring queries to be useful over the evolution of your=
+ software.</p>
+
+=20=20=20=20=20=20
+  </div></td></tr>
+=20=20
+  <tr><td align=3D"left" class=3D"container-padding footer-text" style=3D"b=
+order-collapse: collapse; color: #93a1a1; font-family: Helvetica, Arial, sa=
+ns-serif; font-size: 12px; line-height: 16px; padding-left: 24px; padding-r=
+ight: 24px">
+<br><a href=3D"http://t.dripemail2.com/c/eyJhY2NvdW50X2lkIjoiMzY1MTcxNyIsIm=
+RlbGl2ZXJ5X2lkIjoiNzQwMDA2OTQxIiwidXJsIjoiaHR0cHM6Ly93d3cuZ2V0ZHJpcC5jb20vc=
+3Vic2NyaWJlcnMvaG9nZnNyaHBmaHN3NzZrc2FyZmIvdW5zdWJzY3JpYmU_YnJvYWRjYXN0PTY3=
+OTYzNjc0XHUwMDI2ZD15cWJ2cGtocXFjamt3eTVuMm5ycVx1MDAyNmV4Y2x1ZGVfY2xpY2s9MVx=
+1MDAyNl9fcz1ob2dmc3JocGZoc3c3NmtzYXJmYiJ9" style=3D"color: #268bd2">unsubsc=
+ribe</a> =E2=80=94 LispCast - 2659 Iberville St, New Orleans, LA 70119 USA =
+- 504-302-3742<br><br>
+</td></tr>
+</table>
+</td></tr></table>
+
+<img src=3D"http://o.dripemail2.com/wf/open?upn=3Dw1DZ2zwQMMOPoGpESMb-2B4v9=
+e-2BK7VBWI5g-2BZ7Av6MowZG5-2BdHG35aV6vRggbosx2HCbH-2F-2F-2BcjXkV2xG-2BcaF0D=
+8oPV6gYgIDa3vpkKCBGwKQLcVrE9UAX1LReqsoK-2FDdMW7cTGYiIfbtMb-2F-2FznDNU2wJZse=
+qmARJsjvsxDhgZ2hA2DFrib-2FuJo9pvQlu0JZa-2BoKVSApRJ7WCfkyALSSpNChsV7VA19Y6-2=
+F8aUAtZV7YGLwh2ajqEuOC5TdQVLLMpcaFXgG1W8J2sJ0s2H8T0PBa3qq42lWLlXULJixZ0db-2=
+FP40wcl7VqgiQgZa2kf7thjO0" alt=3D"" width=3D"1" height=3D"1" border=3D"0" s=
+tyle=3D"height:1px !important;width:1px !important;border-width:0 !importan=
+t;margin-top:0 !important;margin-bottom:0 !important;margin-right:0 !import=
+ant;margin-left:0 !important;padding-top:0 !important;padding-bottom:0 !imp=
+ortant;padding-right:0 !important;padding-left:0 !important;"/>
+</body>
+</html>
+
+
+--2e38e5a89f597940b54eaa90cd60710d21276162b4b60fedd2b7c46a9c6a--
