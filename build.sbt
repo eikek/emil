@@ -5,6 +5,7 @@ import ReleaseTransformations._
 
 val scala212 = "2.12.10"
 val scala213 = "2.13.1"
+val updateReadme = inputKey[Unit]("Update readme")
 
 val sharedSettings = Seq(
   organization := "com.github.eikek",
@@ -68,6 +69,7 @@ lazy val publishSettings = Seq(
     //For non cross-build projects, use releaseStepCommand("publishSigned")
     releaseStepCommandAndRemaining("+publishSigned"),
     releaseStepCommand("sonatypeBundleRelease"),
+    releaseStepCommand("microsite/publishMicrosite"),
     setNextVersion,
     commitNextVersion,
     pushChanges
@@ -135,7 +137,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     skip in publish := true,
     micrositeFooterText := Some(
       """
-        |<p>&copy; 2019 <a href="https://github.com/eikek/emil">Emil, v{{site.version}}</a></p>
+        |<p>&copy; 2020 <a href="https://github.com/eikek/emil">Emil, v{{site.version}}</a></p>
         |""".stripMargin
     ),
     micrositeName := "Emil",
@@ -156,6 +158,29 @@ lazy val microsite = project.in(file("modules/microsite")).
     mdocIn := tutSourceDirectory.value
   ).
   dependsOn(common % "compile->compile,test", javamail)
+
+lazy val readme = project
+  .in(file("modules/readme"))
+  .enablePlugins(MdocPlugin)
+  .settings(sharedSettings)
+  .settings(noPublish)
+  .settings(
+    name := "calev-readme",
+    scalacOptions := Seq(),
+    mdocVariables := Map(
+      "VERSION" -> version.value
+    ),
+    updateReadme := {
+      mdoc.evaluated
+      val out = mdocOut.value / "readme.md"
+      val target = (LocalRootProject / baseDirectory).value / "README.md"
+      val logger = streams.value.log
+      logger.info(s"Updating readme: $out -> $target")
+      IO.copyFile(out, target)
+      ()
+    }
+  )
+  .dependsOn(common % "compile->compile;compile->test", javamail % "compile->compile;compile->test")
 
 val root = project.in(file(".")).
   settings(sharedSettings).

@@ -26,7 +26,7 @@ just another wrapper library, but also a bit different:
 
 Send a mail (returning its `messageID`):
 
-```scala
+```scala mdoc:silent
 import cats.effect._
 import cats.data.NonEmptyList
 import emil._, emil.builder._
@@ -56,7 +56,7 @@ val sendIO: IO[NonEmptyList[String]] = myemil(smtpConf).send(mail)
 
 Searching for mails:
 
-```scala
+```scala mdoc:reset:silent
 import java.time._
 import cats.effect._
 import emil._
@@ -79,7 +79,6 @@ def searchInbox[C <: Connection](a: Access[IO, C], q: SearchQuery): MailOp[IO, C
 val q = (ReceivedDate >= Instant.now.minusSeconds(60)) && (Subject =*= "test")
 val searchIO: IO[SearchResult[MailHeader]] = myemil(imapConf).run(searchInbox(myemil.access, q))
 ```
-
 ## Documentation
 
 More information can be found [here](https://eikek.github.io/emil/).
