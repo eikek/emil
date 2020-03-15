@@ -35,17 +35,21 @@ that it is not recursive. Emil can only create *Mixed* or
 ## MailOp
 
 The other concept is the `MailOp`, which is an alias for the cats
-`Kleisli` class, fixing the input type to `Connection`. Every code
-that does something with an e-mail runs inside such a function.
+[`Kleisli`](https://typelevel.org/cats/datatypes/kleisli.html) class,
+where the input type is a `Connection`. Every code that does something
+with an e-mail runs inside such a function.
 
 ```
-type MailOp[F[_], C <: Connection, A] = Kleisli[F, C, A]
+type MailOp[F[_], C, A] = Kleisli[F, C, A]
 ```
+
+The `C` is the type representing the connection to some mail server.
+It is not a concrete type, because this depends on the implementation
+and the operations should not depend on it.
 
 There are pre-defined primitive operations in the `Access` and `Send`
 trait, respectively. These are implemented by some "implementation
-module". You can compose the primitive operations into custom ones
-without depending on a concrete implementation module.
+module". These primitive operations can be composed into custom ones.
 
 For example, this is an operation that moves the first mail in INBOX
 into the Trash folder:
@@ -53,7 +57,7 @@ into the Trash folder:
 ```scala mdoc
 import cats.implicits._, cats.effect._, emil._
 
-def moveToTrash[F[_]: Sync, C <: Connection](a: Access[F, C]): MailOp[F, C, Unit] = {
+def moveToTrash[F[_]: Sync, C](a: Access[F, C]): MailOp[F, C, Unit] = {
   val trash = a.getOrCreateFolder(None, "Trash")
   val findFirstMail = a.getInbox.
     flatMap(in => a.search(in, 1)(SearchQuery.All)).
@@ -93,22 +97,23 @@ needs a corresponding connection to some imap server and the
 `JavaMailEmil`.
 
 ```scala mdoc
-import emil.javamail._, scala.concurrent.ExecutionContext
+import emil.javamail._
+import scala.concurrent.ExecutionContext
 
 implicit val CS = IO.contextShift(ExecutionContext.global)
-val blocker = Blocker.liftExecutionContext(ExecutionContext.fromExecutorService(java.util.concurrent.Executors.newCachedThreadPool()))
+val blocker = Blocker.liftExecutionContext(ExecutionContext.global)
 
 val myemil = JavaMailEmil[IO](blocker)
 val imapConf = MailConfig("imap://devmail:143", "dev", "dev", SSLType.NoEncryption)
 
 val moveIO = myemil(imapConf).run(moveToTrash(myemil.access))
+// moveIO.unsafeRunSync()
 ```
 
 First, we need to create a `ContextShift` instance and a
 `Blocker`. Reason is that JavaMail uses blocking IO and the
 `JavaMailEmil` shifts the execution of all primitive operations onto
 the blocking execution context, given as `Blocker`.
-
 
 Note: The `emil-javamail` depends on the
 [JavaMail](https://github.com/eclipse-ee4j/mail) library, which has a

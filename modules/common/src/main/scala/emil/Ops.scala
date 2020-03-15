@@ -6,21 +6,21 @@ import cats.{Applicative, ApplicativeError}
 
 trait Ops {
 
-  type MailOp[F[_], C <: Connection, A] = Kleisli[F, C, A]
+  type MailOp[F[_], C, A] = Kleisli[F, C, A]
 
   object MailOp {
-    def apply[F[_], C <: Connection, A](run: C => F[A]): MailOp[F, C, A] =
+    def apply[F[_], C, A](run: C => F[A]): MailOp[F, C, A] =
       Kleisli(run)
 
-    def of[F[_]: Sync, C <: Connection, A](run: C => A): MailOp[F, C, A] =
+    def of[F[_]: Sync, C, A](run: C => A): MailOp[F, C, A] =
       MailOp(conn => Sync[F].delay(run(conn)))
 
-    def error[F[_], C <: Connection, A](
+    def error[F[_], C, A](
         msg: String
-    )(implicit ev: ApplicativeError[F, Throwable]): MailOp[F, C, A] =
-      MailOp(_ => ApplicativeError[F, Throwable].raiseError(new Exception(msg)))
+    )(implicit e: ApplicativeError[F, Throwable]): MailOp[F, C, A] =
+      MailOp(_ => e.raiseError(new Exception(msg)))
 
-    def pure[F[_]: Applicative, C <: Connection, A](value: A): MailOp[F, C, A] =
+    def pure[F[_]: Applicative, C, A](value: A): MailOp[F, C, A] =
       Kleisli.pure(value)
   }
 

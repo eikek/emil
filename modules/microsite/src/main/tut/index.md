@@ -28,8 +28,7 @@ just another wrapper library, but also a bit different:
   [EWS](https://github.com/OfficeDev/ews-java-api) can be created
   without affecting the user code of this library.
 
-So, you write you e-mail related code once and then decide how to
-execute.
+Write your e-mail related code once and then decide how to execute.
 
 ## Usage
 

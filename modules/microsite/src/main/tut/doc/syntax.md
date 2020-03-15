@@ -66,5 +66,4 @@ Deserialize:
 
 ```scala mdoc
 val mail2 = Mail.deserialize[IO](mailStr).unsafeRunSync
-
 ```

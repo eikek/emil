@@ -2,7 +2,7 @@ package emil
 
 import cats.{Applicative, FlatMap}
 
-trait Access[F[_], C <: Connection] {
+trait Access[F[_], C] {
 
   def getInbox: MailOp[F, C, MailFolder]
 

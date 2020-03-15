@@ -31,7 +31,7 @@ Searching inbox may look like this:
 ```scala mdoc
 import cats.effect._
 
-def searchInbox[C <: Connection](a: Access[IO, C], q: SearchQuery) =
+def searchInbox[C](a: Access[IO, C], q: SearchQuery) =
   for {
     inbox  <- a.getInbox
     mails  <- a.search(inbox, 20)(q)
@@ -48,7 +48,7 @@ fast. If you really want to load all mails found, use the
 ```scala mdoc
 import cats.effect._
 
-def searchLoadInbox[C <: Connection](a: Access[IO, C], q: SearchQuery) =
+def searchLoadInbox[C](a: Access[IO, C], q: SearchQuery) =
   for {
     inbox  <- a.getInbox
     mails  <- a.searchAndLoad(inbox, 20)(q)

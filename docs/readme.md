@@ -69,7 +69,7 @@ val blocker = Blocker.liftExecutionContext(scala.concurrent.ExecutionContext.glo
 val myemil = JavaMailEmil[IO](blocker)
 val imapConf = MailConfig("imap://devmail:143", "dev", "dev", SSLType.NoEncryption)
 
-def searchInbox[C <: Connection](a: Access[IO, C], q: SearchQuery): MailOp[IO, C, SearchResult[MailHeader]] =
+def searchInbox[C](a: Access[IO, C], q: SearchQuery): MailOp[IO, C, SearchResult[MailHeader]] =
   for {
     inbox  <- a.getInbox
     mails  <- a.search(inbox, 20)(q)
