@@ -4,37 +4,40 @@ import java.util.Properties
 
 import cats.effect.{Resource, Sync}
 import cats.implicits._
+import javax.mail.{Authenticator, PasswordAuthentication, Session, Store, Transport}
 import emil.{MailConfig, SSLType}
-import javax.mail.{Authenticator, PasswordAuthentication, Session, Store}
+import emil.javamail.Settings
 
 import scala.concurrent.duration.Duration
+import java.security.NoSuchProviderException
 
 object ConnectionResource {
   private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](mc: MailConfig, debug: Boolean = false): Resource[F, JavaMailConnection] =
-    Resource.make(make(mc, debug))(
-      conn =>
-        conn.mailStore match {
-          case Some(s) => Sync[F].delay(s.close())
-          case None    => ().pure[F]
-        }
+  def apply[F[_]: Sync](mc: MailConfig, settings: Settings): Resource[F, JavaMailConnection] =
+    Resource.make(make(mc, settings))(conn =>
+      Sync[F].delay {
+        conn.mailStore.foreach(_.close())
+        conn.mailTransport.foreach(_.close())
+      }
     )
 
-  def make[F[_]: Sync](mc: MailConfig, debug: Boolean = false): F[JavaMailConnection] =
+  def make[F[_]: Sync](mc: MailConfig, settings: Settings): F[JavaMailConnection] =
     Sync[F].delay {
-      val session = createSession(mc, debug)
+      val session = ThreadClassLoader(createSession(mc, settings))
       if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
-        val store = createImapStore(session, mc)
-        JavaMailConnection(mc, session, Some(store))
+        val store = ThreadClassLoader(createImapStore(session, mc))
+        JavaMailConnection(mc, session, Some(store), None)
       } else {
-        JavaMailConnection(mc, session, None)
+        val tp = ThreadClassLoader(createSmtpTransport(session, mc))
+        JavaMailConnection(mc, session, None, Some(tp))
       }
     }
 
   private def createImapStore(session: Session, mc: MailConfig): Store = {
     val store = session.getStore(mc.urlParts.protocol)
     if (mc.user.nonEmpty) {
+      logger.debug(s"Connect store with $mc")
       store.connect(mc.user, mc.password)
     } else {
       store.connect()
@@ -42,16 +45,37 @@ object ConnectionResource {
     store
   }
 
-  private def createSession(mc: MailConfig, debug: Boolean): Session = {
+  private def createSmtpTransport(session: Session, mc: MailConfig): Transport = {
+    val tp = session.getTransport(mc.urlParts.protocol)
+    if (tp == null) {
+      throw new NoSuchProviderException(
+        s"Transport cannot be created for protocol: ${mc.urlParts.protocol}"
+      )
+    }
+    if (mc.user.nonEmpty) {
+      logger.debug(s"Connect transport with $mc")
+      tp.connect(mc.user, mc.password)
+    } else {
+      tp.connect()
+    }
+    tp
+  }
+
+  private def createSession(mc: MailConfig, settings: Settings): Session = {
     val host = mc.urlParts.host
     val port = mc.urlParts.port
     val proto = mc.urlParts.protocol
 
     val props = new Properties()
+
+    if (proto.startsWith("smtp")) {
+      props.put(s"mail.$proto.auth", "true");
+    }
+
     if (mc.user.nonEmpty) {
       props.put(s"mail.$proto.user", mc.user)
     }
-    if (debug) {
+    if (settings.debug) {
       props.put("mail.debug", "true")
     }
 
@@ -90,14 +114,16 @@ object ConnectionResource {
     props.put("mail.mime.multipart.ignoreexistingboundaryparameter", "true")
     props.put("mail.mime.multipart.ignoremissingboundaryparameter", "true")
 
+    settings.props(proto).foreachEntry((k, v) => props.put(k, v))
+
     if (mc.user.nonEmpty) {
-      logger.trace(s"Creating session with authenticator and props: $props")
+      logger.debug(s"Creating session with authenticator and props: $props")
       Session.getInstance(props, new Authenticator() {
         override def getPasswordAuthentication: PasswordAuthentication =
           new PasswordAuthentication(mc.user, mc.password)
       })
     } else {
-      logger.trace(s"Creating session without authenticator and props: $props")
+      logger.debug(s"Creating session without authenticator and props: $props")
       Session.getInstance(props)
     }
   }

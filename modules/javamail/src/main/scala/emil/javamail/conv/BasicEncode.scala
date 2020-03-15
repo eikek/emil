@@ -58,12 +58,12 @@ trait BasicEncode {
   implicit def bodyEncode[F[_]: Monad]: Conv[MailBody[F], F[MimeBodyPart]] = {
     def mkTextPart(str: String): MimeBodyPart = {
       val part = new MimeBodyPart()
-      part.setText(str, StandardCharsets.US_ASCII.name().toLowerCase(), "plain")
+      part.setText(str, StandardCharsets.UTF_8.name().toLowerCase(), "plain")
       part
     }
     def mkHtmlPart(str: String): MimeBodyPart = {
       val part = new MimeBodyPart()
-      part.setText(str, StandardCharsets.US_ASCII.name().toLowerCase(), "html")
+      part.setText(str, StandardCharsets.UTF_8.name().toLowerCase(), "html")
       part
     }
     def mkAlternative(txt: String, html: String): MimeBodyPart = {

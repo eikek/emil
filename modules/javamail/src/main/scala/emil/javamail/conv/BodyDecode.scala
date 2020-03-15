@@ -25,7 +25,7 @@ import emil.javamail.internal.EnumerationConverter._
   */
 trait BodyDecode {
 
-  implicit def attachmentDecode[F[_]: Sync]: Conv[BodyPart, Attachments[F]] =
+  implicit def attachmentDecode[F[_]: Sync]: Conv[Part, Attachments[F]] =
     Conv({ bp =>
       if (bp.isMimeType("multipart/*")) {
         val mp = bp.getContent.asInstanceOf[Multipart]
@@ -43,7 +43,7 @@ trait BodyDecode {
     })
 
   implicit def mailBodyDecode[F[_]: Sync](
-      implicit ca: Conv[BodyPart, Attachments[F]]
+      implicit ca: Conv[Part, Attachments[F]]
   ): Conv[MimeMessage, BodyAttach[F]] =
     Conv({ msg =>
       Util.withReadFolder(msg) {
@@ -59,14 +59,11 @@ trait BodyDecode {
 
             case mp: Multipart =>
               if (BodyDecode.isAlternative(mp)) {
-                BodyAttach(
-                  BodyDecode.getAlternativeBody(Body(None, None), mp),
-                  Attachments.empty[F]
-                )
+                BodyDecode.getAlternativeBody(BodyAttach.empty[F], mp)
               } else {
                 (0 until mp.getCount)
                   .map(mp.getBodyPart)
-                  .foldLeft(BodyAttach[F](Body(None, None), Attachments.empty[F])) {
+                  .foldLeft(BodyAttach.empty[F]) {
                     (result, part) =>
                       if (BodyDecode.maySetTextBody(result.body.text, MimeType.textPlain, part)) {
                         result.copy(
@@ -77,13 +74,9 @@ trait BodyDecode {
                         result.copy(
                           body = result.body.copy(html = BodyDecode.getTextContent(part).some)
                         )
-                      } else if (part.isMimeType("multipart/alternative")) {
-                        result.copy(
-                          body = BodyDecode.getAlternativeBody(
-                            result.body,
-                            part.getContent.asInstanceOf[Multipart]
-                          )
-                        )
+                      } else if (part.isMimeType("multipart/alternative") && result.body.isEmpty) {
+                        val mp = part.getContent.asInstanceOf[Multipart]
+                        BodyDecode.getAlternativeBody(result, mp)
                       } else {
                         result.copy(attachments = result.attachments ++ ca.convert(part))
                       }
@@ -91,7 +84,8 @@ trait BodyDecode {
               }
 
             case _ =>
-              sys.error(s"Not implemented content: ${msg.getContent}")
+              BodyAttach(Body(None, None), ca.convert(msg))
+
           }
       }
     })
@@ -138,18 +132,28 @@ object BodyDecode {
         case (None, Some(h))      => MailBody.html(h)
         case (None, None)         => MailBody.text("")
       }
+    def isEmpty: Boolean =
+      text.isEmpty && html.isEmpty
   }
 
-  final case class BodyAttach[F[_]](body: Body, attachments: Attachments[F])
+  final case class BodyAttach[F[_]](body: Body, attachments: Attachments[F]) {
+    def modifyBody(f: Body => Body): BodyAttach[F] =
+      copy(body = f(body))
+  }
+  object BodyAttach {
+    def empty[F[_]] = BodyAttach[F](Body(None, None), Attachments.empty[F])
+  }
 
-  private def getAlternativeBody(body: Body, alt: Multipart): Body =
-    (0 until alt.getCount).map(alt.getBodyPart).foldLeft(body) { (body, part) =>
-      if (maySetTextBody(body.text, MimeType.textPlain, part)) {
-        body.copy(text = getTextContent(part).some)
-      } else if (maySetTextBody(body.html, MimeType.textHtml, part)) {
-        body.copy(html = getTextContent(part).some)
+  private def getAlternativeBody[F[_]](cnt: BodyAttach[F], alt: Multipart)(
+      implicit ca: Conv[Part, Attachments[F]]
+  ): BodyAttach[F] =
+    (0 until alt.getCount).map(alt.getBodyPart).foldLeft(cnt) { (result, part) =>
+      if (maySetTextBody(result.body.text, MimeType.textPlain, part)) {
+        result.modifyBody(body => body.copy(text = getTextContent(part).some))
+      } else if (maySetTextBody(result.body.html, MimeType.textHtml, part)) {
+        result.modifyBody(body => body.copy(html = getTextContent(part).some))
       } else {
-        body
+        result.copy(attachments = result.attachments ++ ca.convert(part))
       }
     }
 

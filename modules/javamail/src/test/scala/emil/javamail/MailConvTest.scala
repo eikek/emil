@@ -26,7 +26,7 @@ object MailConvTest extends SimpleTestSuite {
                         |To: test@test.com
                         |Subject: Hello
                         |MIME-Version: 1.0
-                        |Content-Type: text/plain; charset=us-ascii
+                        |Content-Type: text/plain; charset=utf-8
                         |Content-Transfer-Encoding: 7bit
                         |
                         |This is text""".stripMargin.replace("\n", "\r\n")
@@ -51,7 +51,7 @@ object MailConvTest extends SimpleTestSuite {
                         |To: test@test.com
                         |Subject: Hello
                         |MIME-Version: 1.0
-                        |Content-Type: text/html; charset=us-ascii
+                        |Content-Type: text/html; charset=utf-8
                         |Content-Transfer-Encoding: 7bit
                         |
                         |<p>This is html</p>""".stripMargin.replace("\n", "\r\n")
@@ -75,7 +75,7 @@ object MailConvTest extends SimpleTestSuite {
                         |To: test@test.com
                         |Subject: Hello
                         |MIME-Version: 1.0
-                        |Content-Type: text/plain; charset=us-ascii
+                        |Content-Type: text/plain; charset=utf-8
                         |Content-Transfer-Encoding: 7bit
                         |
                         |""".stripMargin.replace("\n", "\r\n")
@@ -109,12 +109,12 @@ object MailConvTest extends SimpleTestSuite {
                        |{}boundary="$partChars"
                        |
                        |--$partChars
-                       |Content-Type: text/plain; charset=us-ascii
+                       |Content-Type: text/plain; charset=utf-8
                        |Content-Transfer-Encoding: 7bit
                        |
                        |This is html as text
                        |--$partChars
-                       |Content-Type: text/html; charset=us-ascii
+                       |Content-Type: text/html; charset=utf-8
                        |Content-Transfer-Encoding: 7bit
                        |
                        |<p>This is html</p>

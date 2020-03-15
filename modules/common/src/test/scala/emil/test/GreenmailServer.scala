@@ -34,7 +34,7 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
     }
 
   def stop(): Unit = {
-    logger.info("Stopping local greenmail mail servers: imap:{} smtp{}", imapPort, smtpPort)
+    logger.info("Stopping local greenmail mail servers: imap:{} smtp:{}", imapPort, smtpPort)
     greenMail.stop()
   }
 

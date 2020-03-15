@@ -19,6 +19,10 @@ final case class Recipients(to: List[MailAddress], cc: List[MailAddress], bcc: L
 
   def addBccs(ma: Seq[MailAddress]): Recipients =
     Recipients(to, cc, ma.toList ::: bcc)
+
+  def isEmpty: Boolean = to.isEmpty && cc.isEmpty && bcc.isEmpty
+
+  def nonEmpty: Boolean = !isEmpty
 }
 
 object Recipients {

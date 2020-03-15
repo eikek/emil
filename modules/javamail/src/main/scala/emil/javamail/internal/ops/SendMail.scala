@@ -7,7 +7,6 @@ import emil._
 import emil.javamail.conv.{MessageIdEncode, MsgConv}
 import emil.javamail.internal.{JavaMailConnection, Logger, ThreadClassLoader}
 import javax.mail.internet.MimeMessage
-import javax.mail.Transport
 
 object SendMail {
   private[this] val logger = Logger(getClass)
@@ -18,26 +17,18 @@ object SendMail {
       implicit cm: MsgConv[Mail[F], F[MimeMessage]]
   ): MailOp[F, JavaMailConnection, NonEmptyList[String]] =
     MailOp(conn =>
-      Sync[F].delay(logger.debug(s"Sending ${mails.size} mail(s) using ${conn.config}")) *>
-      mails.traverse(mail =>
-        cm.convert(conn.session, MessageIdEncode.Random, mail)
-          .flatMap({ msg =>
-            Sync[F].delay({
+      logger.debugF(s"Sending ${mails.size} mail(s) using ${conn.config}") *>
+        mails.traverse { mail =>
+          ThreadClassLoader {
+            cm.convert(conn.session, MessageIdEncode.Random, mail).map { msg =>
               val msgId = checkMessageID(msg)
               logger.debug(s"Sending message: ${infoLine(mail.header)}, $msgId")
-              // this can be required if the mailcap file is not found
-              ThreadClassLoader {
-                if (conn.config.user.nonEmpty) {
-                  Transport
-                    .send(msg, msg.getAllRecipients, conn.config.user, conn.config.password)
-                } else {
-                  Transport.send(msg, msg.getAllRecipients)
-                }
-              }
+              conn.transport.sendMessage(msg, msg.getAllRecipients)
+              logger.debug("Mail sent")
               msgId
-            })
-          })
-      )
+            }
+          }
+        }
     )
 
   private def checkMessageID(msg: MimeMessage): String =
