@@ -39,7 +39,7 @@ object JavaMailEmil {
 
   def mailToString[F[_]: Sync](
       mail: Mail[F]
-  )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[String] = {
+  )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[String] = ThreadClassLoader {
     val session = Session.getInstance(new Properties())
     cm.convert(session, MessageIdEncode.Given, mail)
       .map(msg =>
@@ -53,8 +53,8 @@ object JavaMailEmil {
 
   def mailFromString[F[_]: Sync](str: String)(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
     Sync[F].delay {
-      val session = Session.getInstance(new Properties())
       ThreadClassLoader {
+        val session = Session.getInstance(new Properties())
         val msg =
           new MimeMessage(session, new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8)))
         cm.convert(msg)

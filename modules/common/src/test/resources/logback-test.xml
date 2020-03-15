@@ -7,9 +7,9 @@
         </encoder>
     </appender>
 
-    <logger name="emil" level="trace" />
+    <logger name="emil" level="error" />
 
-    <root level="INFO">
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
     </root>
 

@@ -24,12 +24,12 @@ object ConnectionResource {
 
   def make[F[_]: Sync](mc: MailConfig, settings: Settings): F[JavaMailConnection] =
     Sync[F].delay {
-      val session = ThreadClassLoader(createSession(mc, settings))
+      val session = createSession(mc, settings)
       if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
-        val store = ThreadClassLoader(createImapStore(session, mc))
+        val store = createImapStore(session, mc)
         JavaMailConnection(mc, session, Some(store), None)
       } else {
-        val tp = ThreadClassLoader(createSmtpTransport(session, mc))
+        val tp = createSmtpTransport(session, mc)
         JavaMailConnection(mc, session, None, Some(tp))
       }
     }

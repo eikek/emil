@@ -11,7 +11,7 @@ final case class MailHeader(
     from: Option[MailAddress],
     replyTo: Option[MailAddress],
     receivedDate: Option[Instant],
-    sentDate: Option[Instant],
+    originationDate: Option[Instant],
     subject: String,
     flags: Set[Flag]
 ) {
@@ -28,7 +28,7 @@ final case class MailHeader(
 
 object MailHeader {
   val headerNames =
-    List("Subject", "Message-Id", "From", "To", "Cc", "Bcc", "Reply-To", "Received-Date", "Date")
+    List("Subject", "Message-Id", "From", "To", "Cc", "Bcc", "Reply-To", "Date")
 
   val empty: MailHeader =
     MailHeader("", None, None, Recipients.empty, None, None, None, None, None, "", Set.empty)

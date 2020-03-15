@@ -100,7 +100,7 @@ trait BasicEncode {
       header.from.map(ca.convert).foreach(msg.setFrom)
       header.sender.map(ca.convert).foreach(msg.setSender)
       msg.setSubject(header.subject)
-      header.sentDate.foreach(i => msg.setSentDate(Date.from(i)))
+      header.originationDate.foreach(i => msg.setSentDate(Date.from(i)))
       msg.messageId = header.messageId
       msg.setRecipients(
         Message.RecipientType.TO,

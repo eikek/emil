@@ -1,7 +1,6 @@
 package emil.javamail.internal
 
 import com.sun.mail.imap.IMAPFolder
-import javax.mail.internet.MimeMessage
 import cats.implicits._
 
 sealed trait InternalId {
@@ -19,14 +18,14 @@ object InternalId {
     def asString = s"uid:$n"
   }
 
-  def makeInternalId(msg: MimeMessage): InternalId =
+  def makeInternalId(msg: SafeMimeMessage): InternalId =
     msg.getFolder match {
-      case imf: IMAPFolder =>
+      case Some(imf: IMAPFolder) =>
         Util.withReadFolder(imf) { _ =>
-          InternalId.Uid(imf.getUID(msg))
+          InternalId.Uid(imf.getUID(msg.delegate))
         }
       case _ =>
-        InternalId.MessageId(msg.getMessageID)
+        InternalId.MessageId(msg.getMessageID.getOrElse(sys.error("No message id present")))
     }
 
   def readInternalId(str: String): Either[String, InternalId] =

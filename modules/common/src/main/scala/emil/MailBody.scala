@@ -16,8 +16,37 @@ sealed trait MailBody[F[_]] {
       both: MailBody.HtmlAndText[F] => A
   ): A
 
+  /** Return the html or the text content. If only text is available, it
+    * is applied to the given function that may convert it into html.
+    */
   def htmlContent(txtToHtml: String => String)(implicit ev: Applicative[F]): F[String] =
     fold(_ => "".pure[F], txt => txt.text.map(txtToHtml), html => html.html, both => both.html)
+
+  /** Return only the text part if present.
+    */
+  def textPart(implicit ev: Applicative[F]): F[Option[String]] =
+    fold(
+      _ => (None: Option[String]).pure[F],
+      txt => txt.text.map(_.some),
+      _ => (None: Option[String]).pure[F],
+      both => both.text.map(_.some)
+    )
+
+  /** Return only the html part if present.
+    */
+  def htmlPart(implicit ev: Applicative[F]): F[Option[String]] =
+    fold(
+      _ => (None: Option[String]).pure[F],
+      _ => (None: Option[String]).pure[F],
+      html => html.html.map(_.some),
+      both => both.html.map(_.some)
+    )
+
+  def isEmpty: Boolean =
+    fold(_ => true, _ => false, _ => false, _ => false)
+
+  def nonEmpty: Boolean =
+    !isEmpty
 }
 
 object MailBody {
