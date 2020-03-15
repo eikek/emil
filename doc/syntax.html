@@ -84,10 +84,10 @@ reading/writing e-mail.</p>
 <span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
 
 <span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span>
-<span class="c1">// mailStr: String = """Date: Sun, 15 Mar 2020 19:43:16 +0000 (GMT)
+<span class="c1">// mailStr: String = """Date: Sun, 15 Mar 2020 19:45:04 +0000 (GMT)
 // From: test@test.com
 // To: test@test.com
-// Message-ID: &lt;1162833093.0.1584301396791@kythira&gt;
+// Message-ID: &lt;1162833093.0.1584301504729@kythira&gt;
 // Subject: Hello
 // MIME-Version: 1.0
 // Content-Type: text/html; charset=utf-8
@@ -101,14 +101,14 @@ reading/writing e-mail.</p>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span>
 <span class="c1">// mail2: Mail[IO] = Mail(
 //   MailHeader(
-//     "messageId:&lt;1162833093.0.1584301396791@kythira&gt;",
-//     Some("&lt;1162833093.0.1584301396791@kythira&gt;"),
+//     "messageId:&lt;1162833093.0.1584301504729@kythira&gt;",
+//     Some("&lt;1162833093.0.1584301504729@kythira&gt;"),
 //     None,
 //     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),
 //     None,
 //     Some(MailAddress(None, "test@test.com")),
 //     None,
-//     Some(2020-03-15T19:43:16Z),
+//     Some(2020-03-15T19:45:04Z),
 //     "Hello",
 //     List(),
 //     Set()
