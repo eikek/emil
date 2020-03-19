@@ -101,6 +101,21 @@ package builder {
       Trans(mail => mail.mapMailHeader(_.withMessageID(id)))
   }
 
+  object UserAgent {
+    def apply[F[_]](value: String): Trans[F] =
+      CustomHeader[F]("User-Agent", value)
+
+    def emil[F[_]]: Trans[F] =
+      apply(s"Emil over JavaMail ${BuildInfo.version}")
+  }
+  object XMailer {
+    def apply[F[_]](value: String): Trans[F] =
+      CustomHeader[F]("X-Mailer", value)
+
+    def emil[F[_]]: Trans[F] =
+      apply(s"Emil over JavaMail ${BuildInfo.version}")
+  }
+
   case class Attach[F[_]](attach: Attachment[F]) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapAttachments(_.add(attach))

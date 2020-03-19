@@ -93,15 +93,26 @@ val testSettings = Seq(
 )
 
 val buildInfoSettings = Seq(
-  buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, gitHeadCommit, gitHeadCommitDate, gitUncommittedChanges, gitDescribedVersion),
+  buildInfoKeys := Seq[BuildInfoKey](
+    name,
+    version,
+    scalaVersion,
+    sbtVersion,
+    gitHeadCommit,
+    gitHeadCommitDate,
+    gitUncommittedChanges,
+    gitDescribedVersion
+  ),
   buildInfoOptions += BuildInfoOption.ToJson,
-  buildInfoOptions += BuildInfoOption.BuildTime
+  buildInfoOptions += BuildInfoOption.BuildTime,
+  buildInfoPackage := "emil"
 )
 
-
 lazy val common = project.in(file("modules/common")).
+  enablePlugins(BuildInfoPlugin).
   settings(sharedSettings).
   settings(testSettings).
+  settings(buildInfoSettings).
   settings(
     name := "emil-common",
     libraryDependencies ++=
