@@ -11,10 +11,8 @@ options:
     nested_options:
       - title: Creating Mails
         url: doc/building
-
       - title: Obtaining Mails
         url: doc/reading
-
       - title: Syntax Utilities
         url: doc/syntax
 
@@ -26,3 +24,5 @@ options:
         url: ext/tnef
       - title: Doobie Integration
         url: ext/doobie
+      - title: Markdown Bodies
+        url: ext/markdown

@@ -19,7 +19,7 @@ abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
       From(user1),
       To(user2),
       Subject("Hello!"),
-      CustomHeader(Header("User-Agent", "my-email-client")),
+      UserAgent("my-email-client"),
       TextBody("Hello!\n\nThis is a mail."),
       HtmlBody(htmlBody),
       Attach(Attachment.text[IO]("hello world!")).withFilename("test.txt")

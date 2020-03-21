@@ -43,7 +43,7 @@ With [sbt](https://scala-sbt.org), add the dependencies:
 
 Emil is provided for Scala 2.12 and 2.13.
 
-There are [extension modules](doc/extensions) that offer integration
+There are [extension modules](extensions) that offer integration
 with other libraries or additional features based on third-party
 libraries.
 

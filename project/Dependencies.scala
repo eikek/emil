@@ -3,6 +3,7 @@ import sbt._
 object Dependencies {
 
   val doobieVersion = "0.8.8"
+  val flexmarkVersion = "0.60.2"
   val fs2Version = "2.3.0"
   val greenmailVersion = "1.5.11"
   val h2Version = "1.4.200"
@@ -65,4 +66,12 @@ object Dependencies {
     "com.h2database" % "h2" % h2Version
   )
 
+  val flexmark = Seq(
+    "com.vladsch.flexmark" % "flexmark" % flexmarkVersion,
+    "com.vladsch.flexmark" % "flexmark-ext-tables" % flexmarkVersion,
+    "com.vladsch.flexmark" % "flexmark-ext-gfm-strikethrough" % flexmarkVersion
+  ).map(_.excludeAll(
+    ExclusionRule("junit"),
+    ExclusionRule("hamcrest-core")
+  ))
 }

@@ -96,7 +96,6 @@ object EmilDoobieTest extends SimpleTestSuite {
       Subject("Hello!"),
       MessageID("my-msg-id"),
       Date(date),
-      CustomHeader(Header("User-Agent", "my-email-client")),
       TextBody("Hello!\n\nThis is a mail."),
       HtmlBody("<h1>Hello!</h1>\n<p>This <b>is</b> a mail.</p>"),
       AttachStream[IO](Stream.emit("hello world!").through(fs2.text.utf8Encode))

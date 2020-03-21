@@ -157,8 +157,18 @@ lazy val doobie = project.in(file("modules/doobie")).
   ).
   dependsOn(common, javamail)
 
+lazy val markdown = project.in(file("modules/markdown")).
+  settings(sharedSettings).
+  settings(testSettings).
+  settings(
+    name := "emil-markdown",
+    libraryDependencies ++=
+      Dependencies.flexmark
+  ).
+  dependsOn(common)
+
 lazy val microsite = project.in(file("modules/microsite")).
-  enablePlugins(MicrositesPlugin).
+  enablePlugins(MicrositesPlugin, MdocPlugin).
   disablePlugins(ReleasePlugin).
   settings(sharedSettings).
   settings(noPublish).
@@ -188,7 +198,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     ),
     mdocIn := tutSourceDirectory.value
   ).
-  dependsOn(common % "compile->compile,test", javamail, tnef, doobie)
+  dependsOn(common % "compile->compile,test", javamail, tnef, doobie /*, markdown*/)
 
 lazy val readme = project
   .in(file("modules/readme"))
@@ -196,7 +206,7 @@ lazy val readme = project
   .settings(sharedSettings)
   .settings(noPublish)
   .settings(
-    name := "calev-readme",
+    name := "emil-readme",
     scalacOptions := Seq(),
     mdocVariables := Map(
       "VERSION" -> version.value
@@ -219,4 +229,4 @@ val root = project.in(file(".")).
   settings(
     name := "emil-root"
   ).
-  aggregate(common, javamail, tnef, doobie)
+  aggregate(common, javamail, tnef, doobie, markdown)
