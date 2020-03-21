@@ -2,6 +2,7 @@
 layout: docs
 position: 3
 title: Documentation
+permalink: doc
 ---
 
 # {{page.title}}

@@ -1,6 +1,7 @@
 ---
 layout: docs
 title: Syntax Utilities
+permalink: doc/syntax
 ---
 
 # {{ page.title }}

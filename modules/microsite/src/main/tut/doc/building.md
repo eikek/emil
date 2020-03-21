@@ -1,6 +1,7 @@
 ---
 layout: docs
 title: Creating Mails
+permalink: doc/building
 ---
 
 # {{ page.title }}

@@ -16,7 +16,9 @@ with a backend implementation that is based on the well known [Java
 Mail](https://github.com/eclipse-ee4j/mail) library. As such it is
 just another wrapper library, but also a bit different:
 
-- Both, accessing and sending mails is supported.
+- Extensible DSL for creating mails in code.
+- Conveniently send mails via SMTP.
+- Search mail boxes via IMAP.
 - The data structures model a simplified E-Mail structure. Instead of
   adhering to the recursive structure of a mime message, a mail here
   is flat, consisting of a header, a body (text, html or both) and a
@@ -40,6 +42,10 @@ With [sbt](https://scala-sbt.org), add the dependencies:
 ```
 
 Emil is provided for Scala 2.12 and 2.13.
+
+There are [extension modules](doc/extensions) that offer integration
+with other libraries or additional features based on third-party
+libraries.
 
 ## License
 

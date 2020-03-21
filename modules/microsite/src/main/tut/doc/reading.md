@@ -1,6 +1,7 @@
 ---
 layout: docs
 title: Obtaining Mails
+permalink: doc/reading
 ---
 
 # {{ page.title }}

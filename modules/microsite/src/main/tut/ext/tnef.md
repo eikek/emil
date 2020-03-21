@@ -1,14 +1,25 @@
 ---
 layout: docs
 title: Extract TNEF files
-permalink: doc/tnef
+permalink: ext/tnef
 ---
 
 # {{ page.title }}
 
 The module `emil-tnef` can be used to extract `winmail.dat`
 ([tnef](https://en.wikipedia.org/wiki/Transport_Neutral_Encapsulation_Format)
-files).
+files) that may occur as attachments.
+
+## Usage
+
+With sbt:
+
+```
+libraryDependencies += "com.github.eikek" %% "emil-tnef" % "@VERSION@"
+```
+
+
+## Description
 
 It happens that some clients add an attachment, often called
 `winmail.dat`, that contains the complete message, or some

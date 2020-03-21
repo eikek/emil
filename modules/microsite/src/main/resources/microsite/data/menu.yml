@@ -3,24 +3,24 @@ options:
     url: index.html
 
   - title: Examples
-    url: examples.html
+    url: examples
 
   - title: Documentation
-    url: doc.html
+    url: doc
 
     nested_options:
       - title: Creating Mails
-        url: doc/building.html
+        url: doc/building
 
       - title: Obtaining Mails
-        url: doc/reading.html
+        url: doc/reading
 
       - title: Syntax Utilities
-        url: doc/syntax.html
+        url: doc/syntax
 
   - title: Extension Modules
-    url: doc/extensions
+    url: extensions
 
     nested_options:
       - title: Extract TNEF
-        url: doc/tnef
+        url: ext/tnef

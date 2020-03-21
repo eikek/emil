@@ -3,6 +3,7 @@ layout: home
 position: 2
 section: home
 title: Examples
+permalink: examples
 ---
 
 # Examples
@@ -20,7 +21,7 @@ val blocker = Blocker.liftExecutionContext(scala.concurrent.ExecutionContext.glo
 ```
 
 
-## Sending Mails
+## Creating an e-mail
 
 Create a simple mail:
 
@@ -37,6 +38,9 @@ val mail: Mail[IO] = MailBuilder.build(
     withMimeType(MimeType.pdf)
 )
 ```
+
+
+## Sending Mails
 
 In order to do something with it, a connection to a server is
 necessary and a concrete emil:
