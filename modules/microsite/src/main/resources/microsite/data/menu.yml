@@ -9,6 +9,8 @@ options:
     url: doc
 
     nested_options:
+      - title: Concept
+        url: doc/concept
       - title: Creating Mails
         url: doc/building
       - title: Obtaining Mails
