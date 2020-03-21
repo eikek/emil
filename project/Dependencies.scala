@@ -8,6 +8,8 @@ object Dependencies {
   val log4sVersion = "1.8.2"
   val logbackVersion = "1.2.3"
   val miniTestVersion = "2.7.0"
+  val poiVersion = "4.1.2"
+
 
   val fs2 = Seq(
     "co.fs2" %% "fs2-core" % fs2Version
@@ -45,4 +47,13 @@ object Dependencies {
       "org.hamcrest" % "hamcrest-all"
     )
   )
+
+  val poi = Seq(
+    "org.apache.poi" % "poi" % poiVersion,
+  //  "org.apache.poi" % "poi-ooxml" % poiVersion,
+    "org.apache.poi" % "poi-scratchpad" % poiVersion,
+  ).map(_.excludeAll(
+    ExclusionRule("commons-logging")
+  ))
+
 }

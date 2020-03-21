@@ -136,6 +136,17 @@ lazy val javamail = project.in(file("modules/javamail")).
   ).
   dependsOn(common % "compile->compile;test->test")
 
+lazy val tnef = project.in(file("modules/tnef")).
+  settings(sharedSettings).
+  settings(testSettings).
+  settings(
+    name := "emil-tnef",
+    libraryDependencies ++=
+      Dependencies.poi
+  ).
+  dependsOn(common)
+
+
 
 lazy val microsite = project.in(file("modules/microsite")).
   enablePlugins(MicrositesPlugin).
@@ -168,7 +179,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     ),
     mdocIn := tutSourceDirectory.value
   ).
-  dependsOn(common % "compile->compile,test", javamail)
+  dependsOn(common % "compile->compile,test", javamail, tnef)
 
 lazy val readme = project
   .in(file("modules/readme"))
@@ -199,4 +210,4 @@ val root = project.in(file(".")).
   settings(
     name := "emil-root"
   ).
-  aggregate(common, javamail)
+  aggregate(common, javamail, tnef)

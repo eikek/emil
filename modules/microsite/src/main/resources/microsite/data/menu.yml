@@ -17,3 +17,10 @@ options:
 
       - title: Syntax Utilities
         url: doc/syntax.html
+
+  - title: Extension Modules
+    url: doc/extensions
+
+    nested_options:
+      - title: Extract TNEF
+        url: doc/tnef
