@@ -17,10 +17,21 @@ with a backend implementation that is based on the well known [Java
 Mail](https://github.com/eclipse-ee4j/mail) library. As such it is
 just another wrapper library, but also a bit different:
 
-- Simplified: a mail is a flat structure, consiting of headers, body
-  and a list of attachments.
-- Sending via SMTP or reading mails via IMAP is supported using same
-  abstractions.
+- Extensible DSL for creating mails in code.
+- Conveniently send mails via SMTP.
+- Search mail boxes via IMAP.
+- The data structures model a simplified E-Mail structure. Instead of
+  adhering to the recursive structure of a mime message, a mail here
+  is flat, consisting of a header, a body (text, html or both) and a
+  list of attachments.
+- The data structures and api are in a separate module, that doesn't
+  depend on a concrete implementation library, like Java Mail. An
+  implementation based on
+  [fs2-mail](https://github.com/Spinoco/fs2-mail) or even
+  [EWS](https://github.com/OfficeDev/ews-java-api) can be created
+  without affecting the user code of this library.
+
+Write your e-mail related code once and then decide how to execute.
 
 ## Examples
 
