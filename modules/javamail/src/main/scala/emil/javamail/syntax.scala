@@ -42,11 +42,28 @@ object syntax {
   implicit final class MimeTypeTypeOps(mt: MimeType.type) {
     def parse(str: String): Either[String, MimeType] =
       MimeTypeDecode.parse(str)
+
+    def parseUnsafe(str: String): MimeType =
+      parse(str).fold(sys.error, identity)
   }
 
   implicit final class MailAddressTypeOps(mat: MailAddress.type) {
     def parse(str: String): Either[String, MailAddress] =
       Either.catchNonFatal(mailAddressParse.convert(str)).leftMap(_.getMessage)
+
+    def parseUnsafe(str: String): MailAddress =
+      parse(str).fold(sys.error, identity)
+
+    /** Reads a comma-separated list of e-mail addresses.
+      */
+    def parseMultiple(str: String): Either[String, List[MailAddress]] =
+      str.split(',').toList.map(_.trim).traverse(parse)
+
+    /** Reads a comma-separated list of e-mail addresses, throwing
+      * exceptions if something fails.
+      */
+    def parseMultipleUnsafe(str: String): List[MailAddress] =
+      parseMultiple(str).fold(sys.error, identity)
   }
 
   implicit final class MailAddressOps(ma: MailAddress) {

@@ -24,6 +24,9 @@ final case class MailHeader(
 
   def withMessageID(id: String): MailHeader =
     copy(messageId = Some(id))
+
+  def withDate(date: Instant): MailHeader =
+    copy(originationDate = Some(date))
 }
 
 object MailHeader {

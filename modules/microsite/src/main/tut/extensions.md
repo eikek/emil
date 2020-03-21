@@ -19,3 +19,5 @@ libraryDependencies += "com.github.eikek" %% "emil-{name}" % "@VERSION@"
 
 - [TNEF Support](ext/tnef) Extract TNEF attachments (a.k.a.
   `winmail.dat`).
+- [Doobie](ext/doobie) Provides meta instances for some emil types for
+  Doobie.

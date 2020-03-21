@@ -2,8 +2,10 @@ import sbt._
 
 object Dependencies {
 
+  val doobieVersion = "0.8.8"
   val fs2Version = "2.3.0"
   val greenmailVersion = "1.5.11"
+  val h2Version = "1.4.200"
   val javaxMailVersion = "1.6.5"
   val log4sVersion = "1.8.2"
   val logbackVersion = "1.2.3"
@@ -55,5 +57,12 @@ object Dependencies {
   ).map(_.excludeAll(
     ExclusionRule("commons-logging")
   ))
+
+  val doobie = Seq(
+    "org.tpolecat" %% "doobie-core" % doobieVersion
+  )
+  val h2 = Seq(
+    "com.h2database" % "h2" % h2Version
+  )
 
 }

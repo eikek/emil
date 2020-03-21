@@ -15,6 +15,8 @@ package builder {
   import cats.data.NonEmptyList
   import cats.effect.{Blocker, ContextShift, Sync}
   import emil.MimeType
+  import java.time.Instant
+  import java.time.temporal.ChronoField
 
   trait Trans[F[_]] {
     def apply(mail: Mail[F]): Mail[F]
@@ -67,6 +69,11 @@ package builder {
   case class Subject[F[_]](text: String) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapMailHeader(_.withSubject(text))
+  }
+
+  case class Date[F[_]](date: Instant) extends Trans[F] {
+    def apply(mail: Mail[F]): Mail[F] =
+      mail.mapMailHeader(_.withDate(date.`with`(ChronoField.MILLI_OF_SECOND, 0)))
   }
 
   case class TextBody[F[_]](text: F[String]) extends Trans[F] {

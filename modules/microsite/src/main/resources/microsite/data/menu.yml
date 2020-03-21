@@ -24,3 +24,5 @@ options:
     nested_options:
       - title: Extract TNEF
         url: ext/tnef
+      - title: Doobie Integration
+        url: ext/doobie

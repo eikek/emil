@@ -146,7 +146,16 @@ lazy val tnef = project.in(file("modules/tnef")).
   ).
   dependsOn(common)
 
-
+lazy val doobie = project.in(file("modules/doobie")).
+  settings(sharedSettings).
+  settings(testSettings).
+  settings(
+    name := "emil-doobie",
+    libraryDependencies ++=
+      Dependencies.doobie ++
+      Dependencies.h2.map(_ % Test)
+  ).
+  dependsOn(common, javamail)
 
 lazy val microsite = project.in(file("modules/microsite")).
   enablePlugins(MicrositesPlugin).
@@ -179,7 +188,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     ),
     mdocIn := tutSourceDirectory.value
   ).
-  dependsOn(common % "compile->compile,test", javamail, tnef)
+  dependsOn(common % "compile->compile,test", javamail, tnef, doobie)
 
 lazy val readme = project
   .in(file("modules/readme"))
@@ -210,4 +219,4 @@ val root = project.in(file(".")).
   settings(
     name := "emil-root"
   ).
-  aggregate(common, javamail, tnef)
+  aggregate(common, javamail, tnef, doobie)
