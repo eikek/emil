@@ -26,7 +26,7 @@ your record classes.
 ```scala mdoc:silent
 import emil._
 
-case class Record(from: MailAddress, recipients: List[MailAddress], ssl: SSLType)
+case class Record(from: MailAddress, recipients: List[MailAddress], ssl: SSLType, mime: MimeType)
 ```
 
 In order to use these types in SQL, you need to import instances
@@ -43,12 +43,12 @@ val r = Record(
     MailAddress.unsafe(Some("Mr. Me"), "me@example.com"),
     MailAddress.unsafe(Some("Mr. You"), "you@example.com")
   ),
-  SSLType.StartTLS
+  SSLType.StartTLS,
+  MimeType.textHtml
 )
 
 val insertRecord = sql"""
   insert into mailaddress(sender, recipients, ssl)
-  values(${r.from}, ${r.recipients}, ${r.ssl})
+  values(${r.from}, ${r.recipients}, ${r.ssl}, ${r.mime})
 """.update.run
-
 ```

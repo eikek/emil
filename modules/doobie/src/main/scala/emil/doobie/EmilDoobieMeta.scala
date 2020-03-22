@@ -20,6 +20,15 @@ trait EmilDoobieMeta {
   implicit val sslTypeWrite: Write[SSLType] =
     Write[String].contramap(_.name)
 
+  implicit val mimeTypeMeta: Meta[MimeType] =
+    Meta[String].imap(parseOrThrow(MimeType.parse))(_.asString)
+
+  implicit val mimeTypeRead: Read[MimeType] =
+    Read[String].map(parseOrThrow(MimeType.parse))
+
+  implicit val mimeTypeWrite: Write[MimeType] =
+    Write[String].contramap(_.asString)
+
   implicit val mailAddressMeta: Meta[MailAddress] =
     Meta[String].imap(parseOrThrow(MailAddress.parse))(_.asUnicodeString)
 

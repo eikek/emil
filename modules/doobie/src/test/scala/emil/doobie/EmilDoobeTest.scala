@@ -27,13 +27,14 @@ object EmilDoobieTest extends SimpleTestSuite {
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
         sender VARCHAR(255) NOT NULL,
         recipients VARCHAR(255) NOT NULL,
-        ssl VARCHAR(255) NOT NULL
+        ssl VARCHAR(255) NOT NULL,
+        mime VARCHAR(255) NOT NULL
       )
       """
 
     val insertRecord = sql"""
-      insert into mailaddress(sender, recipients, ssl)
-      values(${r.from}, ${r.recipients}, ${r.ssl})
+      insert into mailaddress(sender, recipients, ssl, mime)
+      values(${r.from}, ${r.recipients}, ${r.ssl}, ${r.mime})
       """
 
     for {
@@ -43,7 +44,7 @@ object EmilDoobieTest extends SimpleTestSuite {
   }
 
   def loadRecord(id: Long): ConnectionIO[Record] =
-    sql"SELECT sender, recipients, ssl FROM mailaddress WHERE id = $id".query[Record].unique
+    sql"SELECT sender, recipients, ssl, mime FROM mailaddress WHERE id = $id".query[Record].unique
 
 
   def insertMail(mail: Mail[IO]) = {
@@ -76,7 +77,8 @@ object EmilDoobieTest extends SimpleTestSuite {
         MailAddress.unsafe(Some("Mr. Me"), "me@example.com"),
         MailAddress.unsafe(Some("Mr. You"), "you@example.com")
       ),
-      SSLType.StartTLS
+      SSLType.StartTLS,
+      MimeType.textHtml
     )
 
     val op = for {
