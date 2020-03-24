@@ -1,7 +1,7 @@
 package emil.javamail.conv
 
 import java.io.InputStream
-import java.nio.charset.{Charset, StandardCharsets}
+import java.nio.charset.Charset
 
 import cats.Applicative
 import cats.effect.Sync
@@ -15,8 +15,8 @@ import javax.mail.internet.{MimeMessage, MimeUtility}
 import javax.mail.{Header => _, _}
 import scodec.bits.ByteVector
 
-import scala.io.Source
 import emil.javamail.internal.EnumerationConverter._
+import java.io.ByteArrayOutputStream
 
 /** Read a recursive multipart message into our simplified structure:
   *
@@ -48,11 +48,12 @@ trait BodyDecode {
     Conv { msg =>
       Util.withReadFolder(msg) { _ =>
         msg.getContent match {
-          case str: String =>
+          case _: String =>
+            val cnt = BodyDecode.getTextContent(msg)
             val body =
               if (msg.isMimeType(MimeType.textHtml.asString))
-                Body(text = None, html = Option(str))
-              else Body(text = Option(str), html = None)
+                Body(text = None, html = Option(cnt))
+              else Body(text = Option(cnt), html = None)
 
             BodyAttach(body, Attachments.empty[F])
 
@@ -121,13 +122,13 @@ object BodyDecode {
     "win1250" -> "windows-1250",
     "win1252" -> "windows-1252"
   )
-  final case class Body(text: Option[String], html: Option[String]) {
+  final case class Body(text: Option[BodyContent], html: Option[BodyContent]) {
     def toMailBody[F[_]: Applicative]: MailBody[F] =
       (text, html) match {
         case (Some(txt), Some(h)) => MailBody.both(txt, h)
         case (Some(txt), None)    => MailBody.text(txt)
         case (None, Some(h))      => MailBody.html(h)
-        case (None, None)         => MailBody.text("")
+        case (None, None)         => MailBody.empty
       }
     def isEmpty: Boolean =
       text.isEmpty && html.isEmpty
@@ -154,7 +155,7 @@ object BodyDecode {
       }
     }
 
-  private def getTextContent(p: BodyPart): String = {
+  private def getTextContent(p: Part): BodyContent = {
     // Try to map some known incorrect names to correct ones
     // and then try to lookup this charset while falling back
     // to utf-8. `(String) part.getContent()` would throw an exception.
@@ -163,12 +164,12 @@ object BodyDecode {
       .get("charset")
       .map(cs => moreCharsets.getOrElse(cs.toLowerCase, cs))
       .flatMap(cs => Either.catchNonFatal(Charset.forName(cs)).toOption)
-      .getOrElse(StandardCharsets.UTF_8)
 
-    Using.resource(p.getInputStream)(in => Source.fromInputStream(in, charset.name()).mkString)
+    val bv = Using.resource(p.getInputStream)(loadBytes)
+    BodyContent(bv, charset)
   }
 
-  private def maySetTextBody(current: Option[String], mimetype: MimeType, part: BodyPart) =
+  private def maySetTextBody(current: Option[BodyContent], mimetype: MimeType, part: BodyPart) =
     current.isEmpty && part.isMimeType(mimetype.asString) &&
       Option(part.getDisposition).forall(s => s.equalsIgnoreCase(Part.INLINE))
 
@@ -193,5 +194,23 @@ object BodyDecode {
 
     val empty: Stream[F, Byte] = Stream.empty.covary[F]
     (len, bv.map(Stream.chunk).map(_.covary[F]).foldLeft(empty)(_ ++ _))
+  }
+
+  private def loadBytes(in: InputStream): ByteVector = {
+    val baos = new ByteArrayOutputStream()
+    val buffer = Array.ofDim[Byte](8 * 1024)
+
+    @scala.annotation.tailrec
+    def go(): Unit = {
+      val len = in.read(buffer)
+      if (len <= 0) ()
+      else {
+        baos.write(buffer, 0, len)
+        go()
+      }
+    }
+
+    go()
+    ByteVector.view(baos.toByteArray)
   }
 }

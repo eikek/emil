@@ -1,0 +1,73 @@
+Return-Path: <atxgp@bot.ce>
+Delivered-To: max.muster@example.com
+Received: from proxy01.example.com ([127.0.0.1])
+	by dovecot07.posteo.name (Dovecot) with LMTP id bzfeNx9fIF2z1gMACjXI6Q
+	for <max.muster@example.com>; Sat, 06 Jul 2019 10:43:35 +0200
+Received: from localhost ([127.0.0.1])
+	by proxy01.example.com (Dovecot) with LMTP id gFyfDhOGwFzNHwMAKZGY6Q
+	; Sat, 06 Jul 2019 10:43:35 +0200
+Return-Path: <robot@abc.example.de>
+Received: from mail.example.de ([95.169.160.234]) by mx-ha.gmx.net (mxgmx014
+ [212.227.15.9]) with ESMTPS (Nemesis) id 1MHXzH-1hfZWw1GrZ-00DXVo for
+ <atxgp@bot.ce>; Sat, 06 Jul 2019 10:34:07 +0200
+Received: from abc.example.de (abc.example.de [95.169.160.7])
+	by mail.example.de (Postfix) with ESMTPS id A39264127D;
+	Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+Received-SPF: pass (mail.example.de: domain of abc.example.de designates 95.169.160.7 as permitted sender) client-ip=95.169.160.7; envelope-from=robot@abc.example.de; helo=abc.example.de;
+Received: by abc.example.de (Postfix, from userid 504)
+	id 85062B00053; Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+From: "ABC Example AG" <robot@abc.example.de>
+To: atxgp@bot.ce
+Subject: Passwort-=?ISO-8859-1?Q?=C4nderung=20?=
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==_Example_AG_1562402046_ABC_=="
+Message-Id: <20190706083406.85062B00053@abc.example.de>
+Date: Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+Envelope-To: <atxgp@bot.ce>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+
+--==_Example_AG_1562402046_ABC_==
+Content-Type: text/html; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
+<head>
+  <meta name=3D"generator" content=3D"Example AG" />
+  <meta content=3D"text/html; charset=3D"ISO8859-15" http-equiv=3D"Content-=
+Type" />
+  <title></title>
+</head>
+<body style=3D"margin:0;padding:0;background-color:#c7c7c7">
+
+<h2 style=3D"color:#505050;display:block;font-family:Helvetica, Arial;font-=
+size:20px;font-style:normal;font-weight:bold;line-height:110%;letter-spacin=
+g:normal;margin:0;margin-bottom:9px;text-align:left">
+
+Passwort-=C4nderung </h2>
+
+
+<p>
+Sehr geehrte Damen und Herren,
+</p>
+
+<p>
+Sie haben am 06.07.2019 10:34:06 Ihr Zugangspasswort von der IP-Adresse=
+ 123.123.123.123 aus ge=E4ndert.<p>
+Sollten Sie das Passwort selbst ge=E4ndert haben, dann dient diese Mail zu =
+Ihrer Information
+und Best=E4tigung.
+</p>
+<p>Entsprechend der Passwortrichtlinie f=FCr Sicherheit in
+der Informationstechnik empfehlen wir Ihnen dringend, die Einstellung
+zur automatischen &Auml;nderung Ihres Passwortes auf 3 Monate/90 Tage zu
+setzen.<p>
+<p>
+Sollten Sie das Passwort <u>nicht</u> selbst ge=E4ndert haben, dann
+setzen Sie sich bitte umgehend mit uns in Verbindung!
+</p>
+
+</body>
+</html>

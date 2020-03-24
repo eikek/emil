@@ -6,10 +6,22 @@ import emil.builder._
 import emil.javamail.syntax._
 import minitest._
 import scala.concurrent.ExecutionContext
+import java.nio.charset.StandardCharsets
+import java.nio.charset.Charset
 
 object MailConvTest extends SimpleTestSuite {
   implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
   val blocker = Blocker.liftExecutionContext(ExecutionContext.global)
+
+  def toStringContent(body: MailBody[IO]): MailBody[IO] = {
+    def mkString(ios: IO[BodyContent]): BodyContent =
+      BodyContent(ios.unsafeRunSync.asString)
+
+    body.fold(identity,
+      txt => MailBody.text(mkString(txt.text)),
+      html => MailBody.html(mkString(html.html)),
+      both => MailBody.both(mkString(both.text), mkString(both.html)))
+  }
 
   test("write text mail") {
     val mail = MailBuilder.build[IO](
@@ -149,6 +161,8 @@ object MailConvTest extends SimpleTestSuite {
       .unsafeRunSync()
       .copy(additionalHeaders = Headers.empty)
       .mapMailHeader(_.copy(id = "").copy(originationDate = None).copy(messageId = None))
+      .mapBody(toStringContent)
+
     assertEquals(mail, mail2)
   }
 
@@ -166,6 +180,8 @@ object MailConvTest extends SimpleTestSuite {
       .unsafeRunSync()
       .copy(additionalHeaders = Headers.empty)
       .mapMailHeader(_.copy(id = "").copy(originationDate = None).copy(messageId = None))
+      .mapBody(toStringContent)
+
     assertEquals(mail, mail2)
   }
 
@@ -184,6 +200,8 @@ object MailConvTest extends SimpleTestSuite {
       .unsafeRunSync()
       .copy(additionalHeaders = Headers.empty)
       .mapMailHeader(_.copy(id = "").copy(originationDate = None).copy(messageId = None))
+      .mapBody(toStringContent)
+
     assertEquals(mail, mail2)
   }
 
@@ -211,5 +229,25 @@ object MailConvTest extends SimpleTestSuite {
     assert(mail.body.textPart.unsafeRunSync.isDefined)
     assert(mail.body.htmlPart.unsafeRunSync.isDefined)
     assertEquals(mail.header.received.size, 6)
+  }
+
+  test("read latin1 html mail") {
+    val url = getClass.getResource("/mails/latin1-html.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assert(mail.body.nonEmpty)
+    assert(mail.body.textPart.unsafeRunSync.isEmpty)
+    val htmlBody = mail.body.htmlPart.unsafeRunSync.get
+    assertEquals(htmlBody.charset.get, Charset.forName("ISO-8859-15"))
+    assert(htmlBody.asString.contains("Passwort-Änderung"))
+  }
+
+  test("read latin1 html mail2") {
+    val url = getClass.getResource("/mails/latin1-html2.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assert(mail.body.nonEmpty)
+    assert(mail.body.htmlPart.unsafeRunSync.isEmpty)
+    val textBody = mail.body.textPart.unsafeRunSync.get
+    assertEquals(textBody.charset.get, Charset.forName("ISO-8859-15"))
+    assert(textBody.asString.contains("Passwort-Änderung"))
   }
 }

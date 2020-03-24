@@ -1,0 +1,48 @@
+Return-Path: <braeline@example.com>
+Delivered-To: max.muster@example.de
+Received: from proxy01.example.de ([127.0.0.1])
+	by dovecot07.posteo.name (Dovecot) with LMTP id bzfeNx9fIF2z1gMACjXI6Q
+	for <max.muster@example.de>; Sat, 06 Jul 2019 10:43:35 +0200
+Received: from localhost ([127.0.0.1])
+	by proxy01.example.de (Dovecot) with LMTP id gFyfDhOGwFzNHwMAKZGY6Q
+	; Sat, 06 Jul 2019 10:43:35 +0200
+Return-Path: <robot@acme.keyweb.de>
+Received: from mail.keyweb.de ([95.169.160.234]) by mx-ha.gmx.net (mxgmx014
+ [212.227.15.9]) with ESMTPS (Nemesis) id 1MHXzH-1hfZWw1GrZ-00DXVo for
+ <braeline@example.com>; Sat, 06 Jul 2019 10:34:07 +0200
+Received: from acme.keyweb.de (acme.keyweb.de [95.169.160.7])
+	by mail.keyweb.de (Postfix) with ESMTPS id A39264127D;
+	Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+Received-SPF: pass (mail.keyweb.de: domain of acme.keyweb.de designates 95.169.160.7 as permitted sender) client-ip=95.169.160.7; envelope-from=robot@acme.keyweb.de; helo=acme.keyweb.de;
+Received: by acme.keyweb.de (Postfix, from userid 504)
+	id 85062B00053; Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+From: "ACME Acmeee AG" <robot@acme.keyweb.de>
+To: braeline@example.com
+Subject: Passwort-=?ISO-8859-1?Q?=C4nderung=20?=
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==_Acmeee_AG_1562402046_ACME_=="
+Message-Id: <20190706083406.85062B00053@acme.keyweb.de>
+Date: Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+Envelope-To: <braeline@example.com>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+
+--==_Acmeee_AG_1562402046_ACME_==
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: base64
+
+
+UGFzc3dvcnQtxG5kZXJ1bmcKClNlaHIgZ2VlaHJ0ZSBEYW1lbiB1bmQgSGVycmVuLAoKU2llIGhh
+YmVuIGFtIDA2LjA3LjIwMTkgMTA6MzQ6MDYgSWhyIEFDTS1adWdhbmdzcGFzc3dvcnQgdm9uIGRl
+ciBJUC1BZHJlc3NlPQogMTIzLjEyMy4xMjMuMTIzIGF1cyBnZeRuZGVydC4KClNvbGx0ZW4gU2ll
+IGRhcyBQYXNzd29ydCBzZWxic3QgZ2XkbmRlcnQgaGFiZW4sIGRhbm4gZGllbnQgZGllc2UgTWFp
+bCB6dSAKSWhyZXIgSW5mb3JtYXRpb24gdW5kIEJlc3TkdGlndW5nLgoKRW50c3ByZWNoZW5kIGRl
+ciBQYXNzd29ydHJpY2h0bGluaWUgZGVzIGb8ciBTaWNoZXJoZWl0IGluCgpTb2xsdGVuIFNpZSBk
+YXMgUGFzc3dvcnQgPHU+bmljaHQ8L3U+IHNlbGJzdCBnZeRuZGVydCBoYWJlbiwgZGFubgpzZXR6
+ZW4gU2llIHNpY2ggYml0dGUgdW1nZWhlbmQgbWl0IHVucyBpbiBWZXJiaW5kdW5nIQo=
+
+
+
+
+
+

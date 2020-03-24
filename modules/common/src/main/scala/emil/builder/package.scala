@@ -76,22 +76,26 @@ package builder {
       mail.mapMailHeader(_.withDate(date.`with`(ChronoField.MILLI_OF_SECOND, 0)))
   }
 
-  case class TextBody[F[_]](text: F[String]) extends Trans[F] {
+  case class TextBody[F[_]](text: F[BodyContent]) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapBody(_.withText(text))
   }
   object TextBody {
-    def apply[F[_]: Applicative](text: String): TextBody[F] =
+    def apply[F[_]: Applicative](text: BodyContent): TextBody[F] =
       TextBody(text.pure[F])
+    def apply[F[_]: Applicative](text: String): TextBody[F] =
+      apply(BodyContent(text))
   }
 
-  case class HtmlBody[F[_]](html: F[String]) extends Trans[F] {
+  case class HtmlBody[F[_]](html: F[BodyContent]) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapBody(_.withHtml(html))
   }
   object HtmlBody {
-    def apply[F[_]: Applicative](html: String): HtmlBody[F] =
+    def apply[F[_]: Applicative](html: BodyContent): HtmlBody[F] =
       HtmlBody(html.pure[F])
+    def apply[F[_]: Applicative](html: String): HtmlBody[F] =
+      HtmlBody(BodyContent(html))
   }
 
   case class CustomHeader[F[_]](header: Header) extends Trans[F] {

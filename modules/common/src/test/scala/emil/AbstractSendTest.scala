@@ -31,9 +31,12 @@ abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
     val mail2 = emil(imapConf(user2)).run(findFirstMail(emil.access)).unsafeRunSync()
     assertEquals(mail.header.subject, mail2.header.subject)
     assertEquals(mail.attachments.size, mail2.attachments.size)
-    assertEquals(mail.body.htmlContent(identity).unsafeRunSync(), htmlBody)
+    assertEquals(mail.body.htmlContent(identity).unsafeRunSync().asString, htmlBody)
     assert(mail2.body.fold(_ => false, _ => false, _ => false, _ => true))
-    assertEquals(mail2.body.htmlContent(identity).unsafeRunSync().replace("\r\n", "\n"), htmlBody)
+    assertEquals(
+      mail2.body.htmlContent(identity).unsafeRunSync().asString.replace("\r\n", "\n"),
+      htmlBody
+    )
     assertEquals(
       mail2.additionalHeaders.find("user-agent"),
       Some(Header("User-Agent", "my-email-client"))

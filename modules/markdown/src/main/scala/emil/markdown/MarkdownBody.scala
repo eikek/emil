@@ -11,8 +11,8 @@ case class MarkdownBody[F[_]: Applicative](md: F[String], cfg: MarkdownConfig = 
     extends Trans[F] {
 
   def apply(mail: Mail[F]): Mail[F] = {
-    val html = md.map(s => internal.Markdown.toHtml(s, cfg))
-    mail.mapBody(_ => MailBody.HtmlAndText(md, html))
+    val html = md.map(s => BodyContent(internal.Markdown.toHtml(s, cfg)))
+    mail.mapBody(_ => MailBody.HtmlAndText(md.map(BodyContent.apply), html))
   }
 
   def withConfig(config: MarkdownConfig): MarkdownBody[F] =

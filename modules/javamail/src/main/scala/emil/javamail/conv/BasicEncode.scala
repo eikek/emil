@@ -1,7 +1,6 @@
 package emil.javamail.conv
 
 import java.io.{ByteArrayInputStream, InputStream, OutputStream}
-import java.nio.charset.StandardCharsets
 import java.util.Date
 
 import cats.Monad
@@ -56,17 +55,19 @@ trait BasicEncode {
     }
 
   implicit def bodyEncode[F[_]: Monad]: Conv[MailBody[F], F[MimeBodyPart]] = {
-    def mkTextPart(str: String): MimeBodyPart = {
+    def mkTextPart(str: BodyContent): MimeBodyPart = {
       val part = new MimeBodyPart()
-      part.setText(str, StandardCharsets.UTF_8.name().toLowerCase(), "plain")
+      val cs = str.charsetOrUtf8.name
+      part.setText(str.asString, cs.toLowerCase(), "plain")
       part
     }
-    def mkHtmlPart(str: String): MimeBodyPart = {
+    def mkHtmlPart(str: BodyContent): MimeBodyPart = {
       val part = new MimeBodyPart()
-      part.setText(str, StandardCharsets.UTF_8.name().toLowerCase(), "html")
+      val cs = str.charsetOrUtf8.name
+      part.setText(str.asString, cs.toLowerCase(), "html")
       part
     }
-    def mkAlternative(txt: String, html: String): MimeBodyPart = {
+    def mkAlternative(txt: BodyContent, html: BodyContent): MimeBodyPart = {
       val p = new MimeMultipart("alternative")
       p.addBodyPart(mkTextPart(txt))
       p.addBodyPart(mkHtmlPart(html))
@@ -77,7 +78,7 @@ trait BasicEncode {
 
     Conv({
       case MailBody.Empty() =>
-        mkTextPart("").pure[F]
+        mkTextPart(BodyContent.empty).pure[F]
       case MailBody.Text(txt) =>
         txt.map(mkTextPart)
       case MailBody.Html(html) =>

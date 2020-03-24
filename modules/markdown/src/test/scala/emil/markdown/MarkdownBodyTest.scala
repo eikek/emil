@@ -16,7 +16,7 @@ object MarkdownBodyTest extends SimpleTestSuite {
       MarkdownBody(md)
     )
 
-    assertEquals(mail.body.textPart.unsafeRunSync, Some(md))
+    assertEquals(mail.body.textPart.unsafeRunSync.map(_.asString), Some(md))
 
     val expectedHtml = """<!DOCTYPE html>
         |<html>
@@ -33,7 +33,7 @@ object MarkdownBodyTest extends SimpleTestSuite {
         |</html>
         |""".stripMargin
 
-    assertEquals(mail.body.htmlPart.unsafeRunSync, Some(expectedHtml))
+    assertEquals(mail.body.htmlPart.unsafeRunSync.map(_.asString), Some(expectedHtml))
   }
 
 }
