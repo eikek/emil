@@ -69,7 +69,6 @@ lazy val publishSettings = Seq(
     //For non cross-build projects, use releaseStepCommand("publishSigned")
     releaseStepCommandAndRemaining("+publishSigned"),
     releaseStepCommand("sonatypeBundleRelease"),
-    releaseStepCommand("microsite/publishMicrosite"),
     setNextVersion,
     commitNextVersion,
     pushChanges
