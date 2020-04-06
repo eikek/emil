@@ -53,16 +53,16 @@ object BodyContent {
   def apply(bytes: ByteVector, charset: Option[Charset]): BodyContent =
     ByteContent(bytes, charset)
 
-
   final case class StringContent(asString: String) extends BodyContent {
-    lazy val bytes = ByteVector.view(asString.getBytes(UTF8))
+    lazy val bytes               = ByteVector.view(asString.getBytes(UTF8))
     val charset: Option[Charset] = Some(UTF8)
 
     def isEmpty: Boolean = asString.isEmpty
   }
 
-  final case class ByteContent(bytes: ByteVector, charset: Option[Charset]) extends BodyContent {
-    def asString = contentDecode.fold(throw _, identity)
+  final case class ByteContent(bytes: ByteVector, charset: Option[Charset])
+      extends BodyContent {
+    def asString         = contentDecode.fold(throw _, identity)
     def isEmpty: Boolean = bytes.isEmpty
   }
 }

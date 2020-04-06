@@ -57,7 +57,11 @@ object SearchMails {
               if (q == SearchQuery.All) f.getMessages
               else f.search(cq.convert(q))
             SearchResult(
-              messages.take(max).toVector.map(_.asInstanceOf[MimeMessage]).map(ch.convert),
+              messages
+                .take(max)
+                .toVector
+                .map(_.asInstanceOf[MimeMessage])
+                .map(ch.convert),
               messages.length
             )
           }

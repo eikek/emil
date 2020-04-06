@@ -26,13 +26,16 @@ object InternalId {
       case Some(imf: IMAPFolder) =>
         Util.withReadFolder(imf)(_ => InternalId.Uid(imf.getUID(msg.delegate)))
       case _ =>
-        InternalId.MessageId(msg.getMessageID.getOrElse(sys.error("No message id present")))
+        InternalId.MessageId(
+          msg.getMessageID.getOrElse(sys.error("No message id present"))
+        )
     }
 
   def readInternalId(str: String): Either[String, InternalId] =
     str.split(':').toList match {
       case p :: id :: Nil =>
-        if (p == "uid") Either.catchNonFatal(InternalId.Uid(id.toLong)).leftMap(_.getMessage)
+        if (p == "uid")
+          Either.catchNonFatal(InternalId.Uid(id.toLong)).leftMap(_.getMessage)
         else if (p == "messageId") Either.right(InternalId.MessageId(id))
         else Right(NoId)
       case _ =>

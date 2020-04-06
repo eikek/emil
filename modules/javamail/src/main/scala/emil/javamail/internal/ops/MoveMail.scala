@@ -12,7 +12,10 @@ import javax.mail.internet.MimeMessage
 object MoveMail {
   private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
+  def apply[F[_]: Sync](
+      mh: MailHeader,
+      target: MailFolder
+  ): MailOp[F, JavaMailConnection, Unit] =
     FindMail(mh).flatMap {
       case Some(msg) =>
         msg.getFolder match {
@@ -23,8 +26,12 @@ object MoveMail {
             lift(logger.debugF(s"Move '$mh' via Copy to '$target'")) *>
               MailOp.of(conn => moveViaCopy(f, msg, expectTargetFolder(conn, target)))
           case _ =>
-            lift(logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")) *>
-              MailOp.of(conn => expectTargetFolder(conn, target).appendMessages(Array(msg)))
+            lift(
+              logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")
+            ) *>
+              MailOp.of(conn =>
+                expectTargetFolder(conn, target).appendMessages(Array(msg))
+              )
         }
       case None =>
         MailOp.error("Mail to move not found.")
@@ -33,7 +40,10 @@ object MoveMail {
   private def lift[F[_]](fa: F[Unit]): MailOp[F, JavaMailConnection, Unit] =
     Kleisli.liftF(fa)
 
-  private[ops] def expectTargetFolder(conn: JavaMailConnection, target: MailFolder): Folder = {
+  private[ops] def expectTargetFolder(
+      conn: JavaMailConnection,
+      target: MailFolder
+  ): Folder = {
     val folder = conn.store.getFolder(target.id)
     if (folder == null || !folder.exists()) {
       logger.error(s"Target folder expected, but not found: $target")
@@ -50,7 +60,9 @@ object MoveMail {
       }
     } catch {
       case ex: MessagingException =>
-        logger.warn(s"Moving via imap protocol failed (${ex.getMessage}). Trying via copy.")
+        logger.warn(
+          s"Moving via imap protocol failed (${ex.getMessage}). Trying via copy."
+        )
         moveViaCopy(source, msg, target)
     }
 

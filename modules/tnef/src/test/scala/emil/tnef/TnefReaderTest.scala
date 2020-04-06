@@ -7,7 +7,7 @@ import scodec.bits.ByteVector
 import emil.builder._
 
 object TnefReaderTest extends SimpleTestSuite {
-  val blocker = Blocker.liftExecutionContext(ExecutionContext.global)
+  val blocker     = Blocker.liftExecutionContext(ExecutionContext.global)
   implicit val CS = IO.contextShift(ExecutionContext.global)
 
   val winmailDatUrl = getClass.getResource("/winmail.dat")
@@ -40,11 +40,17 @@ object TnefReaderTest extends SimpleTestSuite {
 
     assertEquals(data.size, 2)
     assertEquals(data.head._1, "ZAPPA_~2.JPG")
-    assertEquals(data.head._2, "bea844f30e0fcc20fad419a0d11032a6465da93c1da185a1196949955994409a")
+    assertEquals(
+      data.head._2,
+      "bea844f30e0fcc20fad419a0d11032a6465da93c1da185a1196949955994409a"
+    )
     assertEquals(data.head._3, 2937)
 
     assertEquals(data(1)._1, "bookmark.htm")
-    assertEquals(data(1)._2, "1e08d6e23c75ff80ac992eebc24c2943c7843b7dfee235966b37de5eb4362599")
+    assertEquals(
+      data(1)._2,
+      "1e08d6e23c75ff80ac992eebc24c2943c7843b7dfee235966b37de5eb4362599"
+    )
     assertEquals(data(1)._3, 85805)
   }
 

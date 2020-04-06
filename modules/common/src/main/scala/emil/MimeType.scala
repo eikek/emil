@@ -2,7 +2,11 @@ package emil
 
 import java.nio.charset.{Charset, StandardCharsets}
 
-final case class MimeType private (primary: String, sub: String, params: Map[String, String]) {
+final case class MimeType private (
+    primary: String,
+    sub: String,
+    params: Map[String, String]
+) {
 
   def withParam(name: String, value: String): MimeType =
     copy(params = params.updated(name, value))
@@ -27,9 +31,9 @@ final case class MimeType private (primary: String, sub: String, params: Map[Str
 object MimeType {
 
   val octetStream = application("octet-stream")
-  val textHtml = text("html").withUtf8Charset
-  val textPlain = text("plain").withUtf8Charset
-  val pdf = application("pdf")
+  val textHtml    = text("html").withUtf8Charset
+  val textPlain   = text("plain").withUtf8Charset
+  val pdf         = application("pdf")
 
   def apply(primary: String, sub: String): MimeType =
     MimeType(primary, sub, Map.empty)

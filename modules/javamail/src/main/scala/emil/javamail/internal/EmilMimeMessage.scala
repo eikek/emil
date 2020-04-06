@@ -35,7 +35,11 @@ object EmilMimeMessage {
       val messageIdEncode = midEncode
     }
 
-  def apply(session: Session, midEncode: MessageIdEncode, is: InputStream): EmilMimeMessage =
+  def apply(
+      session: Session,
+      midEncode: MessageIdEncode,
+      is: InputStream
+  ): EmilMimeMessage =
     new MimeMessage(session, is) with EmilMimeMessage {
       val messageIdEncode = midEncode
     }

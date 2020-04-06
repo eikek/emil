@@ -11,16 +11,18 @@ import java.nio.charset.Charset
 
 object MailConvTest extends SimpleTestSuite {
   implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
-  val blocker = Blocker.liftExecutionContext(ExecutionContext.global)
+  val blocker     = Blocker.liftExecutionContext(ExecutionContext.global)
 
   def toStringContent(body: MailBody[IO]): MailBody[IO] = {
     def mkString(ios: IO[BodyContent]): BodyContent =
       BodyContent(ios.unsafeRunSync.asString)
 
-    body.fold(identity,
+    body.fold(
+      identity,
       txt => MailBody.text(mkString(txt.text)),
       html => MailBody.html(mkString(html.html)),
-      both => MailBody.both(mkString(both.text), mkString(both.html)))
+      both => MailBody.both(mkString(both.text), mkString(both.html))
+    )
   }
 
   test("write text mail") {
@@ -142,7 +144,10 @@ object MailConvTest extends SimpleTestSuite {
                        |
                        |<p>This is html</p>
                        |--$partChars--
-                       |""".stripMargin.replace("\n", "\r\n").replace("{}", "\t").replace("[]", " ")
+                       |""".stripMargin
+      .replace("\n", "\r\n")
+      .replace("{}", "\t")
+      .replace("[]", " ")
 
     assertEquals(str, expected)
   }
@@ -206,7 +211,7 @@ object MailConvTest extends SimpleTestSuite {
   }
 
   test("read test mail 1") {
-    val url = getClass.getResource("/mails/test.eml")
+    val url  = getClass.getResource("/mails/test.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
     assertEquals(mail.header.received.size, 7)
     assertEquals(mail.attachments.size, 1)
@@ -214,7 +219,7 @@ object MailConvTest extends SimpleTestSuite {
   }
 
   test("read test mail 2") {
-    val url = getClass.getResource("/mails/test2.eml")
+    val url  = getClass.getResource("/mails/test2.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
     assertEquals(mail.header.received.size, 3)
     assertEquals(mail.attachments.size, 0)
@@ -222,7 +227,7 @@ object MailConvTest extends SimpleTestSuite {
   }
 
   test("read alternative mail") {
-    val url = getClass.getResource("/mails/alt.eml")
+    val url  = getClass.getResource("/mails/alt.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
     assertEquals(mail.attachments.size, 0)
     assert(mail.body.nonEmpty)
@@ -232,7 +237,7 @@ object MailConvTest extends SimpleTestSuite {
   }
 
   test("read latin1 html mail") {
-    val url = getClass.getResource("/mails/latin1-html.eml")
+    val url  = getClass.getResource("/mails/latin1-html.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
     assert(mail.body.nonEmpty)
     assert(mail.body.textPart.unsafeRunSync.isEmpty)
@@ -242,7 +247,7 @@ object MailConvTest extends SimpleTestSuite {
   }
 
   test("read latin1 html mail2") {
-    val url = getClass.getResource("/mails/latin1-html2.eml")
+    val url  = getClass.getResource("/mails/latin1-html2.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync.isEmpty)

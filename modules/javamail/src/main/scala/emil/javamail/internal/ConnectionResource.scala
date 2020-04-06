@@ -14,7 +14,10 @@ import java.security.NoSuchProviderException
 object ConnectionResource {
   private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](mc: MailConfig, settings: Settings): Resource[F, JavaMailConnection] =
+  def apply[F[_]: Sync](
+      mc: MailConfig,
+      settings: Settings
+  ): Resource[F, JavaMailConnection] =
     Resource.make(make(mc, settings))(conn =>
       Sync[F].delay {
         conn.mailStore.foreach(_.close())
@@ -62,8 +65,8 @@ object ConnectionResource {
   }
 
   private def createSession(mc: MailConfig, settings: Settings): Session = {
-    val host = mc.urlParts.host
-    val port = mc.urlParts.port
+    val host  = mc.urlParts.host
+    val port  = mc.urlParts.port
     val proto = mc.urlParts.protocol
 
     val props = new Properties()

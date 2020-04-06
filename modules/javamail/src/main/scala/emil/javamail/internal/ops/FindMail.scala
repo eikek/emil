@@ -10,7 +10,9 @@ import javax.mail.search.MessageIDTerm
 object FindMail {
   private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](mh: MailHeader): MailOp[F, JavaMailConnection, Option[MimeMessage]] =
+  def apply[F[_]: Sync](
+      mh: MailHeader
+  ): MailOp[F, JavaMailConnection, Option[MimeMessage]] =
     MailOp.of { conn =>
       val iid = InternalId.readInternalId(mh.id)
       logger.debug(s"About to find mail with internal id: $iid")

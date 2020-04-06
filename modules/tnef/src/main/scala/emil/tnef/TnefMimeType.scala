@@ -4,7 +4,7 @@ import emil._
 
 object TnefMimeType {
 
-  val applicationTnef = MimeType.application("ms-tnef")
+  val applicationTnef    = MimeType.application("ms-tnef")
   val applicationVndTnef = MimeType.application("vnd.ms-tnef")
 
   val all = Set(applicationTnef, applicationVndTnef)

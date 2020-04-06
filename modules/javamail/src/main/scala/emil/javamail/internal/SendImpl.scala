@@ -10,6 +10,8 @@ import emil.javamail.internal.BlockingSyntax._
 final class SendImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     extends Send[F, JavaMailConnection] {
 
-  def sendMails(mails: NonEmptyList[Mail[F]]): MailOp[F, JavaMailConnection, NonEmptyList[String]] =
+  def sendMails(
+      mails: NonEmptyList[Mail[F]]
+  ): MailOp[F, JavaMailConnection, NonEmptyList[String]] =
     SendMail(mails).blockOn(blocker)
 }

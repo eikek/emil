@@ -65,7 +65,8 @@ trait BasicDecode {
           subject = sm.getSubject.getOrElse(""),
           sm.getHeader("Received").flatMap(r => Received.parse(r).toOption),
           flags =
-            if (sm.getFlags.exists(_.contains(Flags.Flag.FLAGGED))) Set(Flag.Flagged) else Set.empty
+            if (sm.getFlags.exists(_.contains(Flags.Flag.FLAGGED))) Set(Flag.Flagged)
+            else Set.empty
         )
       }
     )

@@ -34,9 +34,10 @@ trait BodyDecode {
           .map(attachmentDecode[F].convert)
           .foldLeft(Attachments.empty[F])(_ ++ _)
       } else {
-        val mt = MimeTypeDecode.parse(bp.getContentType).toOption.getOrElse(MimeType.octetStream)
-        val data = bp.getDataHandler.getInputStream
-        val filename = Option(bp.getFileName)
+        val mt =
+          MimeTypeDecode.parse(bp.getContentType).toOption.getOrElse(MimeType.octetStream)
+        val data                = bp.getDataHandler.getInputStream
+        val filename            = Option(bp.getFileName)
         val (len, dataAsStream) = BodyDecode.loadInputStream(data)
         Attachments(Attachment(filename, mt, dataAsStream, len.pure[F]))
       }
@@ -64,7 +65,11 @@ trait BodyDecode {
               (0 until mp.getCount)
                 .map(mp.getBodyPart)
                 .foldLeft(BodyAttach.empty[F]) { (result, part) =>
-                  if (BodyDecode.maySetTextBody(result.body.text, MimeType.textPlain, part)) {
+                  if (BodyDecode.maySetTextBody(
+                        result.body.text,
+                        MimeType.textPlain,
+                        part
+                      )) {
                     result.copy(
                       body = result.body.copy(text = BodyDecode.getTextContent(part).some)
                     )
@@ -101,7 +106,10 @@ trait BodyDecode {
             .asScalaList
             .foldLeft(Headers.empty) { (hds, h) =>
               hds.add(
-                Header(MimeUtility.decodeText(h.getName), MimeUtility.decodeText(h.getValue))
+                Header(
+                  MimeUtility.decodeText(h.getName),
+                  MimeUtility.decodeText(h.getValue)
+                )
               )
             }
           val bodyAttach = cb.convert(msg)
@@ -159,7 +167,8 @@ object BodyDecode {
     // Try to map some known incorrect names to correct ones
     // and then try to lookup this charset while falling back
     // to utf-8. `(String) part.getContent()` would throw an exception.
-    val mt = MimeTypeDecode.parse(p.getContentType).toOption.getOrElse(MimeType.octetStream)
+    val mt =
+      MimeTypeDecode.parse(p.getContentType).toOption.getOrElse(MimeType.octetStream)
     val charset = mt.params
       .get("charset")
       .map(cs => moreCharsets.getOrElse(cs.toLowerCase, cs))
@@ -169,7 +178,11 @@ object BodyDecode {
     BodyContent(bv, charset)
   }
 
-  private def maySetTextBody(current: Option[BodyContent], mimetype: MimeType, part: BodyPart) =
+  private def maySetTextBody(
+      current: Option[BodyContent],
+      mimetype: MimeType,
+      part: BodyPart
+  ) =
     current.isEmpty && part.isMimeType(mimetype.asString) &&
       Option(part.getDisposition).forall(s => s.equalsIgnoreCase(Part.INLINE))
 
@@ -197,7 +210,7 @@ object BodyDecode {
   }
 
   private def loadBytes(in: InputStream): ByteVector = {
-    val baos = new ByteArrayOutputStream()
+    val baos   = new ByteArrayOutputStream()
     val buffer = Array.ofDim[Byte](8 * 1024)
 
     @scala.annotation.tailrec

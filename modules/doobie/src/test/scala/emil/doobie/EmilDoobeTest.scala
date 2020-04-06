@@ -38,14 +38,15 @@ object EmilDoobieTest extends SimpleTestSuite {
       """
 
     for {
-      _ <- createTable.update.run
+      _  <- createTable.update.run
       id <- insertRecord.update.withUniqueGeneratedKeys[Long]("id")
     } yield id
   }
 
   def loadRecord(id: Long): ConnectionIO[Record] =
-    sql"SELECT sender, recipients, ssl, mime FROM mailaddress WHERE id = $id".query[Record].unique
-
+    sql"SELECT sender, recipients, ssl, mime FROM mailaddress WHERE id = $id"
+      .query[Record]
+      .unique
 
   def insertMail(mail: Mail[IO]) = {
     val createTable = sql"""
@@ -61,7 +62,7 @@ object EmilDoobieTest extends SimpleTestSuite {
       """
 
     for {
-      _ <- createTable.update.run
+      _  <- createTable.update.run
       id <- insert.update.withUniqueGeneratedKeys[Long]("id")
     } yield id
   }
@@ -82,7 +83,7 @@ object EmilDoobieTest extends SimpleTestSuite {
     )
 
     val op = for {
-      id <- insertRecord(record)
+      id   <- insertRecord(record)
       load <- loadRecord(id)
     } yield load
 
@@ -106,7 +107,7 @@ object EmilDoobieTest extends SimpleTestSuite {
     )
 
     val op = for {
-      id <- insertMail(mail)
+      id   <- insertMail(mail)
       load <- loadMail(id)
     } yield load
 

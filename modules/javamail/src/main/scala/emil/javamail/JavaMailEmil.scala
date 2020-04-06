@@ -51,12 +51,17 @@ object JavaMailEmil {
       )
   }
 
-  def mailFromString[F[_]: Sync](str: String)(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
+  def mailFromString[F[_]: Sync](
+      str: String
+  )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
     Sync[F].delay {
       ThreadClassLoader {
         val session = Session.getInstance(new Properties())
         val msg =
-          new MimeMessage(session, new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8)))
+          new MimeMessage(
+            session,
+            new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))
+          )
         cm.convert(msg)
       }
     }

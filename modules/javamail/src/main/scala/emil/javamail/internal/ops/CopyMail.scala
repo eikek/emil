@@ -11,14 +11,19 @@ import javax.mail.internet.MimeMessage
 object CopyMail {
   private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
+  def apply[F[_]: Sync](
+      mh: MailHeader,
+      target: MailFolder
+  ): MailOp[F, JavaMailConnection, Unit] =
     FindMail(mh).flatMap {
       case Some(msg) =>
         msg.getFolder match {
           case f if f != null =>
             MailOp.of(conn => copy(f, msg, MoveMail.expectTargetFolder(conn, target)))
           case _ =>
-            lift(logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")) *>
+            lift(
+              logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")
+            ) *>
               MailOp.of(conn =>
                 MoveMail.expectTargetFolder(conn, target).appendMessages(Array(msg))
               )

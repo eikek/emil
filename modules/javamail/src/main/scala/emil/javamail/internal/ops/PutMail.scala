@@ -15,17 +15,25 @@ object PutMail {
   ): MailOp[F, JavaMailConnection, Unit] =
     for {
       folder <- mailOp(conn => MoveMail.expectTargetFolder(conn, target))
-      msg <- mailOpF(conn => cm.convert(conn.session, MessageIdEncode.GivenOrRandom, mail))
-      _ <- mailOpF(_ => logger.debugF(s"Append mail ${mail.header.id} to folder ${target.id}"))
+      msg <- mailOpF(conn =>
+        cm.convert(conn.session, MessageIdEncode.GivenOrRandom, mail)
+      )
+      _ <- mailOpF(_ =>
+        logger.debugF(s"Append mail ${mail.header.id} to folder ${target.id}")
+      )
       _ = appendMessage(msg, folder)
     } yield ()
 
   private def appendMessage(msg: MimeMessage, folder: Folder): Unit =
     folder.appendMessages(Array(msg))
 
-  private def mailOpF[F[_], A](f: JavaMailConnection => F[A]): MailOp[F, JavaMailConnection, A] =
+  private def mailOpF[F[_], A](
+      f: JavaMailConnection => F[A]
+  ): MailOp[F, JavaMailConnection, A] =
     MailOp(f)
 
-  private def mailOp[F[_]: Sync, A](f: JavaMailConnection => A): MailOp[F, JavaMailConnection, A] =
+  private def mailOp[F[_]: Sync, A](
+      f: JavaMailConnection => A
+  ): MailOp[F, JavaMailConnection, A] =
     MailOp.of[F, JavaMailConnection, A](f)
 }

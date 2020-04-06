@@ -13,12 +13,12 @@ import scala.concurrent.duration._
 
 class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
 
-  private[this] val logger = LoggerFactory.getLogger(getClass)
+  private[this] val logger           = LoggerFactory.getLogger(getClass)
   private val started: AtomicBoolean = new AtomicBoolean(false)
   private val greenMail = {
     val imap = new ServerSetup(imapPort, "localhost", ServerSetup.PROTOCOL_IMAP)
     val smtp = new ServerSetup(smtpPort, "localhost", ServerSetup.PROTOCOL_SMTP)
-    val gm = new GreenMail(Array(imap, smtp))
+    val gm   = new GreenMail(Array(imap, smtp))
     users.foreach { user =>
       gm.getManagers.getUserManager.createUser(user.address, user.address, user.address)
     }
@@ -27,22 +27,40 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
 
   def start(): Unit =
     if (started.compareAndSet(false, true)) {
-      logger.info("Starting local greenmail mail servers: imap:{} smtp:{}", imapPort, smtpPort)
+      logger.info(
+        "Starting local greenmail mail servers: imap:{} smtp:{}",
+        imapPort,
+        smtpPort
+      )
       greenMail.start()
     } else {
       logger.warn("GreenMail already started. Check your test code.")
     }
 
   def stop(): Unit = {
-    logger.info("Stopping local greenmail mail servers: imap:{} smtp:{}", imapPort, smtpPort)
+    logger.info(
+      "Stopping local greenmail mail servers: imap:{} smtp:{}",
+      imapPort,
+      smtpPort
+    )
     greenMail.stop()
   }
 
   def smtpConfig(user: MailAddress): MailConfig =
-    MailConfig(s"smtp://localhost:$smtpPort", user.address, user.address, SSLType.NoEncryption)
+    MailConfig(
+      s"smtp://localhost:$smtpPort",
+      user.address,
+      user.address,
+      SSLType.NoEncryption
+    )
 
   def imapConfig(user: MailAddress): MailConfig =
-    MailConfig(s"imap://localhost:$imapPort", user.address, user.address, SSLType.NoEncryption)
+    MailConfig(
+      s"imap://localhost:$imapPort",
+      user.address,
+      user.address,
+      SSLType.NoEncryption
+    )
 
   def waitForReceive(mails: Int, timeout: FiniteDuration = 10.seconds): Unit =
     assert(
@@ -68,7 +86,7 @@ object GreenmailServer {
       throw new IllegalStateException("Cannot obtain an unused port.");
     }
     val random = new SecureRandom();
-    val port = random.nextInt(20000) + 1024;
+    val port   = random.nextInt(20000) + 1024;
     try {
       val socket = new Socket(null: String, port)
       socket.close()

@@ -1,6 +1,10 @@
 package emil
 
-final case class Recipients(to: List[MailAddress], cc: List[MailAddress], bcc: List[MailAddress]) {
+final case class Recipients(
+    to: List[MailAddress],
+    cc: List[MailAddress],
+    bcc: List[MailAddress]
+) {
 
   def addTo(ma: MailAddress): Recipients =
     Recipients(ma :: to, cc, bcc)

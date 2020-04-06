@@ -97,7 +97,8 @@ object Received {
     def stringIn(chars: Set[Char]): P[String] =
       in => {
         val next = in.takeWhile(chars contains _)
-        if (next.isEmpty) Left(s"Expected chars in ${chars.toList.sorted.mkString}, but got: $in")
+        if (next.isEmpty)
+          Left(s"Expected chars in ${chars.toList.sorted.mkString}, but got: $in")
         else Right(in.substring(next.length) -> next)
       }
 

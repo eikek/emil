@@ -19,34 +19,34 @@ object SearchQuery {
   sealed trait Relation
   object Relation {
     case object Equal extends Relation
-    case object Lt extends Relation
-    case object Gt extends Relation
-    case object Le extends Relation
-    case object Ge extends Relation
+    case object Lt    extends Relation
+    case object Gt    extends Relation
+    case object Le    extends Relation
+    case object Ge    extends Relation
   }
 
   trait ContainsCompanion[A <: SearchQuery, B] {
     def make(value: B, relation: Relation): A
 
     def contains(value: B): A = make(value, Relation.Equal)
-    def =*=(value: B): A = contains(value)
+    def =*=(value: B): A      = contains(value)
 
     def notContains(value: B) = Not(contains(value))
-    def !==(value: B) = notContains(value)
+    def !==(value: B)         = notContains(value)
   }
 
   trait ComparisonCompanion[A <: SearchQuery, B] extends ContainsCompanion[A, B] {
     def greaterThan(value: B): A = make(value, Relation.Gt)
-    def >(value: B): A = greaterThan(value)
+    def >(value: B): A           = greaterThan(value)
 
     def lowerThan(value: B): A = make(value, Relation.Lt)
-    def <(value: B): A = lowerThan(value)
+    def <(value: B): A         = lowerThan(value)
 
     def greaterEqual(value: B): A = make(value, Relation.Ge)
-    def >=(value: B): A = greaterEqual(value)
+    def >=(value: B): A           = greaterEqual(value)
 
     def lowerEqual(value: B): A = make(value, Relation.Le)
-    def <=(value: B): A = lowerEqual(value)
+    def <=(value: B): A         = lowerEqual(value)
   }
 
   case object All extends SearchQuery

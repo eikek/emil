@@ -6,7 +6,7 @@ import java.time.Instant
 object ReceivedTest extends SimpleTestSuite {
 
   test("parse1") {
-    val rc1 = """from localhost.localdomain (unknown [IPv6:2000:333:151:2::333:ffff:fff])
+    val rc1       = """from localhost.localdomain (unknown [IPv6:2000:333:151:2::333:ffff:fff])
   by mx-out-01a.sjc2.discourse.cloud (Postfix) with ESMTP id aaaaaaaaaaE
   for <x.yz@posteo.de>; Fri, 13 Mar 2020 22:31:50 +0000 (UTC)"""
     val Right(rh) = Received.parse(rc1)
@@ -15,7 +15,7 @@ object ReceivedTest extends SimpleTestSuite {
   }
 
   test("parse2") {
-    val rc = """from proxy02.posteo.name ([127.0.0.1])
+    val rc        = """from proxy02.posteo.name ([127.0.0.1])
   by dovecot07.posteo.name (Dovecot) with LMTP id KdksBP5+bF7MgAIACjXI6Q
   for <eike.kettner@posteo.de>; Sat, 14 Mar 2020 08:00:14 +0100"""
     val Right(rh) = Received.parse(rc)
@@ -24,7 +24,7 @@ object ReceivedTest extends SimpleTestSuite {
   }
 
   test("parse3") {
-    val rc = """from proxy02.maite.de ([127.0.0.1])
+    val rc        = """from proxy02.maite.de ([127.0.0.1])
   by proxy02.maite.name (Dovecot) with LMTP id 83QSOxCBbF5WswMAGFAyLg
   ; Sat, 14 Mar 2020 08:55:58 +0100"""
     val Right(rh) = Received.parse(rc)

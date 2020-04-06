@@ -34,5 +34,17 @@ object MailHeader {
     List("Subject", "Message-Id", "From", "To", "Cc", "Bcc", "Reply-To", "Date")
 
   val empty: MailHeader =
-    MailHeader("", None, None, Recipients.empty, None, None, None, None, "", Nil, Set.empty)
+    MailHeader(
+      "",
+      None,
+      None,
+      Recipients.empty,
+      None,
+      None,
+      None,
+      None,
+      "",
+      Nil,
+      Set.empty
+    )
 }

@@ -42,8 +42,6 @@ object Markdown {
   def stringToHtml[F[_]: Sync](data: Stream[F, String], cfg: MarkdownConfig): F[String] =
     data.compile.foldMonoid.map(str => toHtml(str, cfg))
 
-
-
   private def wrapHtml(body: String, cfg: MarkdownConfig): String =
     s"""<!DOCTYPE html>
        |<html>

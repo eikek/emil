@@ -8,7 +8,10 @@ trait Access[F[_], C] {
 
   def createFolder(parent: Option[MailFolder], name: String): MailOp[F, C, MailFolder]
 
-  def findFolder(parent: Option[MailFolder], name: String): MailOp[F, C, Option[MailFolder]]
+  def findFolder(
+      parent: Option[MailFolder],
+      name: String
+  ): MailOp[F, C, Option[MailFolder]]
 
   def getOrCreateFolder(
       parent: Option[MailFolder],

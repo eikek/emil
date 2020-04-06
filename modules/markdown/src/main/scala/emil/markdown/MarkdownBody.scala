@@ -7,8 +7,14 @@ import fs2.Stream
 import emil._
 import emil.builder.Trans
 
-case class MarkdownBody[F[_]: Applicative](md: F[String], cfg: MarkdownConfig = MarkdownConfig.defaultConfig)
-    extends Trans[F] {
+/** A transformation function to use with `emil.builder' package that
+  * takes a plain text string and converts it into a html mail body
+  * using markdown.
+  */
+case class MarkdownBody[F[_]: Applicative](
+    md: F[String],
+    cfg: MarkdownConfig = MarkdownConfig.defaultConfig
+) extends Trans[F] {
 
   def apply(mail: Mail[F]): Mail[F] = {
     val html = md.map(s => BodyContent(internal.Markdown.toHtml(s, cfg)))
