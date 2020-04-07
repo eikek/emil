@@ -7,8 +7,7 @@ permalink: ext/jsoup
 # {{ page.title }}
 
 The module `emil-jsoup` can be used for easier dealing with html
-mails. It uses the famous [jsoup](https://jsoup.org) library to read
-the html.
+mails. It is based on the famous [jsoup](https://jsoup.org) library.
 
 ## Usage
 
@@ -21,14 +20,17 @@ libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "@VERSION@"
 
 ## Description
 
-This module provides a [custom
-transformation](../doc/building#custom-transformations) to the builder
-dsl to modify the html content in an e-mail.
+This module provides the following:
 
-- Clean the html from unwanted content using a custom whitelist of
+- A [custom transformation](../doc/building#custom-transformations) to
+  the builder dsl to modify the html content in an e-mail. This allows
+  to clean the html from unwanted content using a custom whitelist of
   allowed elements. For more information, please refer to the
   documentation of [jsoup](https://jsoup.org).
-- Create a informative html view of a mail body.
+- Create a unified html view of a mail body.
+
+
+For the examples, consider the following mail:
 
 ```scala mdoc
 import cats.effect._
@@ -73,9 +75,10 @@ Jsoup even fixes the invalid html tree.
 ### Html View
 
 The `HtmlBodyView` class can be used to create a unified view of an
-e-mail body. It creates HTML and converts a single text/plain part
-into html. For better results here, use the `emil-markdown` module.
+e-mail body. It produces HTML, converting a text-only body into html.
+For better results here, use the `emil-markdown` module.
 
+Example:
 
 ```scala mdoc
 val htmlView = HtmlBodyView(
@@ -86,14 +89,15 @@ val htmlView = HtmlBodyView(
 )
 ```
 
-If the `mailHeader` is given, the html contains a short header with
-the sender, receiver and subject. Then a function can be given to
-convert a text-only body into html. If it is omitted a very basic
-default conversion is used. At last, another function can be specified
-to further modify the html content. This would be a good place to
-clean the html from unwanted content.
+If the `mailHeader` is given (second argument), a short header with
+the sender, receiver and subject is included into the result. The
+third argument is a function to convert a text-only body into html. If
+it is omitted a very basic default conversion is used. Use the
+`emil-markdown` module for more sophisticated text-to-html conversion.
+At last, another function can be specified to further modify the html
+content. For example to clean the html from unwanted content.
 
-This is the outcome:
+The result of the example is:
 
 ```scala mdoc
 htmlView.map(_.asString).unsafeRunSync
