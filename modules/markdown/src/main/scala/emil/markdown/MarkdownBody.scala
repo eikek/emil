@@ -35,4 +35,7 @@ object MarkdownBody {
 
   def apply[F[_]: Applicative](md: String): MarkdownBody[F] =
     MarkdownBody(md.pure[F])
+
+  def makeHtml(cfg: MarkdownConfig)(text: String): String =
+    internal.Markdown.toHtml(text, cfg)
 }

@@ -166,6 +166,16 @@ lazy val markdown = project.in(file("modules/markdown")).
   ).
   dependsOn(common)
 
+lazy val jsoup = project.in(file("modules/jsoup")).
+  settings(sharedSettings).
+  settings(testSettings).
+  settings(
+    name := "emil-jsoup",
+    libraryDependencies ++=
+      Dependencies.jsoup
+  ).
+  dependsOn(common)
+
 lazy val microsite = project.in(file("modules/microsite")).
   enablePlugins(MicrositesPlugin, MdocPlugin).
   disablePlugins(ReleasePlugin).
@@ -197,7 +207,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     ),
     mdocIn := tutSourceDirectory.value
   ).
-  dependsOn(common % "compile->compile,test", javamail, tnef, doobie /*, markdown*/)
+  dependsOn(common % "compile->compile,test", javamail, tnef, doobie, jsoup /*, markdown*/)
 
 lazy val readme = project
   .in(file("modules/readme"))
@@ -228,4 +238,4 @@ val root = project.in(file(".")).
   settings(
     name := "emil-root"
   ).
-  aggregate(common, javamail, tnef, doobie, markdown)
+  aggregate(common, javamail, tnef, doobie, markdown, jsoup)

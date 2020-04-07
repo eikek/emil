@@ -23,3 +23,5 @@ libraryDependencies += "com.github.eikek" %% "emil-{name}" % "@VERSION@"
   Doobie.
 - [Markdown](ext/markdown) Use markdown for your mail bodies to create
   a text and html version.
+- [Jsoup](ext/jsoup) Use Jsoup library to better deal with html
+  e-mails.

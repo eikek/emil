@@ -8,6 +8,7 @@ object Dependencies {
   val greenmailVersion = "1.5.12"
   val h2Version = "1.4.200"
   val javaxMailVersion = "1.6.5"
+  val jsoupVersion = "1.13.1"
   val log4sVersion = "1.8.2"
   val logbackVersion = "1.2.3"
   val miniTestVersion = "2.8.2"
@@ -74,4 +75,8 @@ object Dependencies {
     ExclusionRule("junit"),
     ExclusionRule("hamcrest-core")
   ))
+
+  val jsoup = Seq(
+    "org.jsoup" % "jsoup" % jsoupVersion
+  )
 }

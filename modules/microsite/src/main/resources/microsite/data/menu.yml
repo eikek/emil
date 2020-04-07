@@ -28,3 +28,5 @@ options:
         url: ext/doobie
       - title: Markdown Bodies
         url: ext/markdown
+      - title: Jsoup
+        url: ext/jsoup
