@@ -1,0 +1,55 @@
+Return-Path: <braeline@example.com>
+Delivered-To: max.muster@example.de
+Received: from proxy01.example.de ([127.0.0.1])
+	by dovecot07.posteo.name (Dovecot) with LMTP id bzfeNx9fIF2z1gMACjXI6Q
+	for <max.muster@example.de>; Sat, 06 Jul 2019 10:43:35 +0200
+Received: from localhost ([127.0.0.1])
+	by proxy01.example.de (Dovecot) with LMTP id gFyfDhOGwFzNHwMAKZGY6Q
+	; Sat, 06 Jul 2019 10:43:35 +0200
+Return-Path: <robot@acme.schneefall.de>
+Received: from mail.schneefall.de ([88.111.123.234]) by mx-ha.gmx.net (mxgmx014
+ [212.227.15.9]) with ESMTPS (Nemesis) id 1MHXzH-1hfZWw1GrZ-00DXVo for
+ <braeline@example.com>; Sat, 06 Jul 2019 10:34:07 +0200
+Received: from acme.schneefall.de (acme.schneefall.de [88.111.123.7])
+	by mail.schneefall.de (Postfix) with ESMTPS id A39264127D;
+	Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+Received-SPF: pass (mail.schneefall.de: domain of acme.schneefall.de designates 88.111.123.7 as permitted sender) client-ip=88.111.123.7; envelope-from=robot@acme.schneefall.de; helo=acme.schneefall.de;
+Received: by acme.schneefall.de (Postfix, from userid 504)
+	id 85062B00053; Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+From: "ACME Acmeee AG" <robot@acme.schneefall.de>
+To: braeline@example.com
+Subject: Passwort-=?ISO-8859-1?Q?=C4nderung=20?=
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==_Acmeee_AG_1562402046_ACME_=="
+Message-Id: <20190706083406.85062B00053@acme.schneefall.de>
+Date: Sat,  6 Jul 2019 10:34:06 +0200 (CEST)
+Envelope-To: <braeline@example.com>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+
+--==_Acmeee_AG_1562402046_ACME_==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+
+Passwort-Änderung
+
+Sehr geehrte Damen und Herren,
+
+Sie haben am 06.07.2019 10:34:06 Ihr ACM-Zugangspasswort von der IP-Adresse=
+ 123.123.123.123 aus geändert.
+
+Sollten Sie das Passwort selbst geändert haben, dann dient diese Mail zu 
+Ihrer Information und Bestätigung.
+
+Entsprechend der Passwortrichtlinie des für Sicherheit in
+
+Sollten Sie das Passwort <u>nicht</u> selbst geändert haben, dann
+setzen Sie sich bitte umgehend mit uns in Verbindung!
+
+
+
+
+
+
+

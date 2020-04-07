@@ -255,4 +255,24 @@ object MailConvTest extends SimpleTestSuite {
     assertEquals(textBody.charset.get, Charset.forName("ISO-8859-15"))
     assert(textBody.asString.contains("Passwort-Änderung"))
   }
+
+  test("read latin1 mail without transfer encoding") {
+    val url  = getClass.getResource("/mails/latin1-8bit.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assert(mail.body.nonEmpty)
+    assert(mail.body.htmlPart.unsafeRunSync.nonEmpty)
+    val textBody = mail.body.htmlPart.unsafeRunSync.get
+    assertEquals(textBody.charset.get, Charset.forName("ISO-8859-1"))
+    assert(textBody.asString.contains("Freundliche Grüße aus Thüringen"))
+  }
+
+  test("read utf8 mail without transfer encoding") {
+    val url  = getClass.getResource("/mails/utf8-8bit.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assert(mail.body.nonEmpty)
+    assert(mail.body.htmlPart.unsafeRunSync.isEmpty)
+    val textBody = mail.body.textPart.unsafeRunSync.get
+    assertEquals(textBody.charset.get, Charset.forName("UTF-8"))
+    assert(textBody.asString.contains("Passwort-Änderung"))
+  }
 }

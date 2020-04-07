@@ -1,0 +1,80 @@
+Return-Path: <abcdefg@test.com>
+Delivered-To: max.muster@example.de
+Received: from proxy01.example.de ([127.0.0.1])
+	by dovecot07.posteo.name (Dovecot) with LMTP id 6GMQEF7aGV26LAAACjXI6Q
+	for <max.muster@example.de>; Mon, 01 Jul 2019 12:11:12 +0200
+Received: from localhost ([127.0.0.1])
+	by proxy01.example.de (Dovecot) with LMTP id E6nONX8AzVxR4AAAKZGY6Q
+	; Mon, 01 Jul 2019 12:11:12 +0200
+Return-Path: <40564a2b59a51e377a179fea7f1ba021e909ac51d97cb94f3230401bacc0ecd2@bounce.acme.aeidaa.de>
+Received: from mail.aeidaa.de ([95.169.160.234]) by mx-ha.gmx.net (mxgmx115
+ [212.227.17.5]) with ESMTPS (Nemesis) id 1MgfwK-1iBQZC09Uq-00h3Nn for
+ <abcdefg@test.com>; Mon, 01 Jul 2019 12:04:26 +0200
+Received: from acme.aeidaa.de (acme.aeidaa.de [95.169.160.7])
+	by mail.aeidaa.de (Postfix) with ESMTPS id B148D46127;
+	Mon,  1 Jul 2019 12:04:25 +0200 (CEST)
+Received-SPF: pass (mail.aeidaa.de: domain of bounce.acme.aeidaa.de designates 95.169.160.7 as permitted sender) client-ip=95.169.160.7; envelope-from=40564a2b59a51e377a179fea7f1ba021e909ac51d97cb94f3230401bacc0ecd2@bounce.acme.aeidaa.de; helo=acme.aeidaa.de;
+Received: by acme.aeidaa.de (Postfix, from userid 0)
+	id A14F9B00053; Mon,  1 Jul 2019 12:04:25 +0200 (CEST)
+From: ACME Acme AG <fk@aeidaa.de>
+Reply-To: fk@aeidaa.de
+To: abcdefg@test.com
+Subject: Ihre Rechnung Nr: 112233
+Bounces-to: 40564a2b59a51e377a179fea7f1ba021e909ac51d97cb94f3230401bacc0ecd2@bounce.acme.aeidaa.de
+Errors-to: 40564a2b59a51e377a179fea7f1ba021e909ac51d97cb94f3230401bacc0ecd2@bounce.acme.aeidaa.de
+X-Mailer: Acme AG PDF2Mail
+Content-Type: multipart/mixed; boundary="=_NextPart_882392"
+Mime-Version: 1.0
+Message-Id: <20190701100425.A14F9B00053@acme.aeidaa.de>
+Date: Mon,  1 Jul 2019 12:04:25 +0200 (CEST)
+Envelope-To: <abcdefg@test.com>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+
+
+This is a message in MIME format.
+
+--=_NextPart_882392
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="text/html; charset="ISO8859-15" http-equiv="Content-Type" />
+</head>
+<body>
+
+<p>
+Ihre neue Rechnung für Ihr Server-/Hostingprodukt wurde soeben erstellt.
+</p>
+Freundliche Grüße aus Thüringen ß
+
+</body></html>
+
+
+
+--=_NextPart_882392
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="text/html; charset="ISO8859-15" http-equiv="Content-Type" />
+</head>
+<body>
+
+<p>
+Ihre neue Rechnung für Ihr Server-/Hostingprodukt wurde soeben erstellt.
+</p>
+<p>
+
+Freundliche Grüße aus Thüringen ß
+
+</body></html>
+
+
+--=_NextPart_882392--

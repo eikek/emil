@@ -11,6 +11,7 @@ import emil.javamail.conv.{Conv, MessageIdEncode, MsgConv}
 import emil.javamail.internal._
 import javax.mail.Session
 import javax.mail.internet.MimeMessage
+import scodec.bits.ByteVector
 
 final class JavaMailEmil[F[_]: Sync: ContextShift](
     blocker: Blocker,
@@ -66,4 +67,21 @@ object JavaMailEmil {
       }
     }
 
+  def mailFromByteArray[F[_]: Sync](
+    bytes: Array[Byte]
+  )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
+    Sync[F].delay {
+      val session = Session.getInstance(new Properties())
+        val msg =
+          new MimeMessage(
+            session,
+            new ByteArrayInputStream(bytes)
+          )
+        cm.convert(msg)
+    }
+
+  def mailFromByteVector[F[_]: Sync](
+    bytes: ByteVector
+  )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
+    mailFromByteArray(bytes.toArray)
 }

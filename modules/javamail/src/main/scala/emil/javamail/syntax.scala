@@ -8,6 +8,7 @@ import emil.javamail.conv.codec._
 import fs2.Pipe
 import java.nio.file.Path
 import java.net.URL
+import scodec.bits.ByteVector
 
 object syntax {
 
@@ -19,6 +20,12 @@ object syntax {
   implicit final class MailTypeOps(mt: Mail.type) {
     def deserialize[F[_]: Sync](str: String): F[Mail[F]] =
       JavaMailEmil.mailFromString(str)
+
+    def deserializeByteArray[F[_]: Sync](ba: Array[Byte]): F[Mail[F]] =
+      JavaMailEmil.mailFromByteArray(ba)
+
+    def deserializeByteVector[F[_]: Sync](bv: ByteVector): F[Mail[F]] =
+      JavaMailEmil.mailFromByteVector(bv)
 
     def fromFile[F[_]: Sync: ContextShift](file: Path, blocker: Blocker): F[Mail[F]] =
       fs2.io.file
@@ -35,8 +42,9 @@ object syntax {
         .lastOrError
 
     def readBytes[F[_]: Sync]: Pipe[F, Byte, Mail[F]] =
-      _.through(fs2.text.utf8Decode).foldMonoid
-        .evalMap(deserialize[F])
+      _.chunks.map(_.toByteVector)
+        .fold(ByteVector.empty)(_ ++ _)
+        .evalMap(deserializeByteVector[F])
   }
 
   implicit final class MimeTypeTypeOps(mt: MimeType.type) {
