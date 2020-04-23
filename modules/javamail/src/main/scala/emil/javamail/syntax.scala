@@ -42,7 +42,8 @@ object syntax {
         .lastOrError
 
     def readBytes[F[_]: Sync]: Pipe[F, Byte, Mail[F]] =
-      _.chunks.map(_.toByteVector)
+      _.chunks
+        .map(_.toByteVector)
         .fold(ByteVector.empty)(_ ++ _)
         .evalMap(deserializeByteVector[F])
   }

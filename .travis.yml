@@ -14,4 +14,4 @@ cache:
     - $HOME/.coursier/cache
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION "test"
+  - sbt ++$TRAVIS_SCALA_VERSION ";scalafmtCheckAll ;test"
