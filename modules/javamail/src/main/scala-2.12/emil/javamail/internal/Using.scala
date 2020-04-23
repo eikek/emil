@@ -30,12 +30,17 @@ object Using {
       if (toThrow eq null) resource.close()
       else {
         try resource.close()
-        catch { case other: Throwable => toThrow = preferentiallySuppress(toThrow, other) } finally throw toThrow
+        catch {
+          case other: Throwable => toThrow = preferentiallySuppress(toThrow, other)
+        } finally throw toThrow
       }
     }
   }
 
-  private def preferentiallySuppress(primary: Throwable, secondary: Throwable): Throwable = {
+  private def preferentiallySuppress(
+      primary: Throwable,
+      secondary: Throwable
+  ): Throwable = {
     def score(t: Throwable): Int = t match {
       case _: VirtualMachineError                   => 4
       case _: LinkageError                          => 3
