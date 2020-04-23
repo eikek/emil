@@ -23,7 +23,7 @@ object MarkdownBodyTest extends SimpleTestSuite {
         |<head>
         |<meta charset="utf-8"/>
         |<style>
-        |body { padding: 2em 5em; }
+        |body { font-size: 10pt; font-family: sans-serif; }
         |</style>
         |</head>
         |<body>
