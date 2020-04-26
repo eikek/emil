@@ -4,7 +4,7 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import java.nio.charset.StandardCharsets
 import java.util.Properties
 
-import cats.effect.{Blocker, ContextShift, Resource, Sync}
+import cats.effect._
 import cats.implicits._
 import emil._
 import emil.javamail.conv.{Conv, MessageIdEncode, MsgConv}
@@ -13,10 +13,11 @@ import javax.mail.Session
 import javax.mail.internet.MimeMessage
 import scodec.bits.ByteVector
 
-final class JavaMailEmil[F[_]: Sync: ContextShift](
+final class JavaMailEmil[F[_]: Sync: ContextShift] private (
     blocker: Blocker,
     settings: Settings
 ) extends Emil[F] {
+  GlobalProperties.applySystemProperties[IO].unsafeRunSync()
 
   type C = JavaMailConnection
 
@@ -31,6 +32,7 @@ final class JavaMailEmil[F[_]: Sync: ContextShift](
 }
 
 object JavaMailEmil {
+  GlobalProperties.applySystemProperties[IO].unsafeRunSync()
 
   def apply[F[_]: Sync: ContextShift](
       blocker: Blocker,

@@ -275,4 +275,16 @@ object MailConvTest extends SimpleTestSuite {
     assertEquals(textBody.charset.get, Charset.forName("UTF-8"))
     assert(textBody.asString.contains("Passwort-Änderung"))
   }
+
+  test("read utf8 b64 encoded filename from attachment") {
+    val url  = getClass.getResource("/mails/filename_b64.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assertEquals(mail.attachments.size, 2)
+    assertEquals(mail.header.subject, "Öffnung der Therapiestelle der Stiftung")
+    assertEquals(
+      mail.attachments.all(0).filename,
+      Some("Einfache Sprache - Die Therapiestelle öffnet.pdf")
+    )
+    assertEquals(mail.attachments.all(1).filename, Some("Öffnung der Therapiestelle.pdf"))
+  }
 }

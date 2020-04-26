@@ -115,6 +115,7 @@ object ConnectionResource {
     props.put("mail.mime.multipart.ignoreexistingboundaryparameter", "true")
     props.put("mail.mime.multipart.ignoremissingboundaryparameter", "true")
 
+    // let users of this library override everything here
     settings.props(proto).foreach({ case (k, v) => props.put(k, v) })
 
     if (mc.user.nonEmpty) {
