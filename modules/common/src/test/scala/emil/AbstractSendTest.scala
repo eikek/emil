@@ -22,7 +22,7 @@ abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
       UserAgent("my-email-client"),
       TextBody("Hello!\n\nThis is a mail."),
       HtmlBody(htmlBody),
-      Attach(Attachment.text[IO]("hello world!")).withFilename("test.txt")
+      Attach(Attachment.textPlain[IO]("hello world!")).withFilename("test.txt")
     )
 
     emil(smtpConf(user1)).send(mail).unsafeRunSync()

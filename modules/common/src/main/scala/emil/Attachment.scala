@@ -40,13 +40,21 @@ object Attachment {
     Attachment(filename, mimeType, content, len)
   }
 
-  def text[F[_]: Applicative](text: String): Attachment[F] = {
-    val bytes = text.getBytes(StandardCharsets.UTF_8)
+  def text[F[_]: Applicative](cnt: String, mimeType: MimeType): Attachment[F] = {
+    val bytes = cnt.getBytes(StandardCharsets.UTF_8)
     Attachment(
       None,
-      MimeType.textPlain,
+      mimeType,
       Stream.chunk(ByteVectorChunk(ByteVector.view(bytes))),
       bytes.length.toLong.pure[F]
     )
   }
+  def textPlain[F[_]: Applicative](cnt: String): Attachment[F] =
+    text(cnt, MimeType.textPlain)
+
+  def textHtml[F[_]: Applicative](cnt: String): Attachment[F] =
+    text(cnt, MimeType.textHtml)
+
+  def content[F[_]: Applicative](cnt: BodyContent, mimeType: MimeType): Attachment[F] =
+    text(cnt.asString, mimeType)
 }

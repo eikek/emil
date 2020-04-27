@@ -287,4 +287,13 @@ object MailConvTest extends SimpleTestSuite {
     )
     assertEquals(mail.attachments.all(1).filename, Some("Öffnung der Therapiestelle.pdf"))
   }
+
+  test("read mail with mime tree") {
+    val url = getClass.getResource("/mails/bodytree.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assert(mail.body.nonEmpty)
+    assert(mail.body.htmlPart.unsafeRunSync.isDefined)
+    assert(mail.body.textPart.unsafeRunSync.isDefined)
+    assertEquals(mail.attachments.size, 3)
+  }
 }
