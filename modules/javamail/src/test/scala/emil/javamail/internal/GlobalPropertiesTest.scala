@@ -35,6 +35,5 @@ object GlobalPropertiesTest extends SimpleTestSuite {
       assert(System.getProperty(kv._1) != null)
       assert(System.getProperty(kv._1) != "")
     }
-    assert(names.nonEmpty)
   }
 }

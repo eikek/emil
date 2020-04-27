@@ -289,7 +289,7 @@ object MailConvTest extends SimpleTestSuite {
   }
 
   test("read mail with mime tree") {
-    val url = getClass.getResource("/mails/bodytree.eml")
+    val url  = getClass.getResource("/mails/bodytree.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync.isDefined)
