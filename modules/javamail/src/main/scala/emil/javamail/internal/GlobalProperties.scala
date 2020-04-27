@@ -1,4 +1,4 @@
-package emil.javamail
+package emil.javamail.internal
 
 import cats.effect._
 
@@ -29,6 +29,8 @@ case class GlobalProperties(props: Map[String, String]) {
         f(k, v)
     }
 
+  def map[A](f: (String, String) => A): List[A] =
+    props.toList.map(t => f(t._1, t._2))
 }
 
 object GlobalProperties {
@@ -61,28 +63,30 @@ object GlobalProperties {
 
   private val chooseSetName = "emil.javamail.globalproperties"
 
-  private[javamail] def applySystemProperties[F[_]: Sync]: F[Unit] =
+  private[javamail] def applySystemProperties[F[_]: Sync]: F[List[String]] =
     Sync[F].delay {
-
       val props = Option(System.getProperty(chooseSetName))
         .map(findSet)
         .getOrElse(lenient)
-
-      props.foreach(set)
+      setAll(props)
     }
 
-  private def findSet(name: String): GlobalProperties =
+  private[javamail] def findSet(name: String): GlobalProperties =
     name.toLowerCase match {
       case "empty"   => empty
       case "lenient" => lenient
       case _         => lenient
     }
 
-  private def set(name: String, value: String): Unit =
+  private[javamail] def setAll(props: GlobalProperties): List[String] =
+    props.map(set).flatten
+
+  private[javamail] def set(name: String, value: String): Option[String] =
     Option(System.getProperty(name)) match {
-      case Some(_) => ()
+      case Some(_) =>
+        None
       case None =>
         System.setProperty(name, value)
-        ()
+        Some(name)
     }
 }
