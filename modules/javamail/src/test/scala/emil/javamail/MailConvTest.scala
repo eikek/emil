@@ -296,4 +296,13 @@ object MailConvTest extends SimpleTestSuite {
     assert(mail.body.textPart.unsafeRunSync.isDefined)
     assertEquals(mail.attachments.size, 3)
   }
+
+  test("read mail with nested alternative body") {
+    val url  = getClass.getResource("/mails/nested-alternative.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    assert(mail.body.nonEmpty)
+    assert(mail.body.htmlPart.unsafeRunSync.isDefined)
+    assert(mail.body.textPart.unsafeRunSync.isDefined)
+    assertEquals(mail.attachments.size, 1)
+  }
 }

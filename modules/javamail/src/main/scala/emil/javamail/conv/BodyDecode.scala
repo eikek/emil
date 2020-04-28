@@ -179,7 +179,13 @@ object BodyDecode {
       } else if (maySetTextBody(result.body.html, MimeType.textHtml, part)) {
         result.modifyBody(body => body.copy(html = getTextContent(part).some))
       } else {
-        result.copy(attachments = result.attachments ++ ca.convert(part))
+        part.getContent() match {
+          case mp: Multipart =>
+            getAlternativeBody(result, mp)
+
+          case _ =>
+            result.copy(attachments = result.attachments ++ ca.convert(part))
+        }
       }
     }
 

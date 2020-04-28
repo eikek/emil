@@ -1,0 +1,77 @@
+From: test@test.ch
+To: test@test.com
+Subject: Test Nested Alternative
+Content-Type: multipart/mixed;
+  boundary="----Part_edlxhA2yM_D1qxvBuPPs_Rqh9nC"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 27 Apr 2020 17:47:58 +0200
+Message-ID: <aaaaaaaaaa.bbbbb.77777@test.com>
+
+This is a multi-part message in MIME format.
+
+------Part_edlxhA2yM_D1qxvBuPPs_Rqh9nC
+Content-Type: multipart/alternative;
+  boundary="----Part_iHNajlsXRnqN1aN1y2KmEyG0SATauyAd"
+
+
+------Part_iHNajlsXRnqN1aN1y2KmEyG0SATauyAd
+Content-Type: text/plain;
+  charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+VGVzdC4=
+
+------Part_iHNajlsXRnqN1aN1y2KmEyG0SATauyAd
+Content-Type: multipart/related;
+        boundary="----Part_h8rmb8S0XZRyf6hXsWpzXt7-LYH6YFzA"
+
+------Part_h8rmb8S0XZRyf6hXsWpzXt7-LYH6YFzA
+Content-Type: text/html;
+        charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+PHA+VGVzdC48L3A+
+
+
+------Part_h8rmb8S0XZRyf6hXsWpzXt7-LYH6YFzA
+Content-Type: image/png;
+ name="logo.png"
+Content-Transfer-Encoding: base64
+Content-ID: <logo.png@jizsx384i2>
+Content-Disposition: inline;
+ filename="logo.png"
+
+
+iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAAOTQAADk0BRtVoCQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAS2SURB
+VFiFtZhZTJxVFMd/d2aAYZGl2IFuNkVrE21jCLXV0tJoNWobt5rGGNRUfWgbF6AEIQYjxkpKMZSW
+9oHGpIkGH0wTWm3cH5TVJVRbkybaKjERLAPIUmFgYL7rw7lTx7LMxzCcl/t9957zP//v3rPcGQUk
+AHFAKhALJAGJ5jnNjIlmPtboxRm7G8xcCuAG4oFkM5ds3l8F6rAhCngXeGGG9VFgHBgE/MA/wIh5
+HjDjiJn3G71xY3cVeB74G3jSDhkM+/PAT8BqIN18cTRkL9A1V6NbkK96M0okgrIW0EDWXA13AQHg
+gSiSUUA/8GwkxnXGeGUUCX0MnIjEMAZoA9qRjIiGlAIXIzW+CegDDkWJTC5gAZ5IAXYg8fN4FMjE
+Iun/2HxAqpBaMudMmEa+AarnA+ACmoAfkIo7HzkAfDvDmgOp9KkqDMgy4BxwCqlBkbaKVUA2stNO
+g512nS9/kMxnBtBtjGMNWLBvzSbTtYph49QH9Jjx+lbhB4aAMbM+7DKA58z4v8UQYJ8htg/YhDRB
+DXQDFUCDsd8OvINUXp8hFACOAa+H+SjbchuS7l6kqT4BlAGdxulapBmOAh3ABkPyPUN4DFgXLTKt
+yDFsAy4gx9EJTCA15BngdyQmNiKd+i/gjNGdBB4N58Rhk0wW8tWLkV2qQ4LytRCcJCQm1iOBXGkI
+HLHpA1d4FUCCbwnwJxJ8+UhF3RGi0w8sRa4jV4C3gKeRLAqXtWBXCdgJvA9cBgqApwyZLmQXapAU
+P4scVQmyU0uQbIoDTiPxMzOZnHodEx8YSgqd9DlHxzv2LB0FyKnvTogPJMS1F6+8L+AbqgIykZgY
+BG5ELlCnjek65FjWI013AnC705Y/t7n0wtmvyhYNCeZUnwkjY35X/Ejfgzj0R6EL8TjrjRPco66t
+KP8nd1Veqmst8mQBNyMxdCtybG0hpj8D95rndMCzbt+pNSlr8hrH9MQJYA9A3Lj3Hiz1eajP0RjH
+yWsxo6Bfm/6h5AoKQGuR59Mth71foNibW9t7vLVw8S/Ab8CXs+w4QD8VeiA5tbcBuOqKVW8EF1xK
+X7JQZQAativIg5AA1jDYUuipmhbW6SzCCpxXSlcDj4QhcU02p/TuBrLRlH/9oudKcL7p5cxOpBGT
+W9ubDjoPbKZ28yvpF0GfRPNwbm3P/XZscuq7E1BUAF2+hMnDdmzs1hmsCV0ODCutqnd9qJ3h9N0+
+ZymwQqHLgskQNTJtJZleNIdQ3NHd3bt7Nt27a/qWKVSxhh+bBz0f2PVhmwxAQI/XoNUfCt7eeLQ/
+eSY9p8OqBBKdUEiFshaETPv+FT6lrHIgI8YKlEynk3fUm41U3samQk/TXPDnRAagucDToOT2V7zp
+WPeUnzSWpaqBAAFJ3QUlg1I6oHUB4FaTMQdCl3IP9+wEvU3B8Zbixb8uPBmgrSijHWhU6PwtNX0b
+AG6v0LFKqYPAwLjLf2B2hCiSAQhYlAId2mHlAyxK63kIGEapsu9fWt4fCabdK8QUad/vuQzcGXxv
+Lsg8g1ymIpZQMumba70HAVD6u5aCjMb5AM8meUe8qy1t/hNS1la0mkImFfldDJp6YMHITCq9yqGV
+8fXflepfcHhwyxnPfTUAAAAASUVORK5CYII=
+
+
+
+------Part_h8rmb8S0XZRyf6hXsWpzXt7-LYH6YFzA--
+
+------Part_iHNajlsXRnqN1aN1y2KmEyG0SATauyAd--
+
+------Part_edlxhA2yM_D1qxvBuPPs_Rqh9nC--
