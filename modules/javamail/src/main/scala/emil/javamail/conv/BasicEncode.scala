@@ -91,8 +91,8 @@ trait BasicEncode {
     })
   }
 
-  implicit def mailHeaderEncode(
-      implicit ca: Conv[MailAddress, InternetAddress],
+  implicit def mailHeaderEncode(implicit
+      ca: Conv[MailAddress, InternetAddress],
       cf: Conv[Flag, Flags.Flag]
   ): MsgConv[MailHeader, MimeMessage] =
     MsgConv { (session, midEncode, header) =>
@@ -125,8 +125,8 @@ trait BasicEncode {
       msg
     }
 
-  implicit def mailEncode[F[_]: Sync](
-      implicit ch: MsgConv[MailHeader, MimeMessage],
+  implicit def mailEncode[F[_]: Sync](implicit
+      ch: MsgConv[MailHeader, MimeMessage],
       cb: Conv[MailBody[F], F[MimeBodyPart]],
       ca: Conv[Attachment[F], F[MimeBodyPart]]
   ): MsgConv[Mail[F], F[MimeMessage]] = {

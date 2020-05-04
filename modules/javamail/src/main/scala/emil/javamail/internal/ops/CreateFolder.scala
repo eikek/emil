@@ -9,8 +9,8 @@ import javax.mail.Folder
 object CreateFolder {
   private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](parent: Option[MailFolder], name: String)(
-      implicit c: Conv[Folder, MailFolder]
+  def apply[F[_]: Sync](parent: Option[MailFolder], name: String)(implicit
+      c: Conv[Folder, MailFolder]
   ): MailOp[F, JavaMailConnection, MailFolder] =
     MailOp(conn =>
       Sync[F].delay {

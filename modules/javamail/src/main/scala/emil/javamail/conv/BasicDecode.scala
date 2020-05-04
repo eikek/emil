@@ -26,8 +26,8 @@ trait BasicDecode {
     Conv[String, InternetAddress](str => new InternetAddress(str))
       .map(a => MailAddress.unsafe(Option(a.getPersonal), a.getAddress))
 
-  implicit def recipientsDecode(
-      implicit ca: Conv[Address, MailAddress]
+  implicit def recipientsDecode(implicit
+      ca: Conv[Address, MailAddress]
   ): Conv[MimeMessage, Recipients] = {
     def recipients(msg: MimeMessage, t: Message.RecipientType): List[Address] =
       SafeMimeMessage(msg).getRecipients(t)
@@ -41,8 +41,8 @@ trait BasicDecode {
     )
   }
 
-  implicit def mailHeaderDecode(
-      implicit cf: Conv[Folder, MailFolder],
+  implicit def mailHeaderDecode(implicit
+      cf: Conv[Folder, MailFolder],
       ca: Conv[Address, MailAddress],
       cr: Conv[MimeMessage, Recipients],
       cs: Conv[String, MailAddress]
@@ -57,10 +57,9 @@ trait BasicDecode {
           recipients = cr.convert(msg),
           sender = sm.getSender.map(ca.convert),
           from = sm.getFrom.headOption.map(ca.convert),
-          replyTo = {
+          replyTo =
             // msg.getReplyTo method calls getFrom if there is no ReplyTo header
-            sm.getHeader("Reply-To", ",").map(cs.convert)
-          },
+            sm.getHeader("Reply-To", ",").map(cs.convert),
           originationDate = sm.getSentDate,
           subject = sm.getSubject.getOrElse(""),
           sm.getHeader("Received").flatMap(r => Received.parse(r).toOption),

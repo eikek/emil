@@ -10,11 +10,8 @@ object ThreadClassLoader {
     if (prev eq next) code
     else {
       Thread.currentThread().setContextClassLoader(next)
-      try {
-        code
-      } finally {
-        Thread.currentThread().setContextClassLoader(prev)
-      }
+      try code
+      finally Thread.currentThread().setContextClassLoader(prev)
     }
   }
 

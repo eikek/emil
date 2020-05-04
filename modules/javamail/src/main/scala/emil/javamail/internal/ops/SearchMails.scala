@@ -11,20 +11,20 @@ import javax.mail.search.SearchTerm
 object SearchMails {
   private[this] val logger = Logger(getClass)
 
-  def apply[F[_]: Sync](folder: MailFolder, q: SearchQuery, max: Int)(
-      implicit cq: Conv[SearchQuery, SearchTerm],
+  def apply[F[_]: Sync](folder: MailFolder, q: SearchQuery, max: Int)(implicit
+      cq: Conv[SearchQuery, SearchTerm],
       ch: Conv[MimeMessage, MailHeader]
   ): MailOp[F, JavaMailConnection, SearchResult[MailHeader]] =
     search[F, MailHeader](folder, q, max)
 
-  def load[F[_]: Sync](folder: MailFolder, q: SearchQuery, max: Int)(
-      implicit cq: Conv[SearchQuery, SearchTerm],
+  def load[F[_]: Sync](folder: MailFolder, q: SearchQuery, max: Int)(implicit
+      cq: Conv[SearchQuery, SearchTerm],
       ch: Conv[MimeMessage, Mail[F]]
   ): MailOp[F, JavaMailConnection, SearchResult[Mail[F]]] =
     search[F, Mail[F]](folder, q, max)
 
-  def delete[F[_]: Sync](folder: MailFolder, q: SearchQuery, max: Int)(
-      implicit cq: Conv[SearchQuery, SearchTerm]
+  def delete[F[_]: Sync](folder: MailFolder, q: SearchQuery, max: Int)(implicit
+      cq: Conv[SearchQuery, SearchTerm]
   ): MailOp[F, JavaMailConnection, DeleteResult] =
     MailOp(conn =>
       conn
@@ -43,8 +43,8 @@ object SearchMails {
         )
     )
 
-  def search[F[_]: Sync, B](folder: MailFolder, q: SearchQuery, max: Int)(
-      implicit cq: Conv[SearchQuery, SearchTerm],
+  def search[F[_]: Sync, B](folder: MailFolder, q: SearchQuery, max: Int)(implicit
+      cq: Conv[SearchQuery, SearchTerm],
       ch: Conv[MimeMessage, B]
   ): MailOp[F, JavaMailConnection, SearchResult[B]] =
     MailOp(conn =>

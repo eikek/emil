@@ -42,11 +42,10 @@ object TnefExtract {
     * file, otherwise return the input
     */
   def extractSingle[F[_]: ConcurrentEffect](a: Attachment[F]): Stream[F, Attachment[F]] =
-    if (TnefMimeType.matches(a.mimeType)) {
+    if (TnefMimeType.matches(a.mimeType))
       fromStream[F](a.content)
-    } else {
+    else
       Stream.emit(a)
-    }
 
   /** Go through the mail's attachments and replace each tnef attachment
     * with its inner attachments.

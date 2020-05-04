@@ -8,14 +8,13 @@ import scala.util.Using
 object Util {
 
   def withOpenFolder[A, B <: Folder](f: B, mode: Int)(code: B => A): A =
-    if (f.isOpen) {
+    if (f.isOpen)
       code(f)
-    } else {
+    else
       Using.resource(f) { _ =>
         f.open(mode)
         code(f)
       }
-    }
 
   def withReadFolder[A, B <: Folder](f: B)(code: B => A): A =
     withOpenFolder(f, Folder.READ_ONLY)(code)

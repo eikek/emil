@@ -116,8 +116,8 @@ object MailBody {
     def withHtml(html: F[BodyContent]): MailBody[F] =
       HtmlAndText(text, html)
 
-    def modify(ft: BodyContent => BodyContent, fh: BodyContent => BodyContent)(
-        implicit F: Applicative[F]
+    def modify(ft: BodyContent => BodyContent, fh: BodyContent => BodyContent)(implicit
+        F: Applicative[F]
     ): HtmlAndText[F] =
       HtmlAndText(text.map(ft), html.map(fh))
 

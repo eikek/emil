@@ -42,17 +42,18 @@ object JavaMailEmil {
 
   def mailToString[F[_]: Sync](
       mail: Mail[F]
-  )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[String] = ThreadClassLoader {
-    val session = Session.getInstance(new Properties())
-    cm.convert(session, MessageIdEncode.GivenOrRandom, mail)
-      .map(msg =>
-        ThreadClassLoader {
-          val out = new ByteArrayOutputStream()
-          msg.writeTo(out)
-          out.toString(StandardCharsets.UTF_8.name())
-        }
-      )
-  }
+  )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[String] =
+    ThreadClassLoader {
+      val session = Session.getInstance(new Properties())
+      cm.convert(session, MessageIdEncode.GivenOrRandom, mail)
+        .map(msg =>
+          ThreadClassLoader {
+            val out = new ByteArrayOutputStream()
+            msg.writeTo(out)
+            out.toString(StandardCharsets.UTF_8.name())
+          }
+        )
+    }
 
   def mailFromString[F[_]: Sync](
       str: String

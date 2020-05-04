@@ -27,15 +27,13 @@ final case class JavaMailConnection(
       .make(Sync[F].delay {
         val f      = store.getFolder(name)
         val doOpen = f != null && !f.isOpen
-        if (doOpen) {
+        if (doOpen)
           f.open(mode)
-        }
         (f, doOpen)
       })(t =>
         Sync[F].delay {
-          if (t._2 && t._1.isOpen) {
+          if (t._2 && t._1.isOpen)
             t._1.close(true)
-          }
         }
       )
       .map(_._1)

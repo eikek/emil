@@ -33,9 +33,8 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
         smtpPort
       )
       greenMail.start()
-    } else {
+    } else
       logger.warn("GreenMail already started. Check your test code.")
-    }
 
   def stop(): Unit = {
     logger.info(
@@ -82,9 +81,8 @@ object GreenmailServer {
     new GreenmailServer(randomPort(10), randomPort(10), users.toList)
 
   private def randomPort(tries: Int): Int = {
-    if (tries == 0) {
+    if (tries == 0)
       throw new IllegalStateException("Cannot obtain an unused port.");
-    }
     val random = new SecureRandom();
     val port   = random.nextInt(20000) + 1024;
     try {

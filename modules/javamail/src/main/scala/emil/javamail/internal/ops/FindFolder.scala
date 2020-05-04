@@ -8,8 +8,8 @@ import javax.mail.Folder
 
 object FindFolder {
 
-  def apply[F[_]: Sync](parent: Option[MailFolder], name: String)(
-      implicit c: Conv[Folder, MailFolder]
+  def apply[F[_]: Sync](parent: Option[MailFolder], name: String)(implicit
+      c: Conv[Folder, MailFolder]
   ): MailOp[F, JavaMailConnection, Option[MailFolder]] =
     MailOp(conn =>
       Sync[F].delay {

@@ -54,8 +54,11 @@ private[javamail] object SafeMimeMessage {
   def getOption[A](name: String, getter: => A): Option[A] =
     Either
       .catchNonFatal(getter)
-      .fold(_ => {
-        logger.debug(s"Error getting '$name' from mime-message. Ignoring this value.");
-        None
-      }, Option.apply)
+      .fold(
+        _ => {
+          logger.debug(s"Error getting '$name' from mime-message. Ignoring this value.");
+          None
+        },
+        Option.apply
+      )
 }

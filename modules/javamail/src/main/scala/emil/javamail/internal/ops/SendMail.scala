@@ -13,8 +13,8 @@ object SendMail {
 
   def apply[F[_]: Sync](
       mails: NonEmptyList[Mail[F]]
-  )(
-      implicit cm: MsgConv[Mail[F], F[MimeMessage]]
+  )(implicit
+      cm: MsgConv[Mail[F], F[MimeMessage]]
   ): MailOp[F, JavaMailConnection, NonEmptyList[String]] =
     MailOp(conn =>
       logger.debugF(s"Sending ${mails.size} mail(s) using ${conn.config}") *>

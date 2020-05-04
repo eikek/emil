@@ -42,25 +42,22 @@ object ConnectionResource {
     if (mc.user.nonEmpty) {
       logger.debug(s"Connect store with $mc")
       store.connect(mc.user, mc.password)
-    } else {
+    } else
       store.connect()
-    }
     store
   }
 
   private def createSmtpTransport(session: Session, mc: MailConfig): Transport = {
     val tp = session.getTransport(mc.urlParts.protocol)
-    if (tp == null) {
+    if (tp == null)
       throw new NoSuchProviderException(
         s"Transport cannot be created for protocol: ${mc.urlParts.protocol}"
       )
-    }
     if (mc.user.nonEmpty) {
       logger.debug(s"Connect transport with $mc")
       tp.connect(mc.user, mc.password)
-    } else {
+    } else
       tp.connect()
-    }
     tp
   }
 
@@ -71,16 +68,13 @@ object ConnectionResource {
 
     val props = new Properties()
 
-    if (proto.startsWith("smtp")) {
+    if (proto.startsWith("smtp"))
       props.put(s"mail.$proto.auth", "true");
-    }
 
-    if (mc.user.nonEmpty) {
+    if (mc.user.nonEmpty)
       props.put(s"mail.$proto.user", mc.user)
-    }
-    if (settings.debug) {
+    if (settings.debug)
       props.put("mail.debug", "true")
-    }
 
     props.put(s"mail.$proto.host", host)
     port.foreach(p => props.put(s"mail.$proto.port", Integer.toString(p)))
@@ -94,15 +88,13 @@ object ConnectionResource {
     mc.sslType match {
       case SSLType.SSL =>
         props.put(s"mail.$proto.ssl.enable", "true")
-        if (mc.disableCertificateCheck) {
+        if (mc.disableCertificateCheck)
           props.put(s"mail.$proto.ssl.trust", "*")
-        }
       case SSLType.StartTLS =>
         props.put(s"mail.$proto.starttls.enable", "true")
         props.put(s"mail.$proto.starttls.required", "true")
-        if (mc.disableCertificateCheck) {
+        if (mc.disableCertificateCheck)
           props.put(s"mail.$proto.ssl.trust", "*")
-        }
       case SSLType.NoEncryption =>
         props.remove(s"mail.$proto.ssl.enable")
         props.remove(s"mail.$proto.starttls.required")
@@ -120,10 +112,13 @@ object ConnectionResource {
 
     if (mc.user.nonEmpty) {
       logger.debug(s"Creating session with authenticator and props: $props")
-      Session.getInstance(props, new Authenticator() {
-        override def getPasswordAuthentication: PasswordAuthentication =
-          new PasswordAuthentication(mc.user, mc.password)
-      })
+      Session.getInstance(
+        props,
+        new Authenticator() {
+          override def getPasswordAuthentication: PasswordAuthentication =
+            new PasswordAuthentication(mc.user, mc.password)
+        }
+      )
     } else {
       logger.debug(s"Creating session without authenticator and props: $props")
       Session.getInstance(props)
