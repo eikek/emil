@@ -4,6 +4,7 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import java.nio.charset.StandardCharsets
 import java.util.Properties
 
+import fs2.{Chunk, Stream}
 import cats.effect._
 import cats.implicits._
 import emil._
@@ -43,6 +44,18 @@ object JavaMailEmil {
   def mailToString[F[_]: Sync](
       mail: Mail[F]
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[String] =
+    mailToByteArray[F](mail).map(b => new String(b, StandardCharsets.UTF_8))
+
+  def mailToByteVector[F[_]: Sync](
+      mail: Mail[F]
+  )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[ByteVector] =
+    mailToByteArray[F](mail).map(ByteVector.view)
+
+  /** Creates a new allocated byte array containing the give mail.
+    */
+  def mailToByteArray[F[_]: Sync](
+      mail: Mail[F]
+  )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[Array[Byte]] =
     ThreadClassLoader {
       val session = Session.getInstance(new Properties())
       cm.convert(session, MessageIdEncode.GivenOrRandom, mail)
@@ -50,25 +63,25 @@ object JavaMailEmil {
           ThreadClassLoader {
             val out = new ByteArrayOutputStream()
             msg.writeTo(out)
-            out.toString(StandardCharsets.UTF_8.name())
+            out.toByteArray
           }
         )
     }
 
+  def mailToByteStream[F[_]: Sync](
+      mail: Mail[F]
+  )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): Stream[F, Byte] =
+    Stream.eval(mailToByteArray[F](mail)).flatMap(bs => Stream.chunk(Chunk.bytes(bs)))
+
   def mailFromString[F[_]: Sync](
       str: String
   )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
-    Sync[F].delay {
-      ThreadClassLoader {
-        val session = Session.getInstance(new Properties())
-        val msg =
-          new MimeMessage(
-            session,
-            new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))
-          )
-        cm.convert(msg)
-      }
-    }
+    mailFromByteArray[F](str.getBytes(StandardCharsets.UTF_8))
+
+  def mailFromByteVector[F[_]: Sync](
+      bytes: ByteVector
+  )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
+    mailFromByteArray(bytes.toArray)
 
   def mailFromByteArray[F[_]: Sync](
       bytes: Array[Byte]
@@ -82,9 +95,4 @@ object JavaMailEmil {
         )
       cm.convert(msg)
     }
-
-  def mailFromByteVector[F[_]: Sync](
-      bytes: ByteVector
-  )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
-    mailFromByteArray(bytes.toArray)
 }

@@ -1,5 +1,6 @@
 package emil.javamail
 
+import fs2.Stream
 import cats.implicits._
 import cats.effect._
 import emil._
@@ -14,7 +15,13 @@ object syntax {
 
   implicit final class MailOps[F[_]: Sync](mail: Mail[F]) {
     def serialize: F[String] =
-      JavaMailEmil.mailToString[F](mail)
+      JavaMailEmil.mailToString(mail)
+
+    def toByteStream: Stream[F, Byte] =
+      JavaMailEmil.mailToByteStream(mail)
+
+    def toByteVector: F[ByteVector] =
+      JavaMailEmil.mailToByteVector(mail)
   }
 
   implicit final class MailTypeOps(mt: Mail.type) {
