@@ -73,7 +73,9 @@ package builder {
 
   case class Date[F[_]](date: Instant) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
-      mail.mapMailHeader(_.withDate(date.`with`(ChronoField.MILLI_OF_SECOND, 0)))
+      mail.mapMailHeader(
+        _.withOriginationDate(date.`with`(ChronoField.MILLI_OF_SECOND, 0))
+      )
   }
 
   case class TextBody[F[_]](text: F[BodyContent]) extends Trans[F] {
