@@ -74,7 +74,7 @@ object HtmlBodyView {
     s"""<div style="padding-bottom: 0.8em;">
      |<strong>From:</strong> <code>${mail(header.from)}</code><br>
      |<strong>To:</strong> <code>${mails(header.recipients.to)}</code><br>
-     |<strong>Subject:</strong> <code>${header.subject}</code>
+     |<strong>Subject:</strong> <code>${header.subject}</code><br>
      |<strong>Date:</strong> <code>${header.date.map(_.toString).getOrElse("")}</code>
      |</div>
      |""".stripMargin

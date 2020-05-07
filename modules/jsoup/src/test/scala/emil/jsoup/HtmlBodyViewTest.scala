@@ -35,6 +35,7 @@ object HtmlBodyViewTest extends SimpleTestSuite {
         |  <div style="padding-bottom: 0.8em;"> <strong>From:</strong> <code>Me Jones &lt;me@test.com&gt;</code>
         |   <br> <strong>To:</strong> <code>test@test.com</code>
         |   <br> <strong>Subject:</strong> <code>Hello!</code>
+        |   <br> <strong>Date:</strong> <code></code>
         |  </div>
         |  <h1>A header</h1>
         |  <p>Hello</p>
