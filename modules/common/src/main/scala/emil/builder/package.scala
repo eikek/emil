@@ -18,14 +18,6 @@ package builder {
   import java.time.Instant
   import java.time.temporal.ChronoField
 
-  trait Trans[F[_]] {
-    def apply(mail: Mail[F]): Mail[F]
-  }
-  object Trans {
-    def apply[F[_]](f: Mail[F] => Mail[F]): Trans[F] =
-      (m: Mail[F]) => f(m)
-  }
-
   case class From[F[_]](ma: MailAddress) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapMailHeader(_.copy(from = Some(ma)))
@@ -102,31 +94,50 @@ package builder {
 
   case class CustomHeader[F[_]](header: Header) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
-      mail.mapHeaders(_.add(header))
+      if (header.isEmpty) mail
+      else mail.mapHeaders(_.add(header))
+
+    /** By default, empty headers are ignored and not set into the mail.
+      * This allows to set headers to an empty value.
+      */
+    def allowEmpty: Trans[F] =
+      Trans(_.mapHeaders(_.add(header)))
   }
   object CustomHeader {
     def apply[F[_]](name: String, value: String, more: String*): CustomHeader[F] =
       CustomHeader[F](Header(name, NonEmptyList.of(value, more: _*)))
+
+    def apply[F[_]](name: String, value: Option[String]): Trans[F] =
+      value.map(v => apply[F](name, v)).getOrElse(Trans.id[F])
   }
 
-  object MessageID {
+  object MessageID extends CustomHeaderOption {
     def apply[F[_]](id: String): Trans[F] =
-      Trans(mail => mail.mapMailHeader(_.withMessageID(id)))
+      if (id.isEmpty) Trans.id[F]
+      else Trans(mail => mail.mapMailHeader(_.withMessageID(id)))
   }
 
-  object UserAgent {
+  object UserAgent extends CustomHeaderOption {
     def apply[F[_]](value: String): Trans[F] =
-      CustomHeader[F]("User-Agent", value)
+      CustomHeader[F](Header.userAgent(value))
 
     def emil[F[_]]: Trans[F] =
-      apply(s"Emil over JavaMail ${BuildInfo.version}")
+      apply(s"Emil/${BuildInfo.version}")
   }
-  object XMailer {
+  object XMailer extends CustomHeaderOption {
     def apply[F[_]](value: String): Trans[F] =
-      CustomHeader[F]("X-Mailer", value)
+      CustomHeader[F](Header.xmailer(value))
 
     def emil[F[_]]: Trans[F] =
-      apply(s"Emil over JavaMail ${BuildInfo.version}")
+      apply(s"Emil/${BuildInfo.version}")
+  }
+  object ListId extends CustomHeaderOption {
+    def apply[F[_]](value: String): Trans[F] =
+      CustomHeader[F](Header.listId(value))
+  }
+  object InReplyTo {
+    def apply[F[_]](value: String, more: String*): Trans[F] =
+      CustomHeader[F](Header.inReplyTo(value, more: _*))
   }
 
   case class Attach[F[_]](attach: Attachment[F]) extends Trans[F] {
@@ -257,5 +268,12 @@ package builder {
 
     def apply[F[_]](personal: String, address: String): A[F] =
       apply(MailAddress.unsafe(Some(personal), address))
+  }
+
+  trait CustomHeaderOption {
+    def apply[F[_]](value: String): Trans[F]
+
+    def apply[F[_]](value: Option[String]): Trans[F] =
+      value.map(apply[F]).getOrElse(Trans.id[F])
   }
 }

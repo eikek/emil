@@ -13,6 +13,12 @@ final case class Header(name: String, value: NonEmptyList[String]) {
 
   def noneOf(v: String, vm: String*): Boolean =
     (v +: vm).forall(s => !name.equalsIgnoreCase(s))
+
+  def isEmpty: Boolean =
+    value.forall(_.isEmpty)
+
+  def nonEmpty: Boolean =
+    !isEmpty
 }
 
 object Header {
@@ -22,4 +28,13 @@ object Header {
   // define some popular ones here
   def inReplyTo(value: String, more: String*): Header =
     Header("In-Reply-To", NonEmptyList.of(value, more: _*))
+
+  def userAgent(value: String): Header =
+    Header("User-Agent", value)
+
+  def xmailer(value: String): Header =
+    Header("X-Mailer", value)
+
+  def listId(value: String): Header =
+    Header("List-Id", value)
 }
