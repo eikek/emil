@@ -1,0 +1,40 @@
+To: xyz@test.com
+From: "Service" <service@test.com>
+Subject: Deine Bestellung wurde versandt - Rechnung & Sendungsverfolgung
+Content-Type: multipart/mixed;
+  boundary="200511130754SA.16988.Attachments"
+Message-Id: <200511130754SB.16988@mssysweb15>
+MIME-Version: 1.0
+Date: Mon, 11 May 2020 13:07:54 +0200
+
+--200511130754SA.16988.Attachments
+Content-Type: text/html;
+  charset="ISO-8859-15"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
+<body style="padding:0px; margin:0px;" bgcolor="#ffffff">
+
+<div>Deine Bestellung wird in K&uuml;rze bei dir eintreffen. Verfolge dein Paket
+jetzt online &#124; Dein Onlineshop f&uuml;r alles &#124; Entdecke unsere
+Top-Marken A, B, V, E</div>
+</body>
+</html>
+
+--200511130754SA.16988.Attachments
+Content-Type: application/pdf;
+  name="xyz.pdf"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+  Filename="xyz.pdf"
+
+VGhpcyBpcyBub3QgYSBwZGYsIGp1c3QgYSB0ZXN0Lg==
+--200511130754SA.16988.Attachments--
+

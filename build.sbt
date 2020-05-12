@@ -174,7 +174,7 @@ lazy val jsoup = project.in(file("modules/jsoup")).
     libraryDependencies ++=
       Dependencies.jsoup
   ).
-  dependsOn(common)
+  dependsOn(common, javamail % "test->compile;test->test")
 
 lazy val microsite = project.in(file("modules/microsite")).
   enablePlugins(MicrositesPlugin, MdocPlugin).

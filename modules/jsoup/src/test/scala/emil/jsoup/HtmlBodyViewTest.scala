@@ -4,9 +4,13 @@ import minitest._
 import cats.effect._
 import emil._
 import emil.builder._
+import emil.javamail.syntax._
 import org.jsoup._
+import scala.concurrent.ExecutionContext
 
 object HtmlBodyViewTest extends SimpleTestSuite {
+  implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
+  val blocker     = Blocker.liftExecutionContext(ExecutionContext.global)
 
   test("create view") {
     val htmlMail = """<h1>A header</h2><p script="alert('hi!');">Hello</p><p>World<p>"""
@@ -26,24 +30,38 @@ object HtmlBodyViewTest extends SimpleTestSuite {
     )
     val str =
       htmlView.map(_.asString).unsafeRunSync
-    val expect =
-      """<html>
-        | <head>
-        |  <meta charset="UTF-8">
-        | </head>
-        | <body>
-        |  <div style="padding-bottom: 0.8em;"> <strong>From:</strong> <code>Me Jones &lt;me@test.com&gt;</code>
-        |   <br> <strong>To:</strong> <code>test@test.com</code>
-        |   <br> <strong>Subject:</strong> <code>Hello!</code>
-        |   <br> <strong>Date:</strong> <code></code>
-        |  </div>
-        |  <h1>A header</h1>
-        |  <p>Hello</p>
-        |  <p>World</p>
-        |  <p></p>
-        | </body>
-        |</html>""".stripMargin
-    assertEquals(Jsoup.parse(str).outerHtml, Jsoup.parse(expect).outerHtml)
+    assert(!str.contains("alert"))
+    assert(
+      str.contains("<strong>From:</strong> <code>Me Jones &lt;me@test.com&gt;</code><br>")
+    )
+    assert(str.contains("<strong>To:</strong> <code>test@test.com</code><br>"))
+    assert(str.contains("<strong>Subject:</strong> <code>Hello!</code><br>"))
+    assert(str.contains("<strong>Date:</strong> <code></code>"))
   }
 
+  test("create from iso transferred utf8 html") {
+    val url  = getClass.getResource("/mails/html-utf8-as-iso.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    val htmlView = HtmlBodyView(
+      mail.body,
+      Some(mail.header),
+      None,
+      Some(BodyClean.whitelistClean(EmailWhitelist.default))
+    )
+
+    val str = htmlView.unsafeRunSync.asString
+    assert(str.contains("in K&uuml;rze"))
+    assert(
+      str.contains(
+        "<strong>From:</strong> <code>Service &lt;service@test.com&gt;</code><br>"
+      )
+    )
+    assert(str.contains("<strong>To:</strong> <code>xyz@test.com</code><br>"))
+    assert(
+      str.contains(
+        "<strong>Subject:</strong> <code>Deine Bestellung wurde versandt - Rechnung &amp; Sendungsverfolgung</code><br>"
+      )
+    )
+    assert(str.contains("<strong>Date:</strong> <code>2020-05-11T11:07:54Z</code>"))
+  }
 }

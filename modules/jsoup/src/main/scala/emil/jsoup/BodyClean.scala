@@ -49,6 +49,12 @@ object BodyClean {
   )(html: BodyContent): BodyContent = {
     def changeDoc(doc: Document): Document = {
       doc.charset(html.charsetOrUtf8)
+      doc.outputSettings(
+        new Document.OutputSettings()
+          .escapeMode(Entities.EscapeMode.extended)
+          .charset("ASCII")
+          .prettyPrint(false)
+      )
       change(doc)
     }
 
