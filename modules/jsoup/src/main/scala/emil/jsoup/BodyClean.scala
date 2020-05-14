@@ -9,6 +9,7 @@ import org.jsoup.safety._
 import org.jsoup.nodes._
 import scodec.bits.ByteVector
 import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
 
 /** Modifies/cleans html bodies.
   */
@@ -21,8 +22,20 @@ case class BodyClean[F[_]: Applicative](change: Document => Document) extends Tr
 
 object BodyClean {
 
+  /** Default `change' function for the BodyClean constructor.
+    */
+  def whitelistClean(whitelist: Whitelist): Document => Document =
+    doc => {
+      val cleaner = new Cleaner(whitelist)
+      val body    = cleaner.clean(doc).body
+      doc.body.replaceWith(body)
+      doc
+    }
+
   def apply[F[_]: Applicative](whitelist: Whitelist): Trans[F] =
-    BodyClean[F](whitelistClean(whitelist) _)
+    BodyClean[F](whitelistClean(whitelist))
+
+  def default[F[_]: Applicative] = apply[F](EmailWhitelist.default)
 
   def cleanBody[F[_]: Applicative](whitelist: Whitelist)(body: MailBody[F]): MailBody[F] =
     modifyBody(whitelistClean(whitelist))(body)
@@ -47,16 +60,8 @@ object BodyClean {
   def modifyContent(
       change: Document => Document
   )(html: BodyContent): BodyContent = {
-    def changeDoc(doc: Document): Document = {
-      doc.charset(html.charsetOrUtf8)
-      doc.outputSettings(
-        new Document.OutputSettings()
-          .escapeMode(Entities.EscapeMode.extended)
-          .charset("ASCII")
-          .prettyPrint(false)
-      )
-      change(doc)
-    }
+    def changeDoc: Document => Document =
+      fixCharset(html.charsetOrUtf8).andThen(change)
 
     html match {
       case BodyContent.StringContent(orig) =>
@@ -70,10 +75,18 @@ object BodyClean {
     }
   }
 
-  def whitelistClean(whitelist: Whitelist)(doc: Document): Document = {
-    val cleaner = new Cleaner(whitelist)
-    val body    = cleaner.clean(doc).body
-    doc.body.replaceWith(body)
-    doc
-  }
+  private[jsoup] def fixCharset(cs: Charset): Document => Document =
+    doc => {
+      doc.head.getElementsByAttributeValue("http-equiv", "content-type").remove()
+      doc.head.getElementsByAttribute("charset").remove()
+      doc.updateMetaCharsetElement(true)
+      doc.charset(cs)
+      doc.outputSettings(
+        doc.outputSettings
+          .escapeMode(Entities.EscapeMode.extended)
+          .charset(cs)
+          .prettyPrint(false)
+      )
+      doc
+    }
 }

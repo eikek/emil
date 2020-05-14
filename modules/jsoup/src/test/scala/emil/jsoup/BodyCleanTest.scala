@@ -4,8 +4,44 @@ import minitest._
 import cats.effect._
 import emil._
 import emil.builder._
+import org.jsoup._
+import java.io.ByteArrayInputStream
+import java.nio.charset.StandardCharsets
 
 object BodyCleanTest extends SimpleTestSuite {
+
+  test("see how jsoup works") {
+    val htmlText =
+      """<html>
+      |<head>
+      |<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      |<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      |<meta name="format-detection" content="telephone=no">
+      |<meta http-equiv="X-UA-Compatible" content="IE=edge">
+      |<meta charset="utf-8"/>
+      |</head>
+      |<body><p>f&uuml;r dich</p></body>
+      |</html>""".stripMargin
+
+    assertEquals(
+      Jsoup
+        .parse(
+          new ByteArrayInputStream(htmlText.getBytes(StandardCharsets.ISO_8859_1)),
+          null, //null charset should use one from header
+          ""
+        )
+        .charset,
+      StandardCharsets.UTF_8
+    )
+
+    val doc = Jsoup.parse(htmlText)
+    doc.head.getElementsByAttributeValue("http-equiv", "content-type").remove()
+    doc.head.getElementsByAttribute("charset").remove()
+    assert(!doc.outerHtml.contains("utf-8"))
+    doc.updateMetaCharsetElement(true)
+    doc.charset(StandardCharsets.ISO_8859_1)
+    assert(doc.outerHtml.contains("ISO-8859-1"))
+  }
 
   test("clean body") {
     val htmlMail = """<h1>A header</h2><p script="alert('hi!');">Hello</p><p>World<p>"""
@@ -54,8 +90,11 @@ object BodyCleanTest extends SimpleTestSuite {
     assertEquals(str, Some(expect))
   }
 
-  test("produce ascii output") {
-    val htmlMail = """<h1>Brief für Sie</h2><p script="alert('hi!');">Grüße – LG.</p>"""
+  test("fix charset") {
+    val htmlMail =
+      """<html><head><meta charset="iso-8859-1"/></head>
+      |<body><h1>Brief f&uuml;r Sie</h2><p script="alert('hi!');">Gr&uuml;&szlig;e – LG.</p></body>
+      |</html>""".stripMargin.replace("\n", "")
 
     val mail: Mail[IO] = MailBuilder.build(
       From("me@test.com"),
@@ -72,8 +111,8 @@ object BodyCleanTest extends SimpleTestSuite {
       cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync
     val expect = """<html><head><meta charset="UTF-8"></head>
         |<body>
-        |<h1>Brief f&uuml;r Sie</h1>
-        |<p>Gr&uuml;&szlig;e &ndash; LG.</p>
+        |<h1>Brief für Sie</h1>
+        |<p>Grüße – LG.</p>
         |</body>
         |</html>""".stripMargin.replace("\n", "")
     assertEquals(str, Some(expect))

@@ -50,7 +50,7 @@ object HtmlBodyViewTest extends SimpleTestSuite {
     )
 
     val str = htmlView.unsafeRunSync.asString
-    assert(str.contains("in K&uuml;rze"))
+    assert(str.contains("in Kürze"))
     assert(
       str.contains(
         "<strong>From:</strong> <code>Service &lt;service@test.com&gt;</code><br>"

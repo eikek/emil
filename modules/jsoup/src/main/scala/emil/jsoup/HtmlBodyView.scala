@@ -19,7 +19,9 @@ object HtmlBodyView {
       body: MailBody[F],
       meta: Option[MailHeader],
       textToHtml: Option[String => String],
-      modify: Option[Document => Document]
+      modify: Option[Document => Document] = Some(
+        BodyClean.whitelistClean(EmailWhitelist.default)
+      )
   ): F[BodyContent] = {
     val strToHtml   = textToHtml.getOrElse(defaultTxtToHtml _)
     val htmlSnippet = body.htmlContent(textContentToHtml(strToHtml))
