@@ -87,12 +87,14 @@ object JavaMailEmil {
       bytes: Array[Byte]
   )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
     Sync[F].delay {
-      val session = Session.getInstance(new Properties())
-      val msg =
-        new MimeMessage(
-          session,
-          new ByteArrayInputStream(bytes)
-        )
-      cm.convert(msg)
+      ThreadClassLoader {
+        val session = Session.getInstance(new Properties())
+        val msg =
+          new MimeMessage(
+            session,
+            new ByteArrayInputStream(bytes)
+          )
+        cm.convert(msg)
+      }
     }
 }
