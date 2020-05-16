@@ -83,19 +83,23 @@ Example:
 ```scala mdoc
 val htmlView = HtmlBodyView(
   mail.body,
-  Some(mail.header),
-  None, //here the emil-markdown module can be used to convert text->html
-  Some(BodyClean.whitelistClean(EmailWhitelist.default))
+  Some(mail.header)
 )
 ```
 
 If the `mailHeader` is given (second argument), a short header with
 the sender, receiver and subject is included into the result. The
-third argument is a function to convert a text-only body into html. If
-it is omitted a very basic default conversion is used. Use the
-`emil-markdown` module for more sophisticated text-to-html conversion.
-At last, another function can be specified to further modify the html
-content. For example to clean the html from unwanted content.
+third argument is a config object `HtmlBodyViewConfig` that has a
+default value that contains:
+
+- a function to convert a text-only body into html. This uses a very
+  basic string replacement approach and also escapes html entities in
+  the text. Use the `emil-markdown` module for more sophisticated
+  text-to-html conversion.
+- a datetime-formatter and a timezone to use when inserting the e-mail
+  date into the document
+- a function to modify the html document tree, which by defaults uses
+  the cleaner from `BodyClean` to remove unwanted contet
 
 The result of the example is:
 
