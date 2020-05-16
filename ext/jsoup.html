@@ -7,7 +7,7 @@ mails. It is based on the famous <a href="https://jsoup.org">jsoup</a> library.<
 
 <p>With sbt:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.5.1"
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.6.0"
 </code></pre></div></div>
 
 <h2 id="description">Description</h2>
@@ -97,7 +97,7 @@ created using the <code class="highlighter-rouge">BodyClean</code>
 <span class="c1">//           "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//         )</span>
 <span class="c1">//       ),</span>
-<span class="c1">//       emil.jsoup.BodyClean$$$Lambda$1764/1031137654@948335d,</span>
+<span class="c1">//       emil.jsoup.BodyClean$$$Lambda$1766/2110519269@4fc178ae,</span>
 <span class="c1">//       0</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
@@ -111,17 +111,7 @@ evaluated, the string looks now like this:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">cleanMail</span><span class="o">.</span><span class="py">body</span><span class="o">.</span><span class="py">htmlPart</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">)).</span><span class="py">unsafeRunSync</span>
 <span class="c1">// res0: Option[String] = Some(</span>
-<span class="c1">//   """&lt;html&gt;</span>
-<span class="c1">//  &lt;head&gt;</span>
-<span class="c1">//   &lt;meta charset="UTF-8"&gt;</span>
-<span class="c1">//  &lt;/head&gt;</span>
-<span class="c1">//  &lt;body&gt;</span>
-<span class="c1">//   &lt;h1&gt;A header&lt;/h1&gt;</span>
-<span class="c1">//   &lt;p&gt;Hello&lt;/p&gt;</span>
-<span class="c1">//   &lt;p&gt;World&lt;/p&gt;</span>
-<span class="c1">//   &lt;p&gt;&lt;/p&gt;</span>
-<span class="c1">//  &lt;/body&gt;</span>
-<span class="c1">// &lt;/html&gt;"""</span>
+<span class="c1">//   "&lt;html&gt;&lt;head&gt;&lt;meta charset=\"UTF-8\"&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;A header&lt;/h1&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -137,9 +127,7 @@ For better results here, use the <code class="highlighter-rouge">emil-markdown</
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">htmlView</span> <span class="k">=</span> <span class="nc">HtmlBodyView</span><span class="o">(</span>
   <span class="nv">mail</span><span class="o">.</span><span class="py">body</span><span class="o">,</span>
-  <span class="nc">Some</span><span class="o">(</span><span class="nv">mail</span><span class="o">.</span><span class="py">header</span><span class="o">),</span>
-  <span class="nc">None</span><span class="o">,</span> <span class="c1">//here the emil-markdown module can be used to convert text-&gt;html</span>
-  <span class="nc">Some</span><span class="o">(</span><span class="nv">BodyClean</span><span class="o">.</span><span class="py">whitelistClean</span><span class="o">(</span><span class="nv">EmailWhitelist</span><span class="o">.</span><span class="py">default</span><span class="o">))</span>
+  <span class="nc">Some</span><span class="o">(</span><span class="nv">mail</span><span class="o">.</span><span class="py">header</span><span class="o">)</span>
 <span class="o">)</span>
 <span class="c1">// htmlView: IO[BodyContent] = Map(</span>
 <span class="c1">//   Pure(</span>
@@ -147,37 +135,37 @@ For better results here, use the <code class="highlighter-rouge">emil-markdown</
 <span class="c1">//       "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   emil.jsoup.HtmlBodyView$$$Lambda$1777/1799074240@5a8a2982,</span>
+<span class="c1">//   emil.jsoup.HtmlBodyView$$$Lambda$1779/2119209199@48195a26,</span>
 <span class="c1">//   0</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
 <p>If the <code class="highlighter-rouge">mailHeader</code> is given (second argument), a short header with
 the sender, receiver and subject is included into the result. The
-third argument is a function to convert a text-only body into html. If
-it is omitted a very basic default conversion is used. Use the
-<code class="highlighter-rouge">emil-markdown</code> module for more sophisticated text-to-html conversion.
-At last, another function can be specified to further modify the html
-content. For example to clean the html from unwanted content.</p>
+third argument is a config object <code class="highlighter-rouge">HtmlBodyViewConfig</code> that has a
+default value that contains:</p>
+
+<ul>
+  <li>a function to convert a text-only body into html. This uses a very
+basic string replacement approach and also escapes html entities in
+the text. Use the <code class="highlighter-rouge">emil-markdown</code> module for more sophisticated
+text-to-html conversion.</li>
+  <li>a datetime-formatter and a timezone to use when inserting the e-mail
+date into the document</li>
+  <li>a function to modify the html document tree, which by defaults uses
+the cleaner from <code class="highlighter-rouge">BodyClean</code> to remove unwanted contet</li>
+</ul>
 
 <p>The result of the example is:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">htmlView</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">).</span><span class="py">unsafeRunSync</span>
-<span class="c1">// res1: String = """&lt;html&gt;</span>
-<span class="c1">//  &lt;head&gt;</span>
-<span class="c1">//   &lt;meta charset="UTF-8"&gt;</span>
-<span class="c1">//  &lt;/head&gt;</span>
-<span class="c1">//  &lt;body&gt;</span>
-<span class="c1">//   &lt;div style="padding-bottom: 0.8em;"&gt; &lt;strong&gt;From:&lt;/strong&gt; &lt;code&gt;me@test.com&lt;/code&gt;</span>
-<span class="c1">//    &lt;br&gt; &lt;strong&gt;To:&lt;/strong&gt; &lt;code&gt;test@test.com&lt;/code&gt;</span>
-<span class="c1">//    &lt;br&gt; &lt;strong&gt;Subject:&lt;/strong&gt; &lt;code&gt;Hello!&lt;/code&gt; </span>
-<span class="c1">//   &lt;/div&gt; </span>
-<span class="c1">//   &lt;h1&gt;A header&lt;/h1&gt;</span>
-<span class="c1">//   &lt;p&gt;Hello&lt;/p&gt;</span>
-<span class="c1">//   &lt;p&gt;World&lt;/p&gt;</span>
-<span class="c1">//   &lt;p&gt;&lt;/p&gt;</span>
-<span class="c1">//  &lt;/body&gt;</span>
-<span class="c1">// &lt;/html&gt;"""</span>
+<span class="c1">// res1: String = """&lt;html&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;/head&gt;&lt;body&gt;&lt;div style="padding-bottom: 0.8em;"&gt;</span>
+<span class="c1">// &lt;strong&gt;From:&lt;/strong&gt; &lt;code&gt;me@test.com&lt;/code&gt;&lt;br&gt;</span>
+<span class="c1">// &lt;strong&gt;To:&lt;/strong&gt; &lt;code&gt;test@test.com&lt;/code&gt;&lt;br&gt;</span>
+<span class="c1">// &lt;strong&gt;Subject:&lt;/strong&gt; &lt;code&gt;Hello!&lt;/code&gt;&lt;br&gt;</span>
+<span class="c1">// &lt;strong&gt;Date:&lt;/strong&gt; &lt;code&gt;-&lt;/code&gt;</span>
+<span class="c1">// &lt;/div&gt;</span>
+<span class="c1">// &lt;h1&gt;A header&lt;/h1&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"""</span>
 </code></pre></div></div>
 </section></div></div></div></div><script src="/emil/highlight/highlight.pack.js"></script><script>
 // For all code blocks, copy the language from the containing div
