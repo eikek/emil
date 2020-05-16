@@ -5,6 +5,8 @@ import cats.implicits._
 import emil._
 import scodec.bits.ByteVector
 import org.jsoup.nodes._
+import java.time.format.DateTimeFormatter
+import java.time.ZoneId
 
 /** Creates a valid html document given a `MailBody'.
   *
@@ -18,23 +20,19 @@ object HtmlBodyView {
   def apply[F[_]: Applicative](
       body: MailBody[F],
       meta: Option[MailHeader],
-      textToHtml: Option[String => String],
-      modify: Option[Document => Document] = Some(
-        BodyClean.whitelistClean(EmailWhitelist.default)
-      )
+      config: HtmlBodyViewConfig = HtmlBodyViewConfig()
   ): F[BodyContent] = {
-    val strToHtml   = textToHtml.getOrElse(defaultTxtToHtml _)
-    val htmlSnippet = body.htmlContent(textContentToHtml(strToHtml))
-    htmlSnippet.map(snippet => toHtmlDocument(snippet, meta, modify.getOrElse(identity)))
+    val htmlSnippet = body.htmlContent(textContentToHtml(config.textToHtml))
+    htmlSnippet.map(snippet => toHtmlDocument(snippet, meta, config))
   }
 
   private def toHtmlDocument(
       in: BodyContent,
       meta: Option[MailHeader],
-      modify: Document => Document
+      cfg: HtmlBodyViewConfig
   ): BodyContent = {
     val change: Document => Document =
-      modify.andThen(meta.map(ammendMeta).getOrElse(identity))
+      cfg.modify.andThen(meta.map(ammendMeta(cfg)).getOrElse(identity))
     BodyClean.modifyContent(change)(in)
   }
 
@@ -46,20 +44,19 @@ object HtmlBodyView {
       BodyContent(ByteVector.view(f(str).getBytes(c.charsetOrUtf8)), cs)
   }
 
-  private def defaultTxtToHtml(str: String): String =
-    str
-      .split("\r?\n")
-      .toList
-      .map(l => if (l.isEmpty) "</p><p>" else l)
-      .mkString("<p>", "\n", "</p>")
-
-  private def ammendMeta(header: MailHeader)(doc: Document): Document = {
-    val el = makeMeta(header)
+  private def ammendMeta(
+      cfg: HtmlBodyViewConfig
+  )(header: MailHeader)(doc: Document): Document = {
+    val el = makeMeta(header, cfg.dateFormat, cfg.zone)
     doc.body.prepend(el)
     doc
   }
 
-  private def makeMeta(header: MailHeader): String = {
+  private def makeMeta(
+      header: MailHeader,
+      fmt: DateTimeFormatter,
+      zone: ZoneId
+  ): String = {
     def mail(ma: Option[MailAddress]): String =
       ma.map(_.displayString).map(Entities.escape).getOrElse("-")
 
@@ -73,11 +70,13 @@ object HtmlBodyView {
             .mkString(", ")
       }
 
+    val dateStr = header.date.map(_.atZone(zone).format(fmt)).getOrElse("-")
+
     s"""<div style="padding-bottom: 0.8em;">
      |<strong>From:</strong> <code>${mail(header.from)}</code><br>
      |<strong>To:</strong> <code>${mails(header.recipients.to)}</code><br>
      |<strong>Subject:</strong> <code>${header.subject}</code><br>
-     |<strong>Date:</strong> <code>${header.date.map(_.toString).getOrElse("")}</code>
+     |<strong>Date:</strong> <code>${dateStr}</code>
      |</div>
      |""".stripMargin
   }

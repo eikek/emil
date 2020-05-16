@@ -24,9 +24,7 @@ object HtmlBodyViewTest extends SimpleTestSuite {
 
     val htmlView = HtmlBodyView(
       mail.body,
-      Some(mail.header),
-      None, //here the emil-markdown module can be used to convert text->html
-      Some(BodyClean.whitelistClean(EmailWhitelist.default))
+      Some(mail.header)
     )
     val str =
       htmlView.map(_.asString).unsafeRunSync
@@ -36,7 +34,7 @@ object HtmlBodyViewTest extends SimpleTestSuite {
     )
     assert(str.contains("<strong>To:</strong> <code>test@test.com</code><br>"))
     assert(str.contains("<strong>Subject:</strong> <code>Hello!</code><br>"))
-    assert(str.contains("<strong>Date:</strong> <code></code>"))
+    assert(str.contains("<strong>Date:</strong> <code>-</code>"))
   }
 
   test("create from iso transferred utf8 html") {
@@ -44,9 +42,7 @@ object HtmlBodyViewTest extends SimpleTestSuite {
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
     val htmlView = HtmlBodyView(
       mail.body,
-      Some(mail.header),
-      None,
-      Some(BodyClean.whitelistClean(EmailWhitelist.default))
+      Some(mail.header)
     )
 
     val str = htmlView.unsafeRunSync.asString
@@ -62,6 +58,26 @@ object HtmlBodyViewTest extends SimpleTestSuite {
         "<strong>Subject:</strong> <code>Deine Bestellung wurde versandt - Rechnung &amp; Sendungsverfolgung</code><br>"
       )
     )
-    assert(str.contains("<strong>Date:</strong> <code>2020-05-11T11:07:54Z</code>"))
+    assert(
+      str.contains("<strong>Date:</strong> <code>Mon, 11 May 2020 11:07:54 GMT</code>")
+    )
+  }
+
+  test("html-escape plain text bodies by default") {
+    val mail: Mail[IO] = MailBuilder.build(
+      From("Me Jones", "me@test.com"),
+      To("test@test.com"),
+      Subject("Hello!"),
+      TextBody("Hello <script> & such.")
+    )
+
+    val htmlView = HtmlBodyView(
+      mail.body,
+      Some(mail.header)
+    )
+    val str =
+      htmlView.map(_.asString).unsafeRunSync
+    assert(str.contains("<p>Hello &lt;script&gt; &amp; such.</p>"))
+    assert(!str.contains("<script>"))
   }
 }
