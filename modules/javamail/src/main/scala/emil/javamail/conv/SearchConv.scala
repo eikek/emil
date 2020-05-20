@@ -1,11 +1,11 @@
 package emil.javamail.conv
 
 import java.util.Date
-
-import emil._
-import emil.SearchQuery.Relation
 import javax.mail._
 import javax.mail.search._
+
+import emil.SearchQuery.Relation
+import emil._
 
 trait SearchConv {
 

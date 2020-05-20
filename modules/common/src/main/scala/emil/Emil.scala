@@ -1,7 +1,7 @@
 package emil
 
-import cats.effect.{Bracket, Resource}
 import cats.data.NonEmptyList
+import cats.effect.{Bracket, Resource}
 
 trait Emil[F[_]] { self =>
 

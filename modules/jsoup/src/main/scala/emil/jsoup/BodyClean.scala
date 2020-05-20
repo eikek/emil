@@ -1,15 +1,16 @@
 package emil.jsoup
 
+import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
+
 import cats.Applicative
 import cats.implicits._
 import emil._
 import emil.builder.Trans
 import org.jsoup._
-import org.jsoup.safety._
 import org.jsoup.nodes._
+import org.jsoup.safety._
 import scodec.bits.ByteVector
-import java.io.ByteArrayInputStream
-import java.nio.charset.Charset
 
 /** Modifies/cleans html bodies.
   */

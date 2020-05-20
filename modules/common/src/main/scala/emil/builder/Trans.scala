@@ -1,7 +1,7 @@
 package emil.builder
 
-import emil._
 import cats._
+import emil._
 
 trait Trans[F[_]] { self =>
   def apply(mail: Mail[F]): Mail[F]

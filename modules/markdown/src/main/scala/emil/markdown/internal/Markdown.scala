@@ -4,6 +4,8 @@ import java.io.{InputStream, InputStreamReader}
 import java.nio.charset.StandardCharsets
 import java.util
 
+import scala.util.Try
+
 import cats.effect.Sync
 import cats.implicits._
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension
@@ -11,11 +13,8 @@ import com.vladsch.flexmark.ext.tables.TablesExtension
 import com.vladsch.flexmark.html.HtmlRenderer
 import com.vladsch.flexmark.parser.Parser
 import com.vladsch.flexmark.util.data.{DataKey, MutableDataSet}
-import fs2.Stream
-
-import scala.util.Try
-
 import emil.markdown.MarkdownConfig
+import fs2.Stream
 
 object Markdown {
 

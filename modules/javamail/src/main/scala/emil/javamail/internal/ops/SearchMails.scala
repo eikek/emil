@@ -1,12 +1,13 @@
 package emil.javamail.internal.ops
 
+import javax.mail.internet.MimeMessage
+import javax.mail.search.SearchTerm
+import javax.mail.{Flags, Folder}
+
 import cats.effect.Sync
 import emil._
 import emil.javamail.conv.Conv
 import emil.javamail.internal.{JavaMailConnection, Logger}
-import javax.mail.internet.MimeMessage
-import javax.mail.{Flags, Folder}
-import javax.mail.search.SearchTerm
 
 object SearchMails {
   private[this] val logger = Logger(getClass)

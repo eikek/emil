@@ -1,11 +1,12 @@
 package emil.javamail.internal
 
-import cats.implicits._
-import javax.mail.internet.MimeMessage
-import javax.mail.{Address, Flags, Folder, Message}
-import org.log4s.getLogger
 import java.time.Instant
-import SafeMimeMessage._
+import javax.mail._
+import javax.mail.internet.MimeMessage
+
+import cats.implicits._
+import emil.javamail.internal.SafeMimeMessage._
+import org.log4s.getLogger
 
 final private[javamail] class SafeMimeMessage(msg: MimeMessage) {
   val delegate = msg

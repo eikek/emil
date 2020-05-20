@@ -1,22 +1,21 @@
 package emil.javamail.conv
 
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.nio.charset.Charset
+import javax.mail.internet.{MimeMessage, MimeUtility}
+import javax.mail.{Header => _, _}
 
 import cats.Applicative
 import cats.effect.Sync
 import cats.implicits._
 import emil._
 import emil.javamail.conv.BodyDecode.{Body, BodyAttach}
+import emil.javamail.internal.EnumerationConverter._
 import emil.javamail.internal.{ThreadClassLoader, Using, Util}
 import fs2.Chunk.ByteVectorChunk
 import fs2.Stream
-import javax.mail.internet.{MimeMessage, MimeUtility}
-import javax.mail.{Header => _, _}
 import scodec.bits.ByteVector
-
-import emil.javamail.internal.EnumerationConverter._
-import java.io.ByteArrayOutputStream
 
 /** Read a recursive multipart message into our simplified structure:
   *

@@ -1,11 +1,11 @@
 package emil.markdown
 
-import cats.implicits._
 import cats.Applicative
 import cats.effect._
-import fs2.Stream
+import cats.implicits._
 import emil._
 import emil.builder.Trans
+import fs2.Stream
 
 /** A transformation function to use with `emil.builder' package that
   * takes a plain text string and converts it into a html mail body

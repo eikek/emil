@@ -1,10 +1,11 @@
 package emil
 
 import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 import cats.implicits._
 import cats.kernel.Semigroup
-import java.time.format.DateTimeFormatter
-import java.time.ZonedDateTime
 
 /** Received header as described in RCF2822.
   *

@@ -1,9 +1,9 @@
 package emil
 
+import cats.implicits._
 import fs2.Stream
 import fs2.io.file.{readAll => readFile}
 import fs2.io.readInputStream
-import cats.implicits._
 
 package builder {
 

@@ -1,8 +1,9 @@
 package emil.javamail.conv
 
+import javax.activation.MimeTypeParameterList
+
 import cats.implicits._
 import emil.MimeType
-import javax.activation.MimeTypeParameterList
 import emil.javamail.internal.EnumerationConverter._
 
 object MimeTypeDecode {

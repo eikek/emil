@@ -1,9 +1,10 @@
 package emil.jsoup
 
-import java.time.format.DateTimeFormatter
-import org.jsoup.nodes._
 import java.time.ZoneId
-import HtmlBodyViewConfig.Defaults
+import java.time.format.DateTimeFormatter
+
+import emil.jsoup.HtmlBodyViewConfig.Defaults
+import org.jsoup.nodes._
 
 /** Settings for creating a html document from a mail body.
   *

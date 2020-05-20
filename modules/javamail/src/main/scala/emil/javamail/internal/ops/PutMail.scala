@@ -1,11 +1,12 @@
 package emil.javamail.internal.ops
 
-import cats.effect._
-import emil.javamail.internal.{JavaMailConnection, Logger}
-import emil._
-import emil.javamail.conv.{MessageIdEncode, MsgConv}
 import javax.mail.Folder
 import javax.mail.internet.MimeMessage
+
+import cats.effect._
+import emil._
+import emil.javamail.conv.{MessageIdEncode, MsgConv}
+import emil.javamail.internal.{JavaMailConnection, Logger}
 
 object PutMail {
   private[this] val logger = Logger(getClass)

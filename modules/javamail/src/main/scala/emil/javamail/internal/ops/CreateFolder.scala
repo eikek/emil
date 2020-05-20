@@ -1,10 +1,11 @@
 package emil.javamail.internal.ops
 
+import javax.mail.Folder
+
 import cats.effect.Sync
 import emil._
 import emil.javamail.conv.Conv
 import emil.javamail.internal.{JavaMailConnection, Logger}
-import javax.mail.Folder
 
 object CreateFolder {
   private[this] val logger = Logger(getClass)

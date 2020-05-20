@@ -1,10 +1,10 @@
 package emil.javamail.internal
 
 import java.io.InputStream
-
-import emil.javamail.conv.MessageIdEncode
 import javax.mail.Session
 import javax.mail.internet.MimeMessage
+
+import emil.javamail.conv.MessageIdEncode
 
 private[javamail] trait EmilMimeMessage extends MimeMessage {
 

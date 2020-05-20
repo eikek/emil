@@ -1,13 +1,14 @@
 package emil.doobie
 
+import scala.reflect.runtime.universe.TypeTag
+
 import cats.effect._
 import cats.implicits._
-import _root_.doobie.{Meta, Read, Write}
-import _root_.doobie.util.invariant._
+import doobie.util.invariant._
+import doobie.{Meta, Read, Write}
 import emil._
+import emil.doobie.EmilDoobieMeta.parseOrThrow
 import emil.javamail.syntax._
-import scala.reflect.runtime.universe.TypeTag
-import EmilDoobieMeta.parseOrThrow
 
 trait EmilDoobieMeta {
 

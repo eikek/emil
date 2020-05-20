@@ -2,10 +2,10 @@ package emil
 
 import java.util.concurrent.TimeUnit
 
+import scala.concurrent.duration.{Duration, FiniteDuration}
+
 import cats.implicits._
 import emil.MailConfig.UrlParts
-
-import scala.concurrent.duration.{Duration, FiniteDuration}
 
 case class MailConfig(
     url: String,

@@ -1,12 +1,13 @@
 package emil.jsoup
 
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
 import cats.Applicative
 import cats.implicits._
 import emil._
-import scodec.bits.ByteVector
 import org.jsoup.nodes._
-import java.time.format.DateTimeFormatter
-import java.time.ZoneId
+import scodec.bits.ByteVector
 
 /** Creates a valid html document given a `MailBody'.
   *

@@ -1,11 +1,12 @@
 package emil.javamail.internal.ops
 
+import javax.mail.internet.MimeMessage
+import javax.mail.search.MessageIDTerm
+
 import cats.effect.Sync
 import com.sun.mail.imap.IMAPFolder
 import emil._
-import emil.javamail.internal.{InternalId, JavaMailConnection, Logger, Util}
-import javax.mail.internet.MimeMessage
-import javax.mail.search.MessageIDTerm
+import emil.javamail.internal._
 
 object FindMail {
   private[this] val logger = Logger(getClass)

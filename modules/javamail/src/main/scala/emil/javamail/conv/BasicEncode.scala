@@ -2,15 +2,15 @@ package emil.javamail.conv
 
 import java.io.{ByteArrayInputStream, InputStream, OutputStream}
 import java.util.Date
+import javax.activation.{DataHandler, DataSource}
+import javax.mail._
+import javax.mail.internet._
 
 import cats.Monad
 import cats.effect.Sync
 import cats.implicits._
 import emil._
 import emil.javamail.internal.EmilMimeMessage
-import javax.activation.{DataHandler, DataSource}
-import javax.mail._
-import javax.mail.internet._
 
 trait BasicEncode {
 

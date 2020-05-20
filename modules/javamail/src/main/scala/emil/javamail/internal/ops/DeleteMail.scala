@@ -1,11 +1,12 @@
 package emil.javamail.internal.ops
 
+import javax.mail.internet.MimeMessage
+import javax.mail.{Flags, Folder, Message}
+
 import cats.effect.Sync
 import cats.implicits._
 import emil._
 import emil.javamail.internal.{JavaMailConnection, Logger, Util}
-import javax.mail.internet.MimeMessage
-import javax.mail.{Flags, Folder, Message}
 
 object DeleteMail {
   private[this] val logger = Logger(getClass)

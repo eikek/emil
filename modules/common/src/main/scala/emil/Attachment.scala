@@ -2,9 +2,9 @@ package emil
 
 import java.nio.charset.StandardCharsets
 
-import cats.implicits._
 import cats.Applicative
 import cats.effect.Sync
+import cats.implicits._
 import fs2.Chunk.ByteVectorChunk
 import fs2.Stream
 import scodec.bits.ByteVector

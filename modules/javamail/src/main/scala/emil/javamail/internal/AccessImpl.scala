@@ -5,8 +5,8 @@ import cats.effect.{Blocker, ContextShift, Sync}
 import cats.implicits._
 import emil._
 import emil.javamail.conv.codec._
-import emil.javamail.internal.ops._
 import emil.javamail.internal.BlockingSyntax._
+import emil.javamail.internal.ops._
 
 final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     extends Access[F, JavaMailConnection] {

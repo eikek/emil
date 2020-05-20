@@ -1,9 +1,10 @@
 package emil
 
-import scodec.bits.ByteVector
+import java.nio.charset.CharacterCodingException
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
-import java.nio.charset.CharacterCodingException
+
+import scodec.bits.ByteVector
 
 /** Content part of the mail body.
   *

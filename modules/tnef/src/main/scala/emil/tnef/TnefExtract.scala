@@ -1,14 +1,14 @@
 package emil.tnef
 
-import org.apache.poi.hmef.HMEFMessage
 import java.io.InputStream
-import fs2.{Chunk, Stream}
+
 import cats.Applicative
 import cats.effect._
 import cats.implicits._
-
 import emil._
 import emil.tnef.Compat._
+import fs2.{Chunk, Stream}
+import org.apache.poi.hmef.HMEFMessage
 
 object TnefExtract {
 

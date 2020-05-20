@@ -1,9 +1,10 @@
 package emil.javamail.conv
 
+import javax.mail._
+import javax.mail.internet.{InternetAddress, MimeMessage}
+
 import emil._
 import emil.javamail.internal._
-import javax.mail.internet.{InternetAddress, MimeMessage}
-import javax.mail.{Address, Flags, Folder, Message, internet}
 
 trait BasicDecode {
 

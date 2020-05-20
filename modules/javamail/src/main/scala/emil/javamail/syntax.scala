@@ -1,14 +1,15 @@
 package emil.javamail
 
-import fs2.Stream
-import cats.implicits._
+import java.net.URL
+import java.nio.file.Path
+
 import cats.effect._
+import cats.implicits._
 import emil._
 import emil.javamail.conv.MimeTypeDecode
 import emil.javamail.conv.codec._
 import fs2.Pipe
-import java.nio.file.Path
-import java.net.URL
+import fs2.Stream
 import scodec.bits.ByteVector
 
 object syntax {

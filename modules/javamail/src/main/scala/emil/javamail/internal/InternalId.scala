@@ -1,7 +1,7 @@
 package emil.javamail.internal
 
-import com.sun.mail.imap.IMAPFolder
 import cats.implicits._
+import com.sun.mail.imap.IMAPFolder
 
 sealed trait InternalId {
 
