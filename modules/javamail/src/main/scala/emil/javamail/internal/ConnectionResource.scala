@@ -71,6 +71,18 @@ object ConnectionResource {
     if (proto.startsWith("smtp"))
       props.put(s"mail.$proto.auth", "true");
 
+    // JavaMail has XOAUTH2 default disabled. And it is the last
+    // mechanism tried. When connecting to GMail, this won't work,
+    // because first LOGIN is tried which fails to authenticate. So
+    // XOAUTH must be first. This is why
+    // "mail.smtp.auth.xoauth2.disable -> false" is not working for
+    // gmail.
+    val mechanisms = "LOGIN PLAIN DIGEST-MD5 NTLM"
+    if (settings.enableXOAuth2)
+      props.put(s"mail.$proto.auth.mechanisms", "XOAUTH2 " + mechanisms)
+    else
+      props.put(s"mail.$proto.auth.mechanisms", mechanisms)
+
     if (mc.user.nonEmpty)
       props.put(s"mail.$proto.user", mc.user)
     if (settings.debug)
@@ -109,6 +121,9 @@ object ConnectionResource {
 
     // let users of this library override everything here
     settings.props(proto).foreach({ case (k, v) => props.put(k, v) })
+
+    if (settings.debug)
+      logger.debug(s"Session properties: $props")
 
     if (mc.user.nonEmpty) {
       logger.debug(s"Creating session with authenticator and props: $props")
