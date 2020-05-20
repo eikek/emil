@@ -107,11 +107,18 @@ val buildInfoSettings = Seq(
   buildInfoPackage := "emil"
 )
 
+val scalafixSettings = Seq(
+  semanticdbEnabled := true, // enable SemanticDB
+  semanticdbVersion := "4.3.10", // use Scalafix compatible version
+  ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.3.1-RC1"
+)
+
 lazy val common = project.in(file("modules/common")).
   enablePlugins(BuildInfoPlugin).
   settings(sharedSettings).
   settings(testSettings).
   settings(buildInfoSettings).
+  settings(scalafixSettings).
   settings(
     name := "emil-common",
     libraryDependencies ++=
@@ -122,6 +129,7 @@ lazy val common = project.in(file("modules/common")).
 lazy val javamail = project.in(file("modules/javamail")).
   settings(sharedSettings).
   settings(testSettings).
+  settings(scalafixSettings).
   settings(
     name := "emil-javamail",
 // consider this option, if there are non-deterministic test outcomes
@@ -138,6 +146,7 @@ lazy val javamail = project.in(file("modules/javamail")).
 lazy val tnef = project.in(file("modules/tnef")).
   settings(sharedSettings).
   settings(testSettings).
+  settings(scalafixSettings).
   settings(
     name := "emil-tnef",
     libraryDependencies ++=
@@ -148,6 +157,7 @@ lazy val tnef = project.in(file("modules/tnef")).
 lazy val doobie = project.in(file("modules/doobie")).
   settings(sharedSettings).
   settings(testSettings).
+  settings(scalafixSettings).
   settings(
     name := "emil-doobie",
     libraryDependencies ++=
@@ -159,6 +169,7 @@ lazy val doobie = project.in(file("modules/doobie")).
 lazy val markdown = project.in(file("modules/markdown")).
   settings(sharedSettings).
   settings(testSettings).
+  settings(scalafixSettings).
   settings(
     name := "emil-markdown",
     libraryDependencies ++=
@@ -169,6 +180,7 @@ lazy val markdown = project.in(file("modules/markdown")).
 lazy val jsoup = project.in(file("modules/jsoup")).
   settings(sharedSettings).
   settings(testSettings).
+  settings(scalafixSettings).
   settings(
     name := "emil-jsoup",
     libraryDependencies ++=
