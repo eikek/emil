@@ -84,10 +84,10 @@ reading/writing e-mail.</p>
 <span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
 
 <span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span>
-<span class="c1">// mailStr: String = """Date: Sat, 16 May 2020 21:38:47 +0000 (GMT)</span>
+<span class="c1">// mailStr: String = """Date: Mon, 25 May 2020 12:30:08 +0000 (GMT)</span>
 <span class="c1">// From: test@test.com</span>
 <span class="c1">// To: test@test.com</span>
-<span class="c1">// Message-ID: &lt;1862966607.0.1589665127795@kythira&gt;</span>
+<span class="c1">// Message-ID: &lt;1862966607.0.1590409808243@kythira&gt;</span>
 <span class="c1">// Subject: Hello</span>
 <span class="c1">// MIME-Version: 1.0</span>
 <span class="c1">// Content-Type: text/html; charset=utf-8</span>
@@ -101,14 +101,14 @@ reading/writing e-mail.</p>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span>
 <span class="c1">// mail2: Mail[IO] = Mail(</span>
 <span class="c1">//   MailHeader(</span>
-<span class="c1">//     "messageId:&lt;1862966607.0.1589665127795@kythira&gt;",</span>
-<span class="c1">//     Some("&lt;1862966607.0.1589665127795@kythira&gt;"),</span>
+<span class="c1">//     "messageId:&lt;1862966607.0.1590409808243@kythira&gt;",</span>
+<span class="c1">//     Some("&lt;1862966607.0.1590409808243@kythira&gt;"),</span>
 <span class="c1">//     None,</span>
 <span class="c1">//     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),</span>
 <span class="c1">//     None,</span>
 <span class="c1">//     Some(MailAddress(None, "test@test.com")),</span>
 <span class="c1">//     None,</span>
-<span class="c1">//     Some(2020-05-16T21:38:47Z),</span>
+<span class="c1">//     Some(2020-05-25T12:30:08Z),</span>
 <span class="c1">//     "Hello",</span>
 <span class="c1">//     List(),</span>
 <span class="c1">//     Set()</span>
@@ -123,7 +123,7 @@ reading/writing e-mail.</p>
 <span class="c1">//   Html(</span>
 <span class="c1">//     Pure(</span>
 <span class="c1">//       ByteContent(</span>
-<span class="c1">//         Chunk(View(scodec.bits.ByteVector$AtArray@6d60c9e6, 0L, 19L)),</span>
+<span class="c1">//         Chunk(View(scodec.bits.ByteVector$AtArray@1c244fd0, 0L, 19L)),</span>
 <span class="c1">//         Some(UTF-8)</span>
 <span class="c1">//       )</span>
 <span class="c1">//     )</span>
