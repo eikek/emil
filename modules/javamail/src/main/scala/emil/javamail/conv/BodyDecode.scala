@@ -52,54 +52,52 @@ trait BodyDecode {
       ca: Conv[Part, Attachments[F]],
       result: BodyAttach[F]
   ): BodyAttach[F] =
-    p.getContent match {
-      case _: String =>
-        val cnt = BodyDecode.getTextContent(p)
-        val body =
-          if (p.isMimeType(MimeType.textHtml.asString))
-            Body(text = None, html = Option(cnt))
-          else Body(text = Option(cnt), html = None)
+    if (p.isMimeType("text/*")) {
+      val cnt = BodyDecode.getTextContent(p)
+      val body =
+        if (p.isMimeType(MimeType.textHtml.asString))
+          Body(text = None, html = Option(cnt))
+        else Body(text = Option(cnt), html = None)
 
-        result.copy(body = body)
-
-      case mp: Multipart =>
-        if (BodyDecode.isAlternative(mp)) {
-          val ba = BodyDecode.getAlternativeBody[F](BodyAttach.empty[F], mp)(ca)
-          result.merge(ba)
-        } else
-          (0 until mp.getCount)
-            .map(mp.getBodyPart)
-            .foldLeft(BodyAttach.empty[F]) { (acc, part) =>
-              if (
-                BodyDecode.maySetTextBody(
-                  acc.body.text,
-                  MimeType.textPlain,
-                  part
-                )
+      result.copy(body = body)
+    } else if (p.isMimeType("multipart/*")) {
+      val mp = p.getContent.asInstanceOf[Multipart]
+      if (BodyDecode.isAlternative(mp)) {
+        val ba = BodyDecode.getAlternativeBody[F](BodyAttach.empty[F], mp)(ca)
+        result.merge(ba)
+      } else
+        (0 until mp.getCount)
+          .map(mp.getBodyPart)
+          .foldLeft(BodyAttach.empty[F]) { (acc, part) =>
+            if (
+              BodyDecode.maySetTextBody(
+                acc.body.text,
+                MimeType.textPlain,
+                part
               )
-                acc.copy(
-                  body = acc.body.copy(text = BodyDecode.getTextContent(part).some)
-                )
-              else if (
-                BodyDecode
-                  .maySetTextBody(acc.body.html, MimeType.textHtml, part)
+            )
+              acc.copy(
+                body = acc.body.copy(text = BodyDecode.getTextContent(part).some)
               )
-                acc.copy(
-                  body = acc.body.copy(html = BodyDecode.getTextContent(part).some)
-                )
-              else if (part.isMimeType("multipart/alternative") && acc.body.isEmpty) {
-                val mp = part.getContent.asInstanceOf[Multipart]
-                val ba = BodyDecode.getAlternativeBody(acc, mp)(ca)
-                result.merge(ba)
-              } else {
-                val next = decodePart(part, ca, result)
-                acc.merge(next)
-              }
+            else if (
+              BodyDecode
+                .maySetTextBody(acc.body.html, MimeType.textHtml, part)
+            )
+              acc.copy(
+                body = acc.body.copy(html = BodyDecode.getTextContent(part).some)
+              )
+            else if (part.isMimeType("multipart/alternative") && acc.body.isEmpty) {
+              val mp = part.getContent.asInstanceOf[Multipart]
+              val ba = BodyDecode.getAlternativeBody(acc, mp)(ca)
+              result.merge(ba)
+            } else {
+              val next = decodePart(part, ca, result)
+              acc.merge(next)
             }
+          }
 
-      case _ =>
-        result.copy(attachments = result.attachments ++ ca.convert(p))
-    }
+    } else
+      result.copy(attachments = result.attachments ++ ca.convert(p))
 
   implicit def mailDecode[F[_]: Sync](implicit
       cb: Conv[MimeMessage, BodyAttach[F]],
@@ -180,14 +178,11 @@ object BodyDecode {
         result.modifyBody(body => body.copy(text = getTextContent(part).some))
       else if (maySetTextBody(result.body.html, MimeType.textHtml, part))
         result.modifyBody(body => body.copy(html = getTextContent(part).some))
-      else
-        part.getContent() match {
-          case mp: Multipart =>
-            getAlternativeBody(result, mp)
-
-          case _ =>
-            result.copy(attachments = result.attachments ++ ca.convert(part))
-        }
+      else if (part.isMimeType("multipart/*")) {
+        val mp = part.getContent.asInstanceOf[Multipart]
+        getAlternativeBody(result, mp)
+      } else
+        result.copy(attachments = result.attachments ++ ca.convert(part))
     }
 
   private def getTextContent(p: Part): BodyContent = {
