@@ -43,9 +43,8 @@ object Received {
 
       def emap[B](f: A => Either[String, B]): P[B] =
         in =>
-          p(in).flatMap({
-            case (rest, a) =>
-              f(a).map(b => rest -> b)
+          p(in).flatMap({ case (rest, a) =>
+            f(a).map(b => rest -> b)
           })
 
       def ~[B](n: P[B]): P[(A, B)] =
@@ -87,8 +86,8 @@ object Received {
       }
 
       def repsep(sep: P[_]): P[Vector[A]] =
-        ((p <~ sep).rep ~ p.opt).map {
-          case (list, el) => list ++ el.toSeq
+        ((p <~ sep).rep ~ p.opt).map { case (list, el) =>
+          list ++ el.toSeq
         }
     }
 
@@ -127,8 +126,8 @@ object Received {
       const("(") ++ stringNotIn(Set(')')) ++ const(")")
 
     def itemValue: P[String] =
-      (stringNotIn(" \t\n\r;".toSet) ~ (ws ++ comment).rep).map {
-        case (v1, vec) => v1 + vec.mkString(" ")
+      (stringNotIn(" \t\n\r;".toSet) ~ (ws ++ comment).rep).map { case (v1, vec) =>
+        v1 + vec.mkString(" ")
       }
 
     def nameValue: P[(String, String)] =
@@ -141,8 +140,8 @@ object Received {
       rest.emap(parseDateTime)
 
     def received: P[Received] =
-      (nameValueList ~ (const(";") ~> date)).map {
-        case (data, dt) => Received(data, dt)
+      (nameValueList ~ (const(";") ~> date)).map { case (data, dt) =>
+        Received(data, dt)
       }
   }
 }
