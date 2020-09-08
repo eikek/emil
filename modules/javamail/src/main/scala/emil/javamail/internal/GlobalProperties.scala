@@ -24,9 +24,8 @@ import cats.effect._
 case class GlobalProperties(props: Map[String, String]) {
 
   def foreach(f: (String, String) => Unit): Unit =
-    props.foreach {
-      case (k, v) =>
-        f(k, v)
+    props.foreach { case (k, v) =>
+      f(k, v)
     }
 
   def map[A](f: (String, String) => A): List[A] =

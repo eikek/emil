@@ -15,9 +15,8 @@ import emil.javamail.internal.EmilMimeMessage
 trait BasicEncode {
 
   implicit def flagEncode: Conv[Flag, Flags.Flag] =
-    Conv {
-      case Flag.Flagged =>
-        Flags.Flag.FLAGGED
+    Conv { case Flag.Flagged =>
+      Flags.Flag.FLAGGED
     }
 
   implicit def mailAddressEncode: Conv[MailAddress, InternetAddress] =
