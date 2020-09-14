@@ -4,7 +4,7 @@ import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
 val scala212 = "2.12.11"
-val scala213 = "2.13.2"
+val scala213 = "2.13.3"
 val updateReadme = inputKey[Unit]("Update readme")
 
 val sharedSettings = Seq(
@@ -33,7 +33,7 @@ val sharedSettings = Seq(
       Nil
     ),
   crossScalaVersions := Seq(scala212, scala213),
-  scalacOptions in Test := Seq(),
+  scalacOptions in Test := Seq("-deprecation", "-feature", "-encoding", "UTF-8"),
   scalacOptions in (Compile, console) := Seq(),
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
   homepage := Some(url("https://github.com/eikek/emil"))
@@ -109,7 +109,7 @@ val buildInfoSettings = Seq(
 
 val scalafixSettings = Seq(
   semanticdbEnabled := true, // enable SemanticDB
-  semanticdbVersion := "4.3.10", // use Scalafix compatible version
+  semanticdbVersion := scalafixSemanticdb.revision, // use Scalafix compatible version
   ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.4.0"
 )
 

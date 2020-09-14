@@ -30,7 +30,7 @@ final class MailBuilder[F[_]](parts: Vector[Trans[F]], initial: Mail[F]) {
   /** Prepends an action that clears the body.
     */
   def clearBody: MailBuilder[F] =
-    prepend(Trans(m => m.mapBody(_ => MailBody.Empty[F])))
+    prepend(Trans(m => m.mapBody(_ => MailBody.Empty[F]())))
 
   def build: Mail[F] =
     parts.foldLeft(initial)((m, p) => p(m))

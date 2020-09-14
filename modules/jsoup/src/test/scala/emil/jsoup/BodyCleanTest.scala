@@ -58,7 +58,7 @@ object BodyCleanTest extends SimpleTestSuite {
       .build
 
     val str =
-      cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync
+      cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync()
     val expect = """<html><head><meta charset="UTF-8"></head>
         |<body>
         |<h1>A header</h1>
@@ -85,7 +85,7 @@ object BodyCleanTest extends SimpleTestSuite {
       .build
 
     val str =
-      cleanMail.body.textPart.map(_.map(_.asString)).unsafeRunSync
+      cleanMail.body.textPart.map(_.map(_.asString)).unsafeRunSync()
     val expect = """Hello World!"""
     assertEquals(str, Some(expect))
   }
@@ -108,7 +108,7 @@ object BodyCleanTest extends SimpleTestSuite {
       .build
 
     val str =
-      cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync
+      cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync()
     val expect = """<html><head><meta charset="UTF-8"></head>
         |<body>
         |<h1>Brief für Sie</h1>

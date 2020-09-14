@@ -66,7 +66,7 @@ function. This only applies to html parts. When the body is now
 evaluated, the string looks now like this:
 
 ```scala mdoc
-cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync
+cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync()
 ```
 
 Jsoup even fixes the invalid html tree.
@@ -104,5 +104,5 @@ default value that contains:
 The result of the example is:
 
 ```scala mdoc
-htmlView.map(_.asString).unsafeRunSync
+htmlView.map(_.asString).unsafeRunSync()
 ```

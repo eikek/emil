@@ -65,7 +65,7 @@ object TnefReaderTest extends SimpleTestSuite {
 
     assertEquals(mail.attachments.size, 1)
 
-    val mail2 = TnefExtract.replace[IO](mail).unsafeRunSync
+    val mail2 = TnefExtract.replace[IO](mail).unsafeRunSync()
     assertEquals(mail2.attachments.size, 2)
   }
 }

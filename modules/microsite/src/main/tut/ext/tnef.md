@@ -50,7 +50,7 @@ val mail = MailBuilder.build[IO](
 implicit val CS: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 
 val mail2: IO[Mail[IO]] = TnefExtract.replace[IO](mail)
-// mail2.unsafeRunSync
+// mail2.unsafeRunSync()
 ```
 
 The extraction must read in the tnef byte stream, therefore the return

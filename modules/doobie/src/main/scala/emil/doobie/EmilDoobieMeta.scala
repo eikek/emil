@@ -51,15 +51,15 @@ trait EmilDoobieMeta {
     Write[String].contramap(_.map(_.asUnicodeString).mkString(","))
 
   implicit def completeMailMeta[F[_]: Effect]: Meta[Mail[F]] =
-    Meta[String].imap(str => Effect[F].toIO(Mail.deserialize(str)).unsafeRunSync)(m =>
-      Effect[F].toIO(m.serialize).unsafeRunSync
+    Meta[String].imap(str => Effect[F].toIO(Mail.deserialize(str)).unsafeRunSync())(m =>
+      Effect[F].toIO(m.serialize).unsafeRunSync()
     )
 
   implicit def completeMailRead[F[_]: Effect]: Read[Mail[F]] =
-    Read[String].map(str => Effect[F].toIO(Mail.deserialize(str)).unsafeRunSync)
+    Read[String].map(str => Effect[F].toIO(Mail.deserialize(str)).unsafeRunSync())
 
   implicit def completeMailWrite[F[_]: Effect]: Write[Mail[F]] =
-    Write[String].contramap(m => Effect[F].toIO(m.serialize).unsafeRunSync)
+    Write[String].contramap(m => Effect[F].toIO(m.serialize).unsafeRunSync())
 }
 
 object EmilDoobieMeta extends EmilDoobieMeta {

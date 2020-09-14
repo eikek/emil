@@ -27,7 +27,7 @@ object HtmlBodyViewTest extends SimpleTestSuite {
       Some(mail.header)
     )
     val str =
-      htmlView.map(_.asString).unsafeRunSync
+      htmlView.map(_.asString).unsafeRunSync()
     assert(!str.contains("alert"))
     assert(
       str.contains("<strong>From:</strong> <code>Me Jones &lt;me@test.com&gt;</code><br>")
@@ -39,13 +39,13 @@ object HtmlBodyViewTest extends SimpleTestSuite {
 
   test("create from iso transferred utf8 html") {
     val url  = getClass.getResource("/mails/html-utf8-as-iso.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
     val htmlView = HtmlBodyView(
       mail.body,
       Some(mail.header)
     )
 
-    val str = htmlView.unsafeRunSync.asString
+    val str = htmlView.unsafeRunSync().asString
     assert(str.contains("in Kürze"))
     assert(
       str.contains(
@@ -76,7 +76,7 @@ object HtmlBodyViewTest extends SimpleTestSuite {
       Some(mail.header)
     )
     val str =
-      htmlView.map(_.asString).unsafeRunSync
+      htmlView.map(_.asString).unsafeRunSync()
     assert(str.contains("<p>Hello &lt;script&gt; &amp; such.</p>"))
     assert(!str.contains("<script>"))
   }
