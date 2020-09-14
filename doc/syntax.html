@@ -98,10 +98,10 @@ reading/writing e-mail.</p>
 <span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
 
 <span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span><span class="o">()</span>
-<span class="c1">// mailStr: String = """Date: Mon, 14 Sep 2020 12:23:07 +0000 (GMT)</span>
+<span class="c1">// mailStr: String = """Date: Mon, 14 Sep 2020 12:35:53 +0000 (GMT)</span>
 <span class="c1">// From: test@test.com</span>
 <span class="c1">// To: test@test.com</span>
-<span class="c1">// Message-ID: &lt;135300128.0.1600086187079@kythira&gt;</span>
+<span class="c1">// Message-ID: &lt;135300128.0.1600086953336@kythira&gt;</span>
 <span class="c1">// Subject: Hello</span>
 <span class="c1">// MIME-Version: 1.0</span>
 <span class="c1">// Content-Type: text/html; charset=utf-8</span>
@@ -115,8 +115,8 @@ reading/writing e-mail.</p>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
 <span class="c1">// mail2: Mail[IO] = Mail(</span>
 <span class="c1">//   header = MailHeader(</span>
-<span class="c1">//     id = "messageId:&lt;135300128.0.1600086187079@kythira&gt;",</span>
-<span class="c1">//     messageId = Some(value = "&lt;135300128.0.1600086187079@kythira&gt;"),</span>
+<span class="c1">//     id = "messageId:&lt;135300128.0.1600086953336@kythira&gt;",</span>
+<span class="c1">//     messageId = Some(value = "&lt;135300128.0.1600086953336@kythira&gt;"),</span>
 <span class="c1">//     folder = None,</span>
 <span class="c1">//     recipients = Recipients(</span>
 <span class="c1">//       to = List(MailAddress(name = None, address = "test@test.com")),</span>
@@ -126,7 +126,7 @@ reading/writing e-mail.</p>
 <span class="c1">//     sender = None,</span>
 <span class="c1">//     from = Some(value = MailAddress(name = None, address = "test@test.com")),</span>
 <span class="c1">//     replyTo = None,</span>
-<span class="c1">//     originationDate = Some(value = 2020-09-14T12:23:07Z),</span>
+<span class="c1">//     originationDate = Some(value = 2020-09-14T12:35:53Z),</span>
 <span class="c1">//     subject = "Hello",</span>
 <span class="c1">//     received = List(),</span>
 <span class="c1">//     flags = Set()</span>
