@@ -60,11 +60,11 @@ val mail = MailBuilder.build[IO](
 
 import emil.javamail.syntax._
 
-val mailStr = mail.serialize.unsafeRunSync
+val mailStr = mail.serialize.unsafeRunSync()
 ```
 
 Deserialize:
 
 ```scala mdoc
-val mail2 = Mail.deserialize[IO](mailStr).unsafeRunSync
+val mail2 = Mail.deserialize[IO](mailStr).unsafeRunSync()
 ```

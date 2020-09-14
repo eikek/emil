@@ -25,6 +25,9 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
     gm
   }
 
+  def getManagers =
+    greenMail.getManagers()
+
   def start(): Unit =
     if (started.compareAndSet(false, true)) {
       logger.info(
@@ -52,6 +55,9 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
       user.address,
       SSLType.NoEncryption
     )
+
+  def smtpConfigNoUser: MailConfig =
+    MailConfig(s"smtp://localhost:$smtpPort", "", "", SSLType.NoEncryption)
 
   def imapConfig(user: MailAddress): MailConfig =
     MailConfig(

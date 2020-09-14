@@ -40,6 +40,9 @@ abstract class GreenmailTestSuite[A] extends TestSuite[A] {
   def smtpConf(user: MailAddress): MailConfig =
     server.smtpConfig(user)
 
+  def smtpConfNoUser: MailConfig =
+    server.smtpConfigNoUser
+
   def imapConf(user: MailAddress): MailConfig =
     server.imapConfig(user)
 
