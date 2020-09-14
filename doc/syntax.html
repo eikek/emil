@@ -14,7 +14,11 @@ reading/writing e-mail.</p>
 
 <span class="nv">MimeType</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"text/html; charset=utf-8"</span><span class="o">)</span>
 <span class="c1">// res0: Either[String, MimeType] = Right(</span>
-<span class="c1">//   MimeType("text", "html", Map("charset" -&gt; "utf-8"))</span>
+<span class="c1">//   value = MimeType(</span>
+<span class="c1">//     primary = "text",</span>
+<span class="c1">//     sub = "html",</span>
+<span class="c1">//     params = Map("charset" -&gt; "utf-8")</span>
+<span class="c1">//   )</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -24,11 +28,14 @@ reading/writing e-mail.</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"John Doe &lt;jdoe@gmail.com&gt;"</span><span class="o">)</span>
 <span class="c1">// res1: Either[String, MailAddress] = Right(</span>
-<span class="c1">//   MailAddress(Some("John Doe"), "jdoe@gmail.com")</span>
+<span class="c1">//   value = MailAddress(</span>
+<span class="c1">//     name = Some(value = "John Doe"),</span>
+<span class="c1">//     address = "jdoe@gmail.com"</span>
+<span class="c1">//   )</span>
 <span class="c1">// )</span>
 <span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"John Doe doe@com"</span><span class="o">)</span>
 <span class="c1">// res2: Either[String, MailAddress] = Left(</span>
-<span class="c1">//   "Local address contains control or whitespace"</span>
+<span class="c1">//   value = "Local address contains control or whitespace"</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -36,14 +43,17 @@ reading/writing e-mail.</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">ma</span> <span class="k">=</span> <span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"Örtlich &lt;über.uns@test.com&gt;"</span><span class="o">).</span><span class="py">toOption</span><span class="o">.</span><span class="py">get</span>
 <span class="c1">// ma: MailAddress = MailAddress(</span>
-<span class="c1">//   Some("\u00d6rtlich"),</span>
-<span class="c1">//   "\u00fcber.uns@test.com"</span>
+<span class="c1">//   name = Some(value = "\u00d6rtlich"),</span>
+<span class="c1">//   address = "\u00fcber.uns@test.com"</span>
 <span class="c1">// )</span>
 <span class="k">val</span> <span class="nv">ascii</span> <span class="k">=</span> <span class="nv">ma</span><span class="o">.</span><span class="py">asAsciiString</span>
 <span class="c1">// ascii: String = "=?UTF-8?Q?=C3=96rtlich?= &lt;\u00fcber.uns@test.com&gt;"</span>
 <span class="nv">MailAddress</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="n">ascii</span><span class="o">)</span>
 <span class="c1">// res3: Either[String, MailAddress] = Right(</span>
-<span class="c1">//   MailAddress(Some("\u00d6rtlich"), "\u00fcber.uns@test.com")</span>
+<span class="c1">//   value = MailAddress(</span>
+<span class="c1">//     name = Some(value = "\u00d6rtlich"),</span>
+<span class="c1">//     address = "\u00fcber.uns@test.com"</span>
+<span class="c1">//   )</span>
 <span class="c1">// )</span>
 <span class="k">val</span> <span class="nv">unicode</span> <span class="k">=</span> <span class="nv">ma</span><span class="o">.</span><span class="py">asUnicodeString</span>
 <span class="c1">// unicode: String = "\"\u00d6rtlich\" &lt;\u00fcber.uns@test.com&gt;"</span>
@@ -63,31 +73,35 @@ reading/writing e-mail.</p>
   <span class="nc">HtmlBody</span><span class="o">(</span><span class="s">"&lt;p&gt;This is html&lt;/p&gt;"</span><span class="o">)</span>
 <span class="o">)</span>
 <span class="c1">// mail: Mail[IO] = Mail(</span>
-<span class="c1">//   MailHeader(</span>
-<span class="c1">//     "",</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Some(MailAddress(None, "test@test.com")),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     "Hello",</span>
-<span class="c1">//     List(),</span>
-<span class="c1">//     Set()</span>
+<span class="c1">//   header = MailHeader(</span>
+<span class="c1">//     id = "",</span>
+<span class="c1">//     messageId = None,</span>
+<span class="c1">//     folder = None,</span>
+<span class="c1">//     recipients = Recipients(</span>
+<span class="c1">//       to = List(MailAddress(name = None, address = "test@test.com")),</span>
+<span class="c1">//       cc = List(),</span>
+<span class="c1">//       bcc = List()</span>
+<span class="c1">//     ),</span>
+<span class="c1">//     sender = None,</span>
+<span class="c1">//     from = Some(value = MailAddress(name = None, address = "test@test.com")),</span>
+<span class="c1">//     replyTo = None,</span>
+<span class="c1">//     originationDate = None,</span>
+<span class="c1">//     subject = "Hello",</span>
+<span class="c1">//     received = List(),</span>
+<span class="c1">//     flags = Set()</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   Headers(List()),</span>
-<span class="c1">//   Html(Pure(StringContent("&lt;p&gt;This is html&lt;/p&gt;"))),</span>
-<span class="c1">//   Attachments(Vector())</span>
+<span class="c1">//   additionalHeaders = Headers(all = List()),</span>
+<span class="c1">//   body = Html(html = Pure(a = StringContent(asString = "&lt;p&gt;This is html&lt;/p&gt;"))),</span>
+<span class="c1">//   attachments = Attachments(all = Vector())</span>
 <span class="c1">// )</span>
 
 <span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
 
-<span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span>
-<span class="c1">// mailStr: String = """Date: Mon, 25 May 2020 12:30:08 +0000 (GMT)</span>
+<span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span><span class="o">()</span>
+<span class="c1">// mailStr: String = """Date: Mon, 14 Sep 2020 11:43:29 +0000 (GMT)</span>
 <span class="c1">// From: test@test.com</span>
 <span class="c1">// To: test@test.com</span>
-<span class="c1">// Message-ID: &lt;1862966607.0.1590409808243@kythira&gt;</span>
+<span class="c1">// Message-ID: &lt;135300128.0.1600083809584@kythira&gt;</span>
 <span class="c1">// Subject: Hello</span>
 <span class="c1">// MIME-Version: 1.0</span>
 <span class="c1">// Content-Type: text/html; charset=utf-8</span>
@@ -98,37 +112,56 @@ reading/writing e-mail.</p>
 
 <p>Deserialize:</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
 <span class="c1">// mail2: Mail[IO] = Mail(</span>
-<span class="c1">//   MailHeader(</span>
-<span class="c1">//     "messageId:&lt;1862966607.0.1590409808243@kythira&gt;",</span>
-<span class="c1">//     Some("&lt;1862966607.0.1590409808243@kythira&gt;"),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Some(MailAddress(None, "test@test.com")),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Some(2020-05-25T12:30:08Z),</span>
-<span class="c1">//     "Hello",</span>
-<span class="c1">//     List(),</span>
-<span class="c1">//     Set()</span>
+<span class="c1">//   header = MailHeader(</span>
+<span class="c1">//     id = "messageId:&lt;135300128.0.1600083809584@kythira&gt;",</span>
+<span class="c1">//     messageId = Some(value = "&lt;135300128.0.1600083809584@kythira&gt;"),</span>
+<span class="c1">//     folder = None,</span>
+<span class="c1">//     recipients = Recipients(</span>
+<span class="c1">//       to = List(MailAddress(name = None, address = "test@test.com")),</span>
+<span class="c1">//       cc = List(),</span>
+<span class="c1">//       bcc = List()</span>
+<span class="c1">//     ),</span>
+<span class="c1">//     sender = None,</span>
+<span class="c1">//     from = Some(value = MailAddress(name = None, address = "test@test.com")),</span>
+<span class="c1">//     replyTo = None,</span>
+<span class="c1">//     originationDate = Some(value = 2020-09-14T11:43:29Z),</span>
+<span class="c1">//     subject = "Hello",</span>
+<span class="c1">//     received = List(),</span>
+<span class="c1">//     flags = Set()</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   Headers(</span>
-<span class="c1">//     List(</span>
-<span class="c1">//       Header("MIME-Version", NonEmptyList("1.0", List())),</span>
-<span class="c1">//       Header("Content-Type", NonEmptyList("text/html; charset=utf-8", List())),</span>
-<span class="c1">//       Header("Content-Transfer-Encoding", NonEmptyList("7bit", List()))</span>
-<span class="c1">//     )</span>
-<span class="c1">//   ),</span>
-<span class="c1">//   Html(</span>
-<span class="c1">//     Pure(</span>
-<span class="c1">//       ByteContent(</span>
-<span class="c1">//         Chunk(View(scodec.bits.ByteVector$AtArray@1c244fd0, 0L, 19L)),</span>
-<span class="c1">//         Some(UTF-8)</span>
+<span class="c1">//   additionalHeaders = Headers(</span>
+<span class="c1">//     all = List(</span>
+<span class="c1">//       Header(</span>
+<span class="c1">//         name = "MIME-Version",</span>
+<span class="c1">//         value = NonEmptyList(head = "1.0", tail = List())</span>
+<span class="c1">//       ),</span>
+<span class="c1">//       Header(</span>
+<span class="c1">//         name = "Content-Type",</span>
+<span class="c1">//         value = NonEmptyList(head = "text/html; charset=utf-8", tail = List())</span>
+<span class="c1">//       ),</span>
+<span class="c1">//       Header(</span>
+<span class="c1">//         name = "Content-Transfer-Encoding",</span>
+<span class="c1">//         value = NonEmptyList(head = "7bit", tail = List())</span>
 <span class="c1">//       )</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   Attachments(Vector())</span>
+<span class="c1">//   body = Html(</span>
+<span class="c1">//     html = Pure(</span>
+<span class="c1">//       a = ByteContent(</span>
+<span class="c1">//         bytes = Chunk(</span>
+<span class="c1">//           bytes = View(</span>
+<span class="c1">//             at = scodec.bits.ByteVector$AtArray@12464b1c,</span>
+<span class="c1">//             offset = 0L,</span>
+<span class="c1">//             size = 19L</span>
+<span class="c1">//           )</span>
+<span class="c1">//         ),</span>
+<span class="c1">//         charset = Some(value = UTF-8)</span>
+<span class="c1">//       )</span>
+<span class="c1">//     )</span>
+<span class="c1">//   ),</span>
+<span class="c1">//   attachments = Attachments(all = Vector())</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 </section></div></div></div></div><script src="/emil/highlight/highlight.pack.js"></script><script>
@@ -148,4 +181,4 @@ document.querySelectorAll(`div[class^='${langPrefix}']`).forEach(function(div) {
 
 hljs.configure({languages:['scala','java','bash']});
 hljs.initHighlightingOnLoad();
-      </script><script>console.info('\x57\x65\x62\x73\x69\x74\x65\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x3a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x5f\x5f\x0a\x20\x20\x20\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x5f\x20\x20\x2f\x20\x2f\x5f\x20\x20\x20\x20\x20\x20\x5f\x5f\x5f\x5f\x20\x5f\x5f\x5f\x20\x20\x28\x5f\x29\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x28\x5f\x29\x20\x2f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x0a\x20\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x60\x5f\x5f\x20\x5c\x2f\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x20\x2f\x20\x5f\x5f\x2f\x20\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x0a\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x5f\x2f\x20\x2f\x20\x2f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x5f\x5f\x2f\x20\x2f\x20\x20\x2f\x20\x2f\x5f\x2f\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x20\x2f\x5f\x2f\x20\x20\x5f\x5f\x28\x5f\x5f\x20\x20\x29\x0a\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2e\x5f\x5f\x5f\x2f\x5c\x5f\x5f\x2f\x20\x20\x20\x20\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x2f\x20\x20\x20\x5c\x5f\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x0a\x0a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x34\x37\x64\x65\x67\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x62\x74\x2d\x6d\x69\x63\x72\x6f\x73\x69\x74\x65\x73')</script><script src="/emil/js/docs.js"></script></body></html>
+      </script><script src="/emil/js/fathom.js"></script><script>console.info('\x57\x65\x62\x73\x69\x74\x65\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x3a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x5f\x5f\x0a\x20\x20\x20\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x5f\x20\x20\x2f\x20\x2f\x5f\x20\x20\x20\x20\x20\x20\x5f\x5f\x5f\x5f\x20\x5f\x5f\x5f\x20\x20\x28\x5f\x29\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x28\x5f\x29\x20\x2f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x0a\x20\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x60\x5f\x5f\x20\x5c\x2f\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x20\x2f\x20\x5f\x5f\x2f\x20\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x0a\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x5f\x2f\x20\x2f\x20\x2f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x5f\x5f\x2f\x20\x2f\x20\x20\x2f\x20\x2f\x5f\x2f\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x20\x2f\x5f\x2f\x20\x20\x5f\x5f\x28\x5f\x5f\x20\x20\x29\x0a\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2e\x5f\x5f\x5f\x2f\x5c\x5f\x5f\x2f\x20\x20\x20\x20\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x2f\x20\x20\x20\x5c\x5f\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x0a\x0a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x34\x37\x64\x65\x67\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x62\x74\x2d\x6d\x69\x63\x72\x6f\x73\x69\x74\x65\x73')</script><script src="/emil/js/docs.js"></script></body></html>

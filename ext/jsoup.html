@@ -7,7 +7,7 @@ mails. It is based on the famous <a href="https://jsoup.org">jsoup</a> library.<
 
 <p>With sbt:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.6.1"
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.6.3"
 </code></pre></div></div>
 
 <h2 id="description">Description</h2>
@@ -39,28 +39,32 @@ documentation of <a href="https://jsoup.org">jsoup</a>.</li>
   <span class="nc">HtmlBody</span><span class="o">(</span><span class="n">htmlMail</span><span class="o">)</span>
 <span class="o">)</span>
 <span class="c1">// mail: Mail[IO] = Mail(</span>
-<span class="c1">//   MailHeader(</span>
-<span class="c1">//     "",</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Some(MailAddress(None, "me@test.com")),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     "Hello!",</span>
-<span class="c1">//     List(),</span>
-<span class="c1">//     Set()</span>
+<span class="c1">//   header = MailHeader(</span>
+<span class="c1">//     id = "",</span>
+<span class="c1">//     messageId = None,</span>
+<span class="c1">//     folder = None,</span>
+<span class="c1">//     recipients = Recipients(</span>
+<span class="c1">//       to = List(MailAddress(name = None, address = "test@test.com")),</span>
+<span class="c1">//       cc = List(),</span>
+<span class="c1">//       bcc = List()</span>
+<span class="c1">//     ),</span>
+<span class="c1">//     sender = None,</span>
+<span class="c1">//     from = Some(value = MailAddress(name = None, address = "me@test.com")),</span>
+<span class="c1">//     replyTo = None,</span>
+<span class="c1">//     originationDate = None,</span>
+<span class="c1">//     subject = "Hello!",</span>
+<span class="c1">//     received = List(),</span>
+<span class="c1">//     flags = Set()</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   Headers(List()),</span>
-<span class="c1">//   Html(</span>
-<span class="c1">//     Pure(</span>
-<span class="c1">//       StringContent(</span>
-<span class="c1">//         "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
+<span class="c1">//   additionalHeaders = Headers(all = List()),</span>
+<span class="c1">//   body = Html(</span>
+<span class="c1">//     html = Pure(</span>
+<span class="c1">//       a = StringContent(</span>
+<span class="c1">//         asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//       )</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   Attachments(Vector())</span>
+<span class="c1">//   attachments = Attachments(all = Vector())</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -76,32 +80,36 @@ created using the <code class="highlighter-rouge">BodyClean</code>
   <span class="o">.</span><span class="py">add</span><span class="o">(</span><span class="nc">BodyClean</span><span class="o">(</span><span class="nv">EmailWhitelist</span><span class="o">.</span><span class="py">default</span><span class="o">))</span>
   <span class="o">.</span><span class="py">build</span>
 <span class="c1">// cleanMail: Mail[IO] = Mail(</span>
-<span class="c1">//   MailHeader(</span>
-<span class="c1">//     "",</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Recipients(List(MailAddress(None, "test@test.com")), List(), List()),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     Some(MailAddress(None, "me@test.com")),</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     None,</span>
-<span class="c1">//     "Hello!",</span>
-<span class="c1">//     List(),</span>
-<span class="c1">//     Set()</span>
+<span class="c1">//   header = MailHeader(</span>
+<span class="c1">//     id = "",</span>
+<span class="c1">//     messageId = None,</span>
+<span class="c1">//     folder = None,</span>
+<span class="c1">//     recipients = Recipients(</span>
+<span class="c1">//       to = List(MailAddress(name = None, address = "test@test.com")),</span>
+<span class="c1">//       cc = List(),</span>
+<span class="c1">//       bcc = List()</span>
+<span class="c1">//     ),</span>
+<span class="c1">//     sender = None,</span>
+<span class="c1">//     from = Some(value = MailAddress(name = None, address = "me@test.com")),</span>
+<span class="c1">//     replyTo = None,</span>
+<span class="c1">//     originationDate = None,</span>
+<span class="c1">//     subject = "Hello!",</span>
+<span class="c1">//     received = List(),</span>
+<span class="c1">//     flags = Set()</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   Headers(List()),</span>
-<span class="c1">//   Html(</span>
-<span class="c1">//     Map(</span>
-<span class="c1">//       Pure(</span>
-<span class="c1">//         StringContent(</span>
-<span class="c1">//           "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
+<span class="c1">//   additionalHeaders = Headers(all = List()),</span>
+<span class="c1">//   body = Html(</span>
+<span class="c1">//     html = Map(</span>
+<span class="c1">//       source = Pure(</span>
+<span class="c1">//         a = StringContent(</span>
+<span class="c1">//           asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//         )</span>
 <span class="c1">//       ),</span>
-<span class="c1">//       emil.jsoup.BodyClean$$$Lambda$1765/1204775681@437c5a25,</span>
-<span class="c1">//       0</span>
+<span class="c1">//       f = emil.jsoup.BodyClean$$$Lambda$2008/1108314788@b6b8b74,</span>
+<span class="c1">//       index = 0</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   Attachments(Vector())</span>
+<span class="c1">//   attachments = Attachments(all = Vector())</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -109,9 +117,9 @@ created using the <code class="highlighter-rouge">BodyClean</code>
 function. This only applies to html parts. When the body is now
 evaluated, the string looks now like this:</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">cleanMail</span><span class="o">.</span><span class="py">body</span><span class="o">.</span><span class="py">htmlPart</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">)).</span><span class="py">unsafeRunSync</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">cleanMail</span><span class="o">.</span><span class="py">body</span><span class="o">.</span><span class="py">htmlPart</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">)).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
 <span class="c1">// res0: Option[String] = Some(</span>
-<span class="c1">//   "&lt;html&gt;&lt;head&gt;&lt;meta charset=\"UTF-8\"&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;A header&lt;/h1&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"</span>
+<span class="c1">//   value = "&lt;html&gt;&lt;head&gt;&lt;meta charset=\"UTF-8\"&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;A header&lt;/h1&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -130,13 +138,13 @@ For better results here, use the <code class="highlighter-rouge">emil-markdown</
   <span class="nc">Some</span><span class="o">(</span><span class="nv">mail</span><span class="o">.</span><span class="py">header</span><span class="o">)</span>
 <span class="o">)</span>
 <span class="c1">// htmlView: IO[BodyContent] = Map(</span>
-<span class="c1">//   Pure(</span>
-<span class="c1">//     StringContent(</span>
-<span class="c1">//       "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
+<span class="c1">//   source = Pure(</span>
+<span class="c1">//     a = StringContent(</span>
+<span class="c1">//       asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   emil.jsoup.HtmlBodyView$$$Lambda$1778/1040354359@fc56cf9,</span>
-<span class="c1">//   0</span>
+<span class="c1">//   f = emil.jsoup.HtmlBodyView$$$Lambda$2021/405976415@1fbdd357,</span>
+<span class="c1">//   index = 0</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -158,7 +166,7 @@ the cleaner from <code class="highlighter-rouge">BodyClean</code> to remove unwa
 
 <p>The result of the example is:</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">htmlView</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">).</span><span class="py">unsafeRunSync</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">htmlView</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
 <span class="c1">// res1: String = """&lt;html&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;/head&gt;&lt;body&gt;&lt;div style="padding-bottom: 0.8em;"&gt;</span>
 <span class="c1">// &lt;strong&gt;From:&lt;/strong&gt; &lt;code&gt;me@test.com&lt;/code&gt;&lt;br&gt;</span>
 <span class="c1">// &lt;strong&gt;To:&lt;/strong&gt; &lt;code&gt;test@test.com&lt;/code&gt;&lt;br&gt;</span>
@@ -184,4 +192,4 @@ document.querySelectorAll(`div[class^='${langPrefix}']`).forEach(function(div) {
 
 hljs.configure({languages:['scala','java','bash']});
 hljs.initHighlightingOnLoad();
-      </script><script>console.info('\x57\x65\x62\x73\x69\x74\x65\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x3a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x5f\x5f\x0a\x20\x20\x20\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x5f\x20\x20\x2f\x20\x2f\x5f\x20\x20\x20\x20\x20\x20\x5f\x5f\x5f\x5f\x20\x5f\x5f\x5f\x20\x20\x28\x5f\x29\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x28\x5f\x29\x20\x2f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x0a\x20\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x60\x5f\x5f\x20\x5c\x2f\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x20\x2f\x20\x5f\x5f\x2f\x20\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x0a\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x5f\x2f\x20\x2f\x20\x2f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x5f\x5f\x2f\x20\x2f\x20\x20\x2f\x20\x2f\x5f\x2f\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x20\x2f\x5f\x2f\x20\x20\x5f\x5f\x28\x5f\x5f\x20\x20\x29\x0a\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2e\x5f\x5f\x5f\x2f\x5c\x5f\x5f\x2f\x20\x20\x20\x20\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x2f\x20\x20\x20\x5c\x5f\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x0a\x0a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x34\x37\x64\x65\x67\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x62\x74\x2d\x6d\x69\x63\x72\x6f\x73\x69\x74\x65\x73')</script><script src="/emil/js/docs.js"></script></body></html>
+      </script><script src="/emil/js/fathom.js"></script><script>console.info('\x57\x65\x62\x73\x69\x74\x65\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x3a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x5f\x5f\x0a\x20\x20\x20\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x5f\x20\x20\x2f\x20\x2f\x5f\x20\x20\x20\x20\x20\x20\x5f\x5f\x5f\x5f\x20\x5f\x5f\x5f\x20\x20\x28\x5f\x29\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x28\x5f\x29\x20\x2f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x0a\x20\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x60\x5f\x5f\x20\x5c\x2f\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x20\x2f\x20\x5f\x5f\x2f\x20\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x0a\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x5f\x2f\x20\x2f\x20\x2f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x5f\x5f\x2f\x20\x2f\x20\x20\x2f\x20\x2f\x5f\x2f\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x20\x2f\x5f\x2f\x20\x20\x5f\x5f\x28\x5f\x5f\x20\x20\x29\x0a\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2e\x5f\x5f\x5f\x2f\x5c\x5f\x5f\x2f\x20\x20\x20\x20\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x2f\x20\x20\x20\x5c\x5f\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x0a\x0a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x34\x37\x64\x65\x67\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x62\x74\x2d\x6d\x69\x63\x72\x6f\x73\x69\x74\x65\x73')</script><script src="/emil/js/docs.js"></script></body></html>
