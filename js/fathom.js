@@ -1,5 +1,4 @@
 // Fathom - simple website analytics - https://github.com/usefathom/fathom
-<script>
 (function(f, a, t, h, o, m){
   a[h]=a[h]||function(){
     (a[h].q=a[h].q||[]).push(arguments)
@@ -11,4 +10,3 @@
 })(document, window, '//webstats.daheim.site/tracker.js', 'fathom');
 fathom('set', 'siteId', 'CGWXS');
 fathom('trackPageview');
-</script>
