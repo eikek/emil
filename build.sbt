@@ -110,7 +110,7 @@ val buildInfoSettings = Seq(
 val scalafixSettings = Seq(
   semanticdbEnabled := true, // enable SemanticDB
   semanticdbVersion := scalafixSemanticdb.revision, // use Scalafix compatible version
-  ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.4.1"
+  ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.4.2"
 )
 
 lazy val common = project.in(file("modules/common")).
