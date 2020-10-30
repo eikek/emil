@@ -9,7 +9,7 @@ object Dependencies {
   val h2Version = "1.4.200"
   val javaxMailVersion = "1.6.5"
   val jsoupVersion = "1.13.1"
-  val log4sVersion = "1.8.2"
+  val log4sVersion = "1.9.0"
   val logbackVersion = "1.2.3"
   val miniTestVersion = "2.8.2"
   val poiVersion = "4.1.2"
