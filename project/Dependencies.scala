@@ -45,7 +45,7 @@ object Dependencies {
 
   val greenmail = Seq(
     "com.icegreen" % "greenmail" % greenmailVersion excludeAll(
-      "com.sun.mail" % "javax.mail",
+      "com.sun.mail" % "jakarta.mail",
       "junit" % "junit",
       "org.hamcrest" % "hamcrest-core",
       "org.hamcrest" % "hamcrest-all"
@@ -55,7 +55,7 @@ object Dependencies {
   val poi = Seq(
     "org.apache.poi" % "poi" % poiVersion,
   //  "org.apache.poi" % "poi-ooxml" % poiVersion,
-    "org.apache.poi" % "poi-scratchpad" % poiVersion,
+    "org.apache.poi" % "poi-scratchpad" % poiVersion
   ).map(_.excludeAll(
     ExclusionRule("commons-logging")
   ))

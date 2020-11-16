@@ -2,7 +2,7 @@ package emil.javamail.internal
 
 import java.security.NoSuchProviderException
 import java.util.Properties
-import javax.mail._
+import jakarta.mail._
 
 import scala.concurrent.duration.Duration
 

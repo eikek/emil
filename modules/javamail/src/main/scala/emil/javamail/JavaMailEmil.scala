@@ -3,8 +3,8 @@ package emil.javamail
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import java.nio.charset.StandardCharsets
 import java.util.Properties
-import javax.mail.Session
-import javax.mail.internet.MimeMessage
+import jakarta.mail.Session
+import jakarta.mail.internet.MimeMessage
 
 import cats.effect._
 import cats.implicits._

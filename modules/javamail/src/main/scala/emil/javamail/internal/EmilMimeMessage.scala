@@ -1,8 +1,8 @@
 package emil.javamail.internal
 
 import java.io.InputStream
-import javax.mail.Session
-import javax.mail.internet.MimeMessage
+import jakarta.mail.Session
+import jakarta.mail.internet.MimeMessage
 
 import emil.javamail.conv.MessageIdEncode
 

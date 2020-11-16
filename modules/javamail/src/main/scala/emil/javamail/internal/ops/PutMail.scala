@@ -1,7 +1,7 @@
 package emil.javamail.internal.ops
 
-import javax.mail.Folder
-import javax.mail.internet.MimeMessage
+import jakarta.mail.Folder
+import jakarta.mail.internet.MimeMessage
 
 import cats.effect._
 import emil._

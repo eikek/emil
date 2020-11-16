@@ -1,8 +1,8 @@
 package emil.javamail.conv
 
 import java.util.Date
-import javax.mail._
-import javax.mail.search._
+import jakarta.mail._
+import jakarta.mail.search._
 
 import emil.SearchQuery.Relation
 import emil._

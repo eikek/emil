@@ -1,6 +1,6 @@
 package emil.javamail.conv
 
-import javax.mail.Session
+import jakarta.mail.Session
 
 trait Conv[A, B] { self =>
 

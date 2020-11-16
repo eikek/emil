@@ -1,6 +1,6 @@
 package emil.javamail.conv
 
-import javax.activation.MimeTypeParameterList
+import jakarta.activation.MimeTypeParameterList
 
 import cats.implicits._
 import emil.MimeType
@@ -8,7 +8,7 @@ import emil.javamail.internal.EnumerationConverter._
 
 object MimeTypeDecode {
 
-  def fromJavax(jm: javax.activation.MimeType): MimeType = {
+  def fromJavax(jm: jakarta.activation.MimeType): MimeType = {
     def paramMap(ps: MimeTypeParameterList): Map[String, String] =
       ps.getNames.asScalaList
         .map(n => (n.toString, Option(ps.get(n.toString)).getOrElse("")))
@@ -18,7 +18,7 @@ object MimeTypeDecode {
 
   def parse(str: String): Either[String, MimeType] =
     Either
-      .catchNonFatal(new javax.activation.MimeType(str))
+      .catchNonFatal(new jakarta.activation.MimeType(str))
       .leftMap(_.getMessage)
       .map(fromJavax)
 

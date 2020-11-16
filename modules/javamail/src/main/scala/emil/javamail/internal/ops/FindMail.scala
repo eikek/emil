@@ -1,7 +1,7 @@
 package emil.javamail.internal.ops
 
-import javax.mail.internet.MimeMessage
-import javax.mail.search.MessageIDTerm
+import jakarta.mail.internet.MimeMessage
+import jakarta.mail.search.MessageIDTerm
 
 import cats.effect.Sync
 import com.sun.mail.imap.IMAPFolder

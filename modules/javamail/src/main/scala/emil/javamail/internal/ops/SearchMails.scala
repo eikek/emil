@@ -1,8 +1,8 @@
 package emil.javamail.internal.ops
 
-import javax.mail.internet.MimeMessage
-import javax.mail.search.SearchTerm
-import javax.mail.{Flags, Folder}
+import jakarta.mail.internet.MimeMessage
+import jakarta.mail.search.SearchTerm
+import jakarta.mail.{Flags, Folder}
 
 import cats.effect.Sync
 import emil._

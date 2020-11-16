@@ -1,7 +1,7 @@
 package emil.javamail.internal.ops
 
-import javax.mail.internet.MimeMessage
-import javax.mail.{Flags, Folder, Message}
+import jakarta.mail.internet.MimeMessage
+import jakarta.mail.{Flags, Folder, Message}
 
 import cats.effect.Sync
 import cats.implicits._

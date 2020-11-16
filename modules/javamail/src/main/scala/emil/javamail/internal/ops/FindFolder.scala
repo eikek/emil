@@ -1,6 +1,6 @@
 package emil.javamail.internal.ops
 
-import javax.mail.Folder
+import jakarta.mail.Folder
 
 import cats.effect.Sync
 import emil._

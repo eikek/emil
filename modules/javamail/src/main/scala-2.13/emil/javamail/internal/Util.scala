@@ -1,7 +1,7 @@
 package emil.javamail.internal
 
-import javax.mail.Folder
-import javax.mail.internet.MimeMessage
+import jakarta.mail.Folder
+import jakarta.mail.internet.MimeMessage
 
 import scala.util.Using
 

@@ -1,6 +1,6 @@
 package emil.javamail.internal.ops
 
-import javax.mail.internet.MimeMessage
+import jakarta.mail.internet.MimeMessage
 
 import cats.data.NonEmptyList
 import cats.effect.Sync

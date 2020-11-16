@@ -1,8 +1,8 @@
 package emil.javamail.internal
 
 import java.time.Instant
-import javax.mail._
-import javax.mail.internet.MimeMessage
+import jakarta.mail._
+import jakarta.mail.internet.MimeMessage
 
 import cats.implicits._
 import emil.javamail.internal.SafeMimeMessage._

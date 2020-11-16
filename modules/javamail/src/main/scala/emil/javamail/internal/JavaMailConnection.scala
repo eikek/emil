@@ -1,6 +1,6 @@
 package emil.javamail.internal
 
-import javax.mail._
+import jakarta.mail._
 
 import cats.effect.{Resource, Sync}
 import emil.{Connection, MailConfig}

@@ -1,7 +1,7 @@
 package emil.javamail.conv
 
-import javax.mail._
-import javax.mail.internet.{InternetAddress, MimeMessage}
+import jakarta.mail._
+import jakarta.mail.internet.{InternetAddress, MimeMessage}
 
 import emil._
 import emil.javamail.internal._

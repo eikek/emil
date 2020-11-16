@@ -2,9 +2,9 @@ package emil.javamail.conv
 
 import java.io.{ByteArrayInputStream, InputStream, OutputStream}
 import java.util.Date
-import javax.activation.{DataHandler, DataSource}
-import javax.mail._
-import javax.mail.internet._
+import jakarta.activation.{DataHandler, DataSource}
+import jakarta.mail._
+import jakarta.mail.internet._
 
 import cats.Monad
 import cats.effect.Sync
