@@ -32,6 +32,9 @@ trait SearchConv {
       case SearchQuery.And(qs) =>
         new AndTerm(qs.map(makeTerm).toArray)
 
+      case SearchQuery.From(value) =>
+        new FromStringTerm(value)
+
       case SearchQuery.RecipientTo(value) =>
         new RecipientStringTerm(Message.RecipientType.TO, value)
 
