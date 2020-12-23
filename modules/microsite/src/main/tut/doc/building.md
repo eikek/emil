@@ -119,7 +119,7 @@ object MyHeader {
     CustomHeader("X-My-Header", value)
 }
 
-val mymail = MailBuilder.build(
+val mymail = MailBuilder.build[IO](
   To("me@test.com"),
   MyHeader("blablabla"),
   TextBody("This is a text")
