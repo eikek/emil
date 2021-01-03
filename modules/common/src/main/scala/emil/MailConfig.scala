@@ -12,6 +12,7 @@ case class MailConfig(
     user: String,
     password: String,
     sslType: SSLType,
+    enableXOAuth2: Boolean = false,
     disableCertificateCheck: Boolean = false,
     timeout: Duration = FiniteDuration(10, TimeUnit.SECONDS)
 ) {
