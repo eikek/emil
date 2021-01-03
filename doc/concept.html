@@ -87,27 +87,69 @@ needs a corresponding connection to some imap server and the
 <span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext</span>
 
 <span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@55a46bf3</span>
+<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@6979e9b8</span>
 <span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// blocker: Blocker = cats.effect.Blocker@324c3ed5</span>
+<span class="c1">// blocker: Blocker = cats.effect.Blocker@771deee6</span>
 
 <span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">blocker</span><span class="o">)</span>
-<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@7f5ba1bf</span>
+<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@345effd7</span>
 <span class="k">val</span> <span class="nv">imapConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"imap://devmail:143"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// imapConf: MailConfig = MailConfig(</span>
 <span class="c1">//   url = "imap://devmail:143",</span>
 <span class="c1">//   user = "dev",</span>
 <span class="c1">//   password = "dev",</span>
 <span class="c1">//   sslType = NoEncryption,</span>
+<span class="c1">//   enableXOAuth2 = false,</span>
 <span class="c1">//   disableCertificateCheck = false,</span>
 <span class="c1">//   timeout = 10 seconds</span>
 <span class="c1">// )</span>
 
 <span class="k">val</span> <span class="nv">moveIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nf">moveToTrash</span><span class="o">(</span><span class="nv">myemil</span><span class="o">.</span><span class="py">access</span><span class="o">))</span>
 <span class="c1">// moveIO: IO[Unit] = Async(</span>
-<span class="c1">//   k = cats.effect.internals.IOBracket$$$Lambda$1551/714129758@25e01756,</span>
-<span class="c1">//   trampolineAfter = false</span>
-<span class="c1">// )</span>
+<span class="c1">//   k = cats.effect.internals.IOAsync$$$Lambda$1335/1864630663@2d854c13,</span>
+<span class="c1">//   trampolineAfter = true,</span>
+<span class="c1">//   trace = StackTrace(</span>
+<span class="c1">//     stackTrace = List(</span>
+<span class="c1">//       cats.effect.internals.IOTracing$.buildFrame(IOTracing.scala:48),</span>
+<span class="c1">//       cats.effect.internals.IOTracing$.buildCachedFrame(IOTracing.scala:39),</span>
+<span class="c1">//       cats.effect.internals.IOTracing$.cached(IOTracing.scala:34),</span>
+<span class="c1">//       cats.effect.internals.IOAsync$.apply(IOAsync.scala:30),</span>
+<span class="c1">//       cats.effect.internals.IOBracket$.apply(IOBracket.scala:54),</span>
+<span class="c1">//       cats.effect.IO.bracketCase(IO.scala:613),</span>
+<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.bracketCase(IO.scala:904),</span>
+<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.bracketCase(IO.scala:863),</span>
+<span class="c1">//       cats.effect.Resource.loop$1(Resource.scala:126),</span>
+<span class="c1">//       cats.effect.Resource.fold(Resource.scala:135),</span>
+<span class="c1">//       cats.effect.Resource.use_(Resource.scala:142),</span>
+<span class="c1">//       cats.effect.ResourceLike.use(ResourceLike.scala:33),</span>
+<span class="c1">//       emil.Emil$$anon$1.run(Emil.scala:20),</span>
+<span class="c1">//       repl.MdocSession$App.&lt;init&gt;(concept.md:47),</span>
+<span class="c1">//       repl.MdocSession$.app(concept.md:3),</span>
+<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$2(DocumentBuilder.scala:89),</span>
+<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
+<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
+<span class="c1">//       scala.Console$.withErr(Console.scala:193),</span>
+<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$1(DocumentBuilder.scala:89),</span>
+<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
+<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
+<span class="c1">//       scala.Console$.withOut(Console.scala:164),</span>
+<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.build(DocumentBuilder.scala:88),</span>
+<span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$.buildDocument(MarkdownBuilder.scala:44),</span>
+<span class="c1">//       mdoc.internal.markdown.Processor.processScalaInputs(Processor.scala:185),</span>
+<span class="c1">//       mdoc.internal.markdown.Processor.processScalaInputs(Processor.scala:152),</span>
+<span class="c1">//       mdoc.internal.markdown.Processor.processDocument(Processor.scala:52),</span>
+<span class="c1">//       mdoc.internal.markdown.Markdown$.toMarkdown(Markdown.scala:131),</span>
+<span class="c1">//       mdoc.internal.cli.MainOps.handleMarkdown(MainOps.scala:82),</span>
+<span class="c1">//       mdoc.internal.cli.MainOps.handleFile(MainOps.scala:110),</span>
+<span class="c1">//       mdoc.internal.cli.MainOps.$anonfun$generateCompleteSite$1(MainOps.scala:156),</span>
+<span class="c1">//       scala.collection.LinearSeqOps.foldLeft(LinearSeq.scala:168),</span>
+<span class="c1">//       scala.collection.LinearSeqOps.foldLeft$(LinearSeq.scala:164),</span>
+<span class="c1">//       scala.collection.immutable.List.foldLeft(List.scala:79),</span>
+<span class="c1">//       mdoc.internal.cli.MainOps.generateCompleteSite(MainOps.scala:155),</span>
+<span class="c1">//       mdoc.internal.cli.MainOps.run(MainOps.scala:177),</span>
+<span class="c1">//       mdoc.internal.cli.MainOps$.process(MainOps.scala:269),</span>
+<span class="c1">//       mdoc.Main$.process(Main.scala:26),</span>
+<span class="c1">// ...</span>
 </code></pre></div></div>
 
 <p>First, we need to create a <code class="highlighter-rouge">ContextShift</code> instance and a
