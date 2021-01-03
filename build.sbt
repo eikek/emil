@@ -215,8 +215,7 @@ lazy val microsite = project.in(file("modules/microsite")).
     scalacOptions := Seq(),
     mdocVariables := Map(
       "VERSION" -> version.value
-    ),
-    mdocIn := sourceDirectory.value/"main"/"tut"
+    )
   ).
   dependsOn(common % "compile->compile,test", javamail, tnef, doobie, jsoup /*, markdown*/)
 
