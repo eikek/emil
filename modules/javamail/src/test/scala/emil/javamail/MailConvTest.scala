@@ -213,6 +213,8 @@ object MailConvTest extends SimpleTestSuite {
   test("read test mail 1") {
     val url  = getClass.getResource("/mails/test.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
     assertEquals(mail.header.received.size, 7)
     assertEquals(mail.attachments.size, 1)
     assert(mail.body.nonEmpty)
@@ -221,6 +223,8 @@ object MailConvTest extends SimpleTestSuite {
   test("read test mail 2") {
     val url  = getClass.getResource("/mails/test2.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
     assertEquals(mail.header.received.size, 3)
     assertEquals(mail.attachments.size, 0)
     assert(mail.body.nonEmpty)
@@ -229,6 +233,8 @@ object MailConvTest extends SimpleTestSuite {
   test("read alternative mail") {
     val url  = getClass.getResource("/mails/alt.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
     assertEquals(mail.attachments.size, 0)
     assert(mail.body.nonEmpty)
     assert(mail.body.textPart.unsafeRunSync().isDefined)
@@ -279,6 +285,8 @@ object MailConvTest extends SimpleTestSuite {
   test("read utf8 b64 encoded filename from attachment") {
     val url  = getClass.getResource("/mails/filename_b64.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
     assertEquals(mail.header.subject, "Öffnung der Therapiestelle der Stiftung")
     assertEquals(
@@ -291,6 +299,8 @@ object MailConvTest extends SimpleTestSuite {
   test("read mail with mime tree") {
     val url  = getClass.getResource("/mails/bodytree.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isDefined)
     assert(mail.body.textPart.unsafeRunSync().isDefined)
@@ -300,9 +310,23 @@ object MailConvTest extends SimpleTestSuite {
   test("read mail with nested alternative body") {
     val url  = getClass.getResource("/mails/nested-alternative.eml")
     val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isDefined)
     assert(mail.body.textPart.unsafeRunSync().isDefined)
     assertEquals(mail.attachments.size, 1)
+  }
+
+  test("read mail without charset declaration") {
+    val url  = getClass.getResource("/mails/latin1-missing-charset.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
+    assert(mail.body.nonEmpty)
+    assert(mail.body.htmlPart.unsafeRunSync().isEmpty)
+    val textBody = mail.body.textPart.unsafeRunSync().get
+    assertEquals(textBody.charset, None)
+    assert(textBody.asString.contains("Passwort-Änderung"))
   }
 }
