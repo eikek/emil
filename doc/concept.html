@@ -87,12 +87,12 @@ needs a corresponding connection to some imap server and the
 <span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext</span>
 
 <span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@6979e9b8</span>
+<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@1c33d539</span>
 <span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// blocker: Blocker = cats.effect.Blocker@771deee6</span>
+<span class="c1">// blocker: Blocker = cats.effect.Blocker@527b989a</span>
 
 <span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">blocker</span><span class="o">)</span>
-<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@345effd7</span>
+<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@2c3f47ba</span>
 <span class="k">val</span> <span class="nv">imapConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"imap://devmail:143"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// imapConf: MailConfig = MailConfig(</span>
 <span class="c1">//   url = "imap://devmail:143",</span>
@@ -106,7 +106,7 @@ needs a corresponding connection to some imap server and the
 
 <span class="k">val</span> <span class="nv">moveIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nf">moveToTrash</span><span class="o">(</span><span class="nv">myemil</span><span class="o">.</span><span class="py">access</span><span class="o">))</span>
 <span class="c1">// moveIO: IO[Unit] = Async(</span>
-<span class="c1">//   k = cats.effect.internals.IOAsync$$$Lambda$1335/1864630663@2d854c13,</span>
+<span class="c1">//   k = cats.effect.internals.IOAsync$$$Lambda$1349/859456754@e316971,</span>
 <span class="c1">//   trampolineAfter = true,</span>
 <span class="c1">//   trace = StackTrace(</span>
 <span class="c1">//     stackTrace = List(</span>
@@ -135,15 +135,15 @@ needs a corresponding connection to some imap server and the
 <span class="c1">//       scala.Console$.withOut(Console.scala:164),</span>
 <span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.build(DocumentBuilder.scala:88),</span>
 <span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$.buildDocument(MarkdownBuilder.scala:44),</span>
-<span class="c1">//       mdoc.internal.markdown.Processor.processScalaInputs(Processor.scala:185),</span>
-<span class="c1">//       mdoc.internal.markdown.Processor.processScalaInputs(Processor.scala:152),</span>
-<span class="c1">//       mdoc.internal.markdown.Processor.processDocument(Processor.scala:52),</span>
+<span class="c1">//       mdoc.internal.markdown.Processor.processScalaInputs(Processor.scala:182),</span>
+<span class="c1">//       mdoc.internal.markdown.Processor.processScalaInputs(Processor.scala:149),</span>
+<span class="c1">//       mdoc.internal.markdown.Processor.processDocument(Processor.scala:49),</span>
 <span class="c1">//       mdoc.internal.markdown.Markdown$.toMarkdown(Markdown.scala:131),</span>
 <span class="c1">//       mdoc.internal.cli.MainOps.handleMarkdown(MainOps.scala:82),</span>
 <span class="c1">//       mdoc.internal.cli.MainOps.handleFile(MainOps.scala:110),</span>
 <span class="c1">//       mdoc.internal.cli.MainOps.$anonfun$generateCompleteSite$1(MainOps.scala:156),</span>
-<span class="c1">//       scala.collection.LinearSeqOps.foldLeft(LinearSeq.scala:168),</span>
-<span class="c1">//       scala.collection.LinearSeqOps.foldLeft$(LinearSeq.scala:164),</span>
+<span class="c1">//       scala.collection.LinearSeqOps.foldLeft(LinearSeq.scala:169),</span>
+<span class="c1">//       scala.collection.LinearSeqOps.foldLeft$(LinearSeq.scala:165),</span>
 <span class="c1">//       scala.collection.immutable.List.foldLeft(List.scala:79),</span>
 <span class="c1">//       mdoc.internal.cli.MainOps.generateCompleteSite(MainOps.scala:155),</span>
 <span class="c1">//       mdoc.internal.cli.MainOps.run(MainOps.scala:177),</span>
