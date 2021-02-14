@@ -12,18 +12,18 @@ final private[javamail] class SafeMimeMessage(msg: MimeMessage) {
   val delegate = msg
 
   def getFlags: Option[Flags] =
-    getOption("flags", msg.getFlags)
+    getOptionA("flags", msg.getFlags)
 
   def getHeader(name: String, delimiter: String): Option[String] =
     getOption(s"getHeader($name, $delimiter)", msg.getHeader(name, delimiter))
 
   def getHeader(name: String): List[String] =
-    getOption(s"getHeader($name)", msg.getHeader(name))
+    getOptionA(s"getHeader($name)", msg.getHeader(name))
       .map(_.toList)
       .getOrElse(Nil)
 
   def getSentDate: Option[Instant] =
-    getOption("Sent-Date", msg.getSentDate).map(_.toInstant)
+    getOptionA("Sent-Date", msg.getSentDate).map(_.toInstant)
 
   def getMessageID: Option[String] =
     getOption("MessageID", msg.getMessageID)
@@ -32,16 +32,16 @@ final private[javamail] class SafeMimeMessage(msg: MimeMessage) {
     getOption("Subject", msg.getSubject)
 
   def getSender: Option[Address] =
-    getOption("Sender", msg.getSender)
+    getOptionA("Sender", msg.getSender)
 
   def getFolder: Option[Folder] =
-    getOption("Folder", msg.getFolder)
+    getOptionA("Folder", msg.getFolder)
 
   def getFrom: List[Address] =
-    getOption("From", msg.getFrom).map(_.toList).getOrElse(Nil)
+    getOptionA("From", msg.getFrom).map(_.toList).getOrElse(Nil)
 
   def getRecipients(rt: Message.RecipientType): List[Address] =
-    getOption(s"Recipients($rt)", msg.getRecipients(rt))
+    getOptionA(s"Recipients($rt)", msg.getRecipients(rt))
       .map(_.toList)
       .getOrElse(Nil)
 }
@@ -52,7 +52,7 @@ private[javamail] object SafeMimeMessage {
   def apply(mm: MimeMessage): SafeMimeMessage =
     new SafeMimeMessage(mm)
 
-  def getOption[A](name: String, getter: => A): Option[A] =
+  def getOptionA[A](name: String, getter: => A): Option[A] =
     Either
       .catchNonFatal(getter)
       .fold(
@@ -62,4 +62,7 @@ private[javamail] object SafeMimeMessage {
         },
         Option.apply
       )
+
+  def getOption(name: String, getter: => String): Option[String] =
+    getOptionA(name, getter).map(_.trim).filter(_.nonEmpty)
 }
