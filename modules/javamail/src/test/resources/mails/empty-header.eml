@@ -1,0 +1,41 @@
+Return-Path: <max.muster@test.com>
+Delivered-To: moritz.muster@test.com
+From: Max Muster <max.muster@test.com>
+To: Max Muster <max.muster@test.com>
+Subject: Testing
+Reply-To:
+X-Something:
+Date: Thu, 23 Apr 2020 14:17:39 +0000
+Message-ID: <abc-decf-52012.test.com>
+Content-Type: multipart/mixed;
+  boundary="_007_FB9FC6347A65F54FA9C682E7356F4F0601264D75E5S52013brrabc__"
+MIME-Version: 1.0
+
+--_007_FB9FC6347A65F54FA9C682E7356F4F0601264D75E5S52013brrabc__
+Content-Type: application/pdf; name=
+  "=?utf-8?B?RWluZmFjaGUgU3ByYWNoZSAtIERpZSBUaGVyYXBpZXN0ZWxsZSDDtmZmbmV0?=
+ =?utf-8?Q?.pdf?="
+Content-Description: =?utf-8?B?RWluZmFjaGUgU3ByYWNoZSAtIERpZSBUaGVyYXBpZXN0ZWxsZSDDtmZmbmV0?=
+ =?utf-8?Q?.pdf?=
+Content-Disposition: attachment; filename=
+  "=?utf-8?B?RWluZmFjaGUgU3ByYWNoZSAtIERpZSBUaGVyYXBpZXN0ZWxsZSDDtmZmbmV0?=
+ =?utf-8?Q?.pdf?="; size=14533;
+  creation-date="Thu, 23 Apr 2020 14:12:09 GMT";
+  modification-date="Thu, 23 Apr 2020 14:10:39 GMT"
+Content-Transfer-Encoding: base64
+
+VGhpcyBpcyBvbmx5IGEgdGVzdC4=
+
+--_007_FB9FC6347A65F54FA9C682E7356F4F0601264D75E5S52013brrabc__
+Content-Type: application/pdf;
+  name="=?utf-8?B?w5ZmZm51bmcgZGVyIFRoZXJhcGllc3RlbGxlLnBkZg==?="
+Content-Description: =?utf-8?B?w5ZmZm51bmcgZGVyIFRoZXJhcGllc3RlbGxlLnBkZg==?=
+Content-Disposition: attachment;
+  filename="=?utf-8?B?w5ZmZm51bmcgZGVyIFRoZXJhcGllc3RlbGxlLnBkZg==?=";
+  size=16683; creation-date="Thu, 23 Apr 2020 14:12:14 GMT";
+  modification-date="Thu, 23 Apr 2020 14:08:58 GMT"
+Content-Transfer-Encoding: base64
+
+VGhpcyBpcyBvbmx5IGEgdGVzdC4=
+
+--_007_FB9FC6347A65F54FA9C682E7356F4F0601264D75E5S52013brrabc__--

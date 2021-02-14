@@ -8,6 +8,7 @@ import minitest._
 import scala.concurrent.ExecutionContext
 import java.nio.charset.StandardCharsets
 import java.nio.charset.Charset
+import cats.data.NonEmptyList
 
 object MailConvTest extends SimpleTestSuite {
   implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
@@ -328,5 +329,23 @@ object MailConvTest extends SimpleTestSuite {
     val textBody = mail.body.textPart.unsafeRunSync().get
     assertEquals(textBody.charset, None)
     assert(textBody.asString.contains("Passwort-Änderung"))
+  }
+
+  test("read mail with empty headers") {
+    val url  = getClass.getResource("/mails/empty-header.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
+    assertEquals(mail.attachments.size, 2)
+    assertEquals(mail.header.subject, "Testing")
+    assertEquals(
+      mail.attachments.all(0).filename,
+      Some("Einfache Sprache - Die Therapiestelle öffnet.pdf")
+    )
+    assertEquals(mail.attachments.all(1).filename, Some("Öffnung der Therapiestelle.pdf"))
+    assertEquals(
+      mail.additionalHeaders.find("X-Something"),
+      Some(Header("X-Something", NonEmptyList.of("")))
+    )
   }
 }
