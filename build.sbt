@@ -4,7 +4,7 @@ import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
 val scala212 = "2.12.11"
-val scala213 = "2.13.3"
+val scala213 = "2.13.4"
 val updateReadme = inputKey[Unit]("Update readme")
 
 val sharedSettings = Seq(
@@ -110,7 +110,7 @@ val buildInfoSettings = Seq(
 val scalafixSettings = Seq(
   semanticdbEnabled := true, // enable SemanticDB
   semanticdbVersion := scalafixSemanticdb.revision, // use Scalafix compatible version
-  ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.4.3"
+  ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
 )
 
 lazy val common = project.in(file("modules/common")).
@@ -213,11 +213,9 @@ lazy val microsite = project.in(file("modules/microsite")).
     micrositeShareOnSocial := false,
     fork in run := true,
     scalacOptions := Seq(),
-    micrositeCompilingDocsTool := WithMdoc,
     mdocVariables := Map(
       "VERSION" -> version.value
-    ),
-    mdocIn := tutSourceDirectory.value
+    )
   ).
   dependsOn(common % "compile->compile,test", javamail, tnef, doobie, jsoup /*, markdown*/)
 

@@ -77,7 +77,7 @@ object ConnectionResource {
       // "mail.smtp.auth.xoauth2.disable -> false" is not working for
       // gmail.
       val mechanisms = "LOGIN PLAIN DIGEST-MD5 NTLM"
-      if (settings.enableXOAuth2) {
+      if (mc.enableXOAuth2) {
         props.put(s"mail.$proto.auth.mechanisms", "XOAUTH2 " + mechanisms)
       } else {
         props.put(s"mail.$proto.auth.mechanisms", mechanisms)

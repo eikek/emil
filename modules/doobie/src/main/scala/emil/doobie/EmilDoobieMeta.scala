@@ -1,11 +1,10 @@
 package emil.doobie
 
-import scala.reflect.runtime.universe.TypeTag
-
 import cats.effect._
 import cats.implicits._
 import doobie.util.invariant._
 import doobie.{Meta, Read, Write}
+import org.tpolecat.typename.TypeName
 import emil._
 import emil.doobie.EmilDoobieMeta.parseOrThrow
 import emil.javamail.syntax._
@@ -66,7 +65,7 @@ object EmilDoobieMeta extends EmilDoobieMeta {
 
   private def parseOrThrow[A](
       f: String => Either[String, A]
-  )(str: String)(implicit ev: TypeTag[A]): A =
+  )(str: String)(implicit ev: TypeName[A]): A =
     f(str) match {
       case Right(a)  => a
       case Left(err) => throw InvalidValue[String, A](str, err)

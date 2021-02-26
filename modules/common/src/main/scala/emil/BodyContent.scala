@@ -35,7 +35,8 @@ sealed trait BodyContent {
       case Some(cs) =>
         bytes.decodeString(cs)
       case None =>
-        bytes.decodeUtf8
+        // try some, we don't know
+        PreferredCharsets.decode(bytes)
     }
 
   def isEmpty: Boolean

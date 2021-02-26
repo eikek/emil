@@ -81,6 +81,11 @@ object SearchQuery {
 
   case object Flagged extends SearchQuery
 
+  case class From(value: String) extends SearchQuery
+  object From extends ContainsCompanion[From, String] {
+    def make(value: String, rel: Relation) = From(value)
+  }
+
   case class RecipientTo(value: String) extends SearchQuery
   object RecipientTo extends ContainsCompanion[RecipientTo, String] {
     def make(value: String, rel: Relation) = RecipientTo(value)
