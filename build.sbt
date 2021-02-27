@@ -3,8 +3,8 @@ import com.typesafe.sbt.SbtGit.GitKeys._
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
-val scala212 = "2.12.13"
-val scala213 = "2.13.4"
+val scala212 = "2.12.11"
+val scala213 = "2.13.5"
 val updateReadme = inputKey[Unit]("Update readme")
 
 val sharedSettings = Seq(
