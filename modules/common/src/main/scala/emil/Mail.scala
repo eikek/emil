@@ -1,6 +1,5 @@
 package emil
 
-import cats.Applicative
 import emil.builder.MailBuilder
 
 final case class Mail[F[_]](
@@ -28,7 +27,7 @@ final case class Mail[F[_]](
 
 object Mail {
 
-  def empty[F[_]: Applicative]: Mail[F] =
+  def empty[F[_]]: Mail[F] =
     Mail(MailHeader.empty, Headers.empty, MailBody.empty[F], Attachments.empty[F])
 
 }

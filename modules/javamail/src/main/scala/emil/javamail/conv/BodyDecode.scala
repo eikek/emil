@@ -213,7 +213,7 @@ object BodyDecode {
       .flatMap(ct => MimeTypeDecode.parse(ct).toOption)
       .exists(mt => mt.sub.equalsIgnoreCase("alternative"))
 
-  private def loadInputStream[F[_]: Sync](in: InputStream): (Long, Stream[F, Byte]) = {
+  private def loadInputStream[F[_]](in: InputStream): (Long, Stream[F, Byte]) = {
     val buffer = Array.ofDim[Byte](16 * 1024)
     @annotation.tailrec
     def go(chunks: Vector[ByteVectorChunk], len: Long): (Long, Vector[ByteVectorChunk]) =
