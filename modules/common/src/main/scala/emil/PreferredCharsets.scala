@@ -2,8 +2,8 @@ package emil
 
 import java.nio.charset.{CharacterCodingException, Charset, StandardCharsets}
 
-import scodec.bits.ByteVector
 import cats.Eval
+import scodec.bits.ByteVector
 
 private[emil] object PreferredCharsets extends Charsets {
   type DecodeResult = Either[CharacterCodingException, String]
