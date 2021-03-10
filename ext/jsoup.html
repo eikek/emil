@@ -7,7 +7,7 @@ mails. It is based on the famous <a href="https://jsoup.org">jsoup</a> library.<
 
 <p>With sbt:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.7.2"
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.7.3"
 </code></pre></div></div>
 
 <h2 id="description">Description</h2>
@@ -105,7 +105,7 @@ created using the <code class="highlighter-rouge">BodyClean</code>
 <span class="c1">//           asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//         )</span>
 <span class="c1">//       ),</span>
-<span class="c1">//       f = emil.jsoup.BodyClean$$$Lambda$1969/1855342891@69140b46,</span>
+<span class="c1">//       f = emil.jsoup.BodyClean$$$Lambda$1936/1306447637@1b31ca2,</span>
 <span class="c1">//       trace = StackTrace(</span>
 <span class="c1">//         stackTrace = List(</span>
 <span class="c1">//           cats.effect.internals.IOTracing$.buildFrame(IOTracing.scala:48),</span>
@@ -119,13 +119,13 @@ created using the <code class="highlighter-rouge">BodyClean</code>
 <span class="c1">//           cats.Functor$ToFunctorOps$$anon$4.map(Functor.scala:250),</span>
 <span class="c1">//           emil.jsoup.BodyClean$.modifyBody(BodyClean.scala:55),</span>
 <span class="c1">//           emil.jsoup.BodyClean.$anonfun$apply$1(BodyClean.scala:20),</span>
-<span class="c1">//           emil.Mail.mapBody(Mail.scala:20),</span>
+<span class="c1">//           emil.Mail.mapBody(Mail.scala:19),</span>
 <span class="c1">//           emil.jsoup.BodyClean.apply(BodyClean.scala:20),</span>
-<span class="c1">//           emil.builder.MailBuilder.$anonfun$build$1(MailBuilder.scala:36),</span>
+<span class="c1">//           emil.builder.MailBuilder.$anonfun$build$1(MailBuilder.scala:35),</span>
 <span class="c1">//           scala.collection.IterableOnceOps.foldLeft(IterableOnce.scala:646),</span>
 <span class="c1">//           scala.collection.IterableOnceOps.foldLeft$(IterableOnce.scala:642),</span>
 <span class="c1">//           scala.collection.AbstractIterable.foldLeft(Iterable.scala:919),</span>
-<span class="c1">//           emil.builder.MailBuilder.build(MailBuilder.scala:36),</span>
+<span class="c1">//           emil.builder.MailBuilder.build(MailBuilder.scala:35),</span>
 <span class="c1">//           repl.MdocSession$App.&lt;init&gt;(jsoup.md:35),</span>
 <span class="c1">// ...</span>
 </code></pre></div></div>
@@ -160,7 +160,7 @@ For better results here, use the <code class="highlighter-rouge">emil-markdown</
 <span class="c1">//       asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   f = emil.jsoup.HtmlBodyView$$$Lambda$1983/2020305643@6d4c611d,</span>
+<span class="c1">//   f = emil.jsoup.HtmlBodyView$$$Lambda$1950/1518804547@155d4db,</span>
 <span class="c1">//   trace = StackTrace(</span>
 <span class="c1">//     stackTrace = List(</span>
 <span class="c1">//       cats.effect.internals.IOTracing$.buildFrame(IOTracing.scala:48),</span>
