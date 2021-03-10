@@ -66,7 +66,7 @@ object syntax {
 
   implicit final class MailAddressTypeOps(mat: MailAddress.type) {
     def parse(str: String): Either[String, MailAddress] =
-      Either.catchNonFatal(mailAddressParse.convert(str)).leftMap(_.getMessage)
+      mailAddressParse.convert(str)
 
     def parseUnsafe(str: String): MailAddress =
       parse(str).fold(sys.error, identity)

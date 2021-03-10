@@ -3,6 +3,7 @@ package emil.javamail.conv
 import javax.mail._
 import javax.mail.internet.{InternetAddress, MimeMessage}
 
+import cats.implicits._
 import emil._
 import emil.javamail.internal._
 
@@ -23,9 +24,13 @@ trait BasicDecode {
         MailAddress.unsafe(Option(ia.getPersonal), ia.getAddress)
     }
 
-  implicit def mailAddressParse: Conv[String, MailAddress] =
-    Conv[String, InternetAddress](str => new InternetAddress(str))
-      .map(a => MailAddress.unsafe(Option(a.getPersonal), a.getAddress))
+  implicit def mailAddressParse: Conv[String, Either[String, MailAddress]] =
+    Conv(str =>
+      Either
+        .catchNonFatal(new InternetAddress(str))
+        .leftMap(ex => s"Invalid mail address '$str' - ${ex.getMessage}")
+        .map(a => MailAddress.unsafe(Option(a.getPersonal), a.getAddress))
+    )
 
   implicit def recipientsDecode(implicit
       ca: Conv[Address, MailAddress]
@@ -46,7 +51,7 @@ trait BasicDecode {
       cf: Conv[Folder, MailFolder],
       ca: Conv[Address, MailAddress],
       cr: Conv[MimeMessage, Recipients],
-      cs: Conv[String, MailAddress]
+      cs: Conv[String, Either[String, MailAddress]]
   ): Conv[MimeMessage, MailHeader] =
     Conv(msg =>
       Util.withReadFolder(msg) { _ =>
@@ -60,7 +65,7 @@ trait BasicDecode {
           from = sm.getFrom.headOption.map(ca.convert),
           replyTo =
             // msg.getReplyTo method calls getFrom if there is no ReplyTo header
-            sm.getHeader("Reply-To", ",").map(cs.convert),
+            sm.getHeader("Reply-To", ",").flatMap(cs.map(_.toOption).convert),
           originationDate = sm.getSentDate,
           subject = sm.getSubject.getOrElse(""),
           sm.getHeader("Received").flatMap(r => Received.parse(r).toOption),

@@ -4,10 +4,10 @@ import cats.effect._
 import cats.implicits._
 import doobie.util.invariant._
 import doobie.{Meta, Read, Write}
-import org.tpolecat.typename.TypeName
 import emil._
 import emil.doobie.EmilDoobieMeta.parseOrThrow
 import emil.javamail.syntax._
+import org.tpolecat.typename.TypeName
 
 trait EmilDoobieMeta {
 
