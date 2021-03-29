@@ -2,14 +2,16 @@ package emil.javamail
 
 import java.net.URL
 import java.nio.file.Path
+import javax.activation.MimeTypeParseException
+import javax.mail.internet.AddressException
 
+import cats.data.ValidatedNec
 import cats.effect._
 import cats.implicits._
 import emil._
 import emil.javamail.conv.MimeTypeDecode
 import emil.javamail.conv.codec._
-import fs2.Pipe
-import fs2.Stream
+import fs2.{Pipe, Stream}
 import scodec.bits.ByteVector
 
 object syntax {
@@ -60,6 +62,9 @@ object syntax {
     def parse(str: String): Either[String, MimeType] =
       MimeTypeDecode.parse(str)
 
+    def parseValidated(str: String): ValidatedNec[MimeTypeParseException, MimeType] =
+      MimeTypeDecode.parseValidated(str)
+
     def parseUnsafe(str: String): MimeType =
       parse(str).fold(sys.error, identity)
   }
@@ -68,13 +73,39 @@ object syntax {
     def parse(str: String): Either[String, MailAddress] =
       mailAddressParse.convert(str)
 
+    /** Parses an email address returning a cats `ValidatedNec` with `AddressException` as the error in case of malformed address. */
+    def parseValidated(str: String): ValidatedNec[AddressException, MailAddress] =
+      mailAddressParseValidated.convert(str)
+
+    /** Parses an email address from two parts. */
+    def parseAddressAndName(
+        name: Option[String],
+        address: String
+    ): Either[String, MailAddress] =
+      mailAddressParseNameAndAddress.convert((name, address))
+
+    /** Parses an email address from two parts returning a cats `ValidatedNec` with `AddressException` as the error in case of malformed address. */
+    def parseAddressAndNameValidated(
+        name: Option[String],
+        address: String
+    ): ValidatedNec[AddressException, MailAddress] =
+      mailAddressParseNameAndAddressValidated.convert((name, address))
+
     def parseUnsafe(str: String): MailAddress =
-      parse(str).fold(sys.error, identity)
+      parseValidated(str).fold(nec => throw nec.head, identity)
 
     /** Reads a comma-separated list of e-mail addresses.
       */
     def parseMultiple(str: String): Either[String, List[MailAddress]] =
-      str.split(',').toList.map(_.trim).traverse(parse)
+      str.split(Array(',', ';')).toList.map(_.trim).traverse(parse)
+
+    /** Reads a comma-separated list of e-mail addresses,
+      *  returning a cats `ValidatedNec` with `AddressException` as the error in case of malformed addresses.
+      */
+    def parseMultipleValidated(
+        str: String
+    ): ValidatedNec[AddressException, List[MailAddress]] =
+      str.split(Array(',', ';')).toList.map(_.trim).traverse(parseValidated)
 
     /** Reads a comma-separated list of e-mail addresses, throwing
       * exceptions if something fails.

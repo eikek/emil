@@ -1,5 +1,7 @@
 package emil
 
+import cats.Hash
+
 final case class Headers(all: List[Header]) {
 
   def add(h: Header): Headers = {
@@ -22,4 +24,6 @@ object Headers {
 
   def apply(hdrs: Header*): Headers =
     Headers(hdrs.toList)
+
+  implicit lazy val hash: Hash[Headers] = Hash.fromUniversalHashCode[Headers]
 }

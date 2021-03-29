@@ -2,6 +2,8 @@ package emil
 
 import java.time.Instant
 
+import cats.Hash
+
 final case class MailHeader(
     id: String,
     messageId: Option[String],
@@ -54,4 +56,7 @@ object MailHeader {
       Nil,
       Set.empty
     )
+
+  implicit lazy val hash: Hash[MailHeader] = Hash.fromUniversalHashCode[MailHeader]
+
 }

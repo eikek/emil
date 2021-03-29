@@ -1,9 +1,8 @@
 package emil
 
-import java.nio.charset.CharacterCodingException
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
+import java.nio.charset.{CharacterCodingException, Charset, StandardCharsets}
 
+import cats.Hash
 import scodec.bits.ByteVector
 
 /** Content part of the mail body.
@@ -45,6 +44,15 @@ sealed trait BodyContent {
   def isEmpty: Boolean
 
   def nonEmpty: Boolean = !isEmpty
+
+  final override def hashCode(): Int = bytes.hashCode
+
+  final override def equals(that: Any): Boolean = that match {
+    case that: AnyRef if this.eq(that) => true
+    case that: BodyContent             => this.bytes == that.bytes
+    case _                             => false
+  }
+
 }
 
 object BodyContent {
@@ -57,6 +65,8 @@ object BodyContent {
 
   def apply(bytes: ByteVector, charset: Option[Charset]): BodyContent =
     ByteContent(bytes, charset)
+
+  implicit lazy val hash: Hash[BodyContent] = Hash.fromUniversalHashCode[BodyContent]
 
   final case class StringContent(asString: String) extends BodyContent {
     lazy val bytes               = ByteVector.view(asString.getBytes(UTF8))

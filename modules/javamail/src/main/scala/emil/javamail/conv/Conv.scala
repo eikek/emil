@@ -8,6 +8,9 @@ trait Conv[A, B] { self =>
 
   final def map[C](f: B => C): Conv[A, C] =
     Conv(a => f(self.convert(a)))
+
+  final def contraMap[C](f: C => A): Conv[C, B] =
+    Conv(a => self.convert(f(a)))
 }
 
 object Conv {
