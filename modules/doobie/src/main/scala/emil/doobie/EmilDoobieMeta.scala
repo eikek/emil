@@ -25,7 +25,7 @@ trait EmilDoobieMeta {
 
   val mailAddressMulicolumnRead: Read[MailAddress] =
     Read[(Option[String], String)]
-      .map(parseOrThrow(MailAddress.parseAddressAndName _ tupled))
+      .map(parseOrThrow(na => MailAddress.parseAddressAndName(na._1, na._2)))
 
   val mailAddressMulicolumnWrite: Write[MailAddress] =
     Write[(Option[String], String)].contramap { mailAddress =>
