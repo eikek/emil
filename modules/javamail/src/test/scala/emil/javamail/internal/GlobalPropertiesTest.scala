@@ -30,7 +30,7 @@ object GlobalPropertiesTest extends SimpleTestSuite {
   }
 
   test("set lenient properties") {
-    val names = GlobalProperties.setAll(GlobalProperties.lenient)
+    val _ = GlobalProperties.setAll(GlobalProperties.lenient)
     for (kv <- GlobalProperties.lenient.props) {
       assert(System.getProperty(kv._1) != null)
       assert(System.getProperty(kv._1) != "")

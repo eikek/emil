@@ -1,10 +1,9 @@
 package emil.javamail
 
 import cats.effect._
-import minitest._
-import emil.test.GreenmailTestSuite
-import emil.builder._
 import emil._
+import emil.builder._
+import emil.test.GreenmailTestSuite
 
 object SendMailNoAuthTest extends GreenmailTestSuite[Unit] {
 

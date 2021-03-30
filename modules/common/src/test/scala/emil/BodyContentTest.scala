@@ -1,7 +1,6 @@
 package emil
 
-import java.nio.charset.{Charset, StandardCharsets}
-import java.util.concurrent.atomic.AtomicLong
+import java.nio.charset.StandardCharsets
 
 import minitest._
 import scodec.bits.ByteVector
