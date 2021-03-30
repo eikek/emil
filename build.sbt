@@ -6,6 +6,12 @@ val scala212     = "2.12.13"
 val scala213     = "2.13.5"
 val updateReadme = inputKey[Unit]("Update readme")
 
+addCommandAlias(
+  "lint",
+  "; scalafmtSbtCheck; scalafmtCheckAll; compile:scalafix --check; test:scalafix --check"
+)
+addCommandAlias("fix", "; compile:scalafix; test:scalafix; scalafmtSbt; scalafmtAll")
+
 val sharedSettings = Seq(
   organization := "com.github.eikek",
   scalaVersion := scala213,
@@ -33,7 +39,6 @@ val sharedSettings = Seq(
        else
          Nil),
   crossScalaVersions := Seq(scala212, scala213),
-  scalacOptions in Test := Seq("-deprecation", "-feature", "-encoding", "UTF-8"),
   scalacOptions in (Compile, console) := Seq(),
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
   homepage := Some(url("https://github.com/eikek/emil"))

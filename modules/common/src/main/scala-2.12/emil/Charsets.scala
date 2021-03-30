@@ -1,6 +1,7 @@
 package emil
 
 import java.nio.charset.Charset
+
 import scala.collection.JavaConverters._
 
 private trait Charsets {

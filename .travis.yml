@@ -1,8 +1,8 @@
 sudo: false
 language: scala
 scala:
-  - 2.12.11
-  - 2.13.3
+  - 2.12.13
+  - 2.13.5
 
 jdk:
   - openjdk8
@@ -24,4 +24,4 @@ install:
     sudo ln -s $HOME/sbt/bin/sbt /usr/local/bin/sbt
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION "; scalafmtSbtCheck; scalafmtCheckAll; test"
+  - sbt ++$TRAVIS_SCALA_VERSION "; lint; test"

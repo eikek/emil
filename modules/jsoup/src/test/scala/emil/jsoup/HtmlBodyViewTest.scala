@@ -1,12 +1,12 @@
 package emil.jsoup
 
-import minitest._
+import scala.concurrent.ExecutionContext
+
 import cats.effect._
 import emil._
 import emil.builder._
 import emil.javamail.syntax._
-import org.jsoup._
-import scala.concurrent.ExecutionContext
+import minitest._
 
 object HtmlBodyViewTest extends SimpleTestSuite {
   implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
