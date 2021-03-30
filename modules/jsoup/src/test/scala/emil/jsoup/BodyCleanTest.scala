@@ -1,12 +1,13 @@
 package emil.jsoup
 
-import minitest._
+import java.io.ByteArrayInputStream
+import java.nio.charset.StandardCharsets
+
 import cats.effect._
 import emil._
 import emil.builder._
+import minitest._
 import org.jsoup._
-import java.io.ByteArrayInputStream
-import java.nio.charset.StandardCharsets
 
 object BodyCleanTest extends SimpleTestSuite {
 

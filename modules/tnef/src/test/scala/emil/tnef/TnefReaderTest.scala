@@ -1,10 +1,11 @@
 package emil.tnef
 
-import cats.effect._
-import minitest._
 import scala.concurrent.ExecutionContext
-import scodec.bits.ByteVector
+
+import cats.effect._
 import emil.builder._
+import minitest._
+import scodec.bits.ByteVector
 
 object TnefReaderTest extends SimpleTestSuite {
   val blocker     = Blocker.liftExecutionContext(ExecutionContext.global)

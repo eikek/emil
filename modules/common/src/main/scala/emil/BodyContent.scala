@@ -1,9 +1,8 @@
 package emil
 
-import java.nio.charset.CharacterCodingException
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
+import java.nio.charset.{CharacterCodingException, Charset, StandardCharsets}
 
+import cats.Hash
 import scodec.bits.ByteVector
 
 /** Content part of the mail body.
@@ -33,7 +32,10 @@ sealed trait BodyContent {
   final def contentDecode: Either[CharacterCodingException, String] =
     charset match {
       case Some(cs) =>
-        bytes.decodeString(cs)
+        val e = bytes.decodeString(cs)
+        //note: .orElse is 2.13 only
+        e.fold(_ => PreferredCharsets.decode(bytes), _ => e)
+
       case None =>
         // try some, we don't know
         PreferredCharsets.decode(bytes)
@@ -42,6 +44,15 @@ sealed trait BodyContent {
   def isEmpty: Boolean
 
   def nonEmpty: Boolean = !isEmpty
+
+  final override def hashCode(): Int = bytes.hashCode
+
+  final override def equals(that: Any): Boolean = that match {
+    case that: AnyRef if this.eq(that) => true
+    case that: BodyContent             => this.bytes == that.bytes
+    case _                             => false
+  }
+
 }
 
 object BodyContent {
@@ -55,6 +66,8 @@ object BodyContent {
   def apply(bytes: ByteVector, charset: Option[Charset]): BodyContent =
     ByteContent(bytes, charset)
 
+  implicit lazy val hash: Hash[BodyContent] = Hash.fromUniversalHashCode[BodyContent]
+
   final case class StringContent(asString: String) extends BodyContent {
     lazy val bytes               = ByteVector.view(asString.getBytes(UTF8))
     val charset: Option[Charset] = Some(UTF8)
@@ -64,7 +77,10 @@ object BodyContent {
 
   final case class ByteContent(bytes: ByteVector, charset: Option[Charset])
       extends BodyContent {
-    def asString         = contentDecode.fold(throw _, identity)
+    def asString         = contentDecode.fold(placeholder, identity)
     def isEmpty: Boolean = bytes.isEmpty
+
+    private def placeholder(ex: Throwable): String =
+      s"Error decoding ${bytes.size} bytes with charset '$charset': ${ex.getMessage}"
   }
 }

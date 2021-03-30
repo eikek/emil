@@ -1,15 +1,17 @@
 package emil.doobie
 
 import java.time.Instant
-import minitest._
-import cats.effect._
-import fs2.Stream
+
+import scala.concurrent.ExecutionContext
+
 import _root_.doobie._
 import _root_.doobie.implicits._
+import cats.effect._
 import emil._
 import emil.builder._
 import emil.doobie.EmilDoobieMeta._
-import scala.concurrent.ExecutionContext
+import fs2.Stream
+import minitest._
 
 object EmilDoobieTest extends SimpleTestSuite {
   implicit val CS: ContextShift[IO] = IO.contextShift(ExecutionContext.global)

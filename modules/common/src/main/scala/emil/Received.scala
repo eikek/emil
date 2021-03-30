@@ -1,17 +1,16 @@
 package emil
 
-import java.time.Instant
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.{Instant, ZonedDateTime}
 
 import cats.implicits._
-import cats.kernel.Semigroup
+import cats.{Hash, Semigroup}
 
 /** Received header as described in RCF2822.
   *
   * https://tools.ietf.org/html/rfc2822
   */
-case class Received(data: Vector[(String, String)], date: Instant) {
+final case class Received(data: Vector[(String, String)], date: Instant) {
 
   def findFirst(name: String): Option[String] =
     data.find(_._1.equalsIgnoreCase(name)).map(_._2)
@@ -144,4 +143,7 @@ object Received {
         Received(data, dt)
       }
   }
+
+  implicit lazy val hash: Hash[Received] = Hash.fromUniversalHashCode[Received]
+
 }

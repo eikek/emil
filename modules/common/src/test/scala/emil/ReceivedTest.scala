@@ -1,7 +1,8 @@
 package emil
 
-import minitest._
 import java.time.Instant
+
+import minitest._
 
 object ReceivedTest extends SimpleTestSuite {
 

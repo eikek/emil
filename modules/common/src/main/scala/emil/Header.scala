@@ -1,5 +1,6 @@
 package emil
 
+import cats.Hash
 import cats.data.NonEmptyList
 import cats.implicits._
 
@@ -37,4 +38,6 @@ object Header {
 
   def listId(value: String): Header =
     Header("List-Id", value)
+
+  implicit lazy val hash: Hash[Header] = Hash.fromUniversalHashCode[Header]
 }

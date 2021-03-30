@@ -1,5 +1,7 @@
 package emil
 
+import cats.Hash
+
 final case class Recipients(
     to: List[MailAddress],
     cc: List[MailAddress],
@@ -35,4 +37,7 @@ object Recipients {
 
   def to(ma: MailAddress): Recipients =
     Recipients(List(ma), Nil, Nil)
+
+  implicit lazy val hash: Hash[Recipients] = Hash.fromUniversalHashCode[Recipients]
+
 }

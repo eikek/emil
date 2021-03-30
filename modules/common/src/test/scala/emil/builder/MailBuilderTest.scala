@@ -1,10 +1,9 @@
 package emil.builder
 
-import cats.Monoid
-import cats.implicits._
 import cats.effect._
-import minitest._
+import cats.implicits._
 import emil._
+import minitest._
 
 object MailBuilderTest extends SimpleTestSuite {
 

@@ -4,12 +4,12 @@ import java.net.Socket
 import java.security.SecureRandom
 import java.util.concurrent.atomic.AtomicBoolean
 
+import scala.concurrent.duration._
+
 import com.icegreen.greenmail.imap.ImapHostManager
 import com.icegreen.greenmail.util.{GreenMail, ServerSetup}
 import emil.{MailAddress, MailConfig, SSLType}
 import org.slf4j.LoggerFactory
-
-import scala.concurrent.duration._
 
 class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
 

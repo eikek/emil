@@ -1,9 +1,9 @@
 package emil.markdown
 
-import minitest._
 import cats.effect._
 import emil._
 import emil.builder._
+import minitest._
 
 object MarkdownBodyTest extends SimpleTestSuite {
 

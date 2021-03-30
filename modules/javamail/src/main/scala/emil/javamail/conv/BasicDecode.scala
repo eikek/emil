@@ -1,8 +1,12 @@
 package emil.javamail.conv
 
 import javax.mail._
-import javax.mail.internet.{InternetAddress, MimeMessage}
+import javax.mail.internet.{AddressException, InternetAddress, MimeMessage}
 
+import scala.language.postfixOps
+
+import cats.data.{Validated, ValidatedNec}
+import cats.implicits._
 import emil._
 import emil.javamail.internal._
 
@@ -23,9 +27,34 @@ trait BasicDecode {
         MailAddress.unsafe(Option(ia.getPersonal), ia.getAddress)
     }
 
-  implicit def mailAddressParse: Conv[String, MailAddress] =
-    Conv[String, InternetAddress](str => new InternetAddress(str))
-      .map(a => MailAddress.unsafe(Option(a.getPersonal), a.getAddress))
+  implicit def mailAddressParse: Conv[String, Either[String, MailAddress]] =
+    Conv(str =>
+      Either
+        .catchNonFatal(new InternetAddress(str, true))
+        .leftMap(ex => s"Invalid mail address '$str' - ${ex.getMessage}")
+        .map(a => MailAddress.unsafe(Option(a.getPersonal), a.getAddress))
+    )
+
+  implicit def mailAddressParseValidated
+      : Conv[String, ValidatedNec[AddressException, MailAddress]] =
+    Conv(str =>
+      Validated
+        .catchOnly[AddressException](new InternetAddress(str, true))
+        .toValidatedNec
+        .map[MailAddress](a => MailAddress.unsafe(Option(a.getPersonal), a.getAddress))
+    )
+
+  implicit def mailAddressParseNameAndAddress
+      : Conv[(Option[String], String), Either[String, MailAddress]] =
+    mailAddressParse.contraMap[(Option[String], String)](
+      MailAddress.twoPartDisplay _ tupled
+    )
+
+  implicit def mailAddressParseNameAndAddressValidated
+      : Conv[(Option[String], String), ValidatedNec[AddressException, MailAddress]] =
+    mailAddressParseValidated.contraMap[(Option[String], String)](
+      MailAddress.twoPartDisplay _ tupled
+    )
 
   implicit def recipientsDecode(implicit
       ca: Conv[Address, MailAddress]
@@ -46,7 +75,7 @@ trait BasicDecode {
       cf: Conv[Folder, MailFolder],
       ca: Conv[Address, MailAddress],
       cr: Conv[MimeMessage, Recipients],
-      cs: Conv[String, MailAddress]
+      cs: Conv[String, Either[String, MailAddress]]
   ): Conv[MimeMessage, MailHeader] =
     Conv(msg =>
       Util.withReadFolder(msg) { _ =>
@@ -60,7 +89,7 @@ trait BasicDecode {
           from = sm.getFrom.headOption.map(ca.convert),
           replyTo =
             // msg.getReplyTo method calls getFrom if there is no ReplyTo header
-            sm.getHeader("Reply-To", ",").map(cs.convert),
+            sm.getHeader("Reply-To", ",").flatMap(cs.map(_.toOption).convert),
           originationDate = sm.getSentDate,
           subject = sm.getSubject.getOrElse(""),
           sm.getHeader("Received").flatMap(r => Received.parse(r).toOption),

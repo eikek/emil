@@ -1,14 +1,15 @@
 package emil.javamail
 
+import java.nio.charset.Charset
+
+import scala.concurrent.ExecutionContext
+
+import cats.data.NonEmptyList
 import cats.effect._
 import emil._
 import emil.builder._
 import emil.javamail.syntax._
 import minitest._
-import scala.concurrent.ExecutionContext
-import java.nio.charset.StandardCharsets
-import java.nio.charset.Charset
-import cats.data.NonEmptyList
 
 object MailConvTest extends SimpleTestSuite {
   implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
@@ -347,5 +348,38 @@ object MailConvTest extends SimpleTestSuite {
       mail.additionalHeaders.find("X-Something"),
       Some(Header("X-Something", NonEmptyList.of("")))
     )
+    assertEquals(mail.header.replyTo, None)
+  }
+
+  test("read mail with empty address <>") {
+    val url  = getClass.getResource("/mails/empty-address.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
+    assertEquals(mail.attachments.size, 2)
+    assertEquals(mail.header.subject, "Testing")
+    assertEquals(
+      mail.attachments.all(0).filename,
+      Some("Einfache Sprache - Die Therapiestelle öffnet.pdf")
+    )
+    assertEquals(mail.attachments.all(1).filename, Some("Öffnung der Therapiestelle.pdf"))
+    assertEquals(mail.header.replyTo, None)
+  }
+
+  test("read mail with invalid headers") {
+    val url  = getClass.getResource("/mails/broken-header.eml")
+    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    //test decoding
+    toStringContent(mail.body)
+    assertEquals(mail.attachments.size, 2)
+    assertEquals(mail.header.subject, "Testing")
+    assertEquals(
+      mail.attachments.all(0).filename,
+      Some("Einfache Sprache - Die Therapiestelle öffnet.pdf")
+    )
+    assertEquals(mail.attachments.all(1).filename, Some("Öffnung der Therapiestelle.pdf"))
+    assertEquals(mail.header.replyTo, None)
+    assertEquals(mail.header.date, None)
+    assertEquals(mail.header.recipients.to, Nil)
   }
 }

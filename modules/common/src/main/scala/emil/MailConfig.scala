@@ -4,10 +4,11 @@ import java.util.concurrent.TimeUnit
 
 import scala.concurrent.duration.{Duration, FiniteDuration}
 
+import cats.Hash
 import cats.implicits._
 import emil.MailConfig.UrlParts
 
-case class MailConfig(
+final case class MailConfig(
     url: String,
     user: String,
     password: String,
@@ -50,5 +51,7 @@ object MailConfig {
         Left(s"Invalid url: $url")
     }
   }
+
+  implicit lazy val hash: Hash[MailConfig] = Hash.fromUniversalHashCode[MailConfig]
 
 }
