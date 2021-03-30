@@ -1,7 +1,5 @@
 package emil.doobie
 
-import scala.language.postfixOps
-
 import cats.Show
 import cats.effect._
 import cats.implicits._
