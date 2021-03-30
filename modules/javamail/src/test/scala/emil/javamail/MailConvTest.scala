@@ -1,14 +1,15 @@
 package emil.javamail
 
+import java.nio.charset.Charset
+
+import scala.concurrent.ExecutionContext
+
+import cats.data.NonEmptyList
 import cats.effect._
 import emil._
 import emil.builder._
 import emil.javamail.syntax._
 import minitest._
-import scala.concurrent.ExecutionContext
-import java.nio.charset.StandardCharsets
-import java.nio.charset.Charset
-import cats.data.NonEmptyList
 
 object MailConvTest extends SimpleTestSuite {
   implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)

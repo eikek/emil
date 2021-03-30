@@ -3,12 +3,12 @@ package emil.test
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
 
-import cats.effect.{Blocker, ContextShift, IO}
-import emil.{MailAddress, MailConfig}
-import emil.test.GreenmailTestSuite.Context
-import minitest.TestSuite
-
 import scala.concurrent.ExecutionContext
+
+import cats.effect.{Blocker, ContextShift, IO}
+import emil.test.GreenmailTestSuite.Context
+import emil.{MailAddress, MailConfig}
+import minitest.TestSuite
 
 abstract class GreenmailTestSuite[A] extends TestSuite[A] {
 

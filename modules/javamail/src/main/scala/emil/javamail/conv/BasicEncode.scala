@@ -20,12 +20,7 @@ trait BasicEncode {
     }
 
   implicit def mailAddressEncode: Conv[MailAddress, InternetAddress] =
-    Conv({
-      case MailAddress(Some(personal), address) =>
-        new InternetAddress(address, personal)
-      case MailAddress(None, address) =>
-        new InternetAddress(address)
-    })
+    Conv(mailAddress => new InternetAddress(mailAddress.displayString))
 
   implicit def attachmentEncode[F[_]: Sync]: Conv[Attachment[F], F[MimeBodyPart]] =
     Conv { attach =>
