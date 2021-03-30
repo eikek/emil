@@ -2,6 +2,8 @@ package emil
 
 import java.nio.charset.{Charset, StandardCharsets}
 
+import cats.Hash
+
 final case class MimeType private (
     primary: String,
     sub: String,
@@ -43,4 +45,7 @@ object MimeType {
 
   def text(sub: String): MimeType =
     apply("text", sub)
+
+  implicit lazy val hash: Hash[MimeType] = Hash.fromUniversalHashCode[MimeType]
+
 }

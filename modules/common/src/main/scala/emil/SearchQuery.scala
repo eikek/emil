@@ -2,6 +2,8 @@ package emil
 
 import java.time.Instant
 
+import cats.Hash
+
 sealed trait SearchQuery {
 
   def &&(q: SearchQuery): SearchQuery.And =
@@ -23,6 +25,9 @@ object SearchQuery {
     case object Gt    extends Relation
     case object Le    extends Relation
     case object Ge    extends Relation
+
+    implicit lazy val hash: Hash[Relation] = Hash.fromUniversalHashCode[Relation]
+
   }
 
   trait ContainsCompanion[A <: SearchQuery, B] {
@@ -126,4 +131,6 @@ object SearchQuery {
   case class Not(c: SearchQuery) extends SearchQuery {
     override def unary_! : SearchQuery = c
   }
+
+  implicit lazy val hash: Hash[SearchQuery] = Hash.fromUniversalHashCode[SearchQuery]
 }

@@ -1,5 +1,7 @@
 package emil
 
+import cats.Hash
+
 sealed trait SSLType { self: Product =>
 
   final def name: String =
@@ -24,5 +26,7 @@ object SSLType {
 
   def unsafe(str: String): SSLType =
     fromString(str).fold(sys.error, identity)
+
+  implicit lazy val hash: Hash[SSLType] = Hash.fromUniversalHashCode[SSLType]
 
 }
