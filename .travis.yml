@@ -24,4 +24,4 @@ install:
     sudo ln -s $HOME/sbt/bin/sbt /usr/local/bin/sbt
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION ";scalafmtCheckAll ;test"
+  - sbt ++$TRAVIS_SCALA_VERSION "; scalafmtSbtCheck; scalafmtCheckAll; test"
