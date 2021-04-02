@@ -1,6 +1,4 @@
 import com.typesafe.sbt.SbtGit.GitKeys._
-import xerial.sbt.Sonatype._
-import ReleaseTransformations._
 
 val scala212     = "2.12.13"
 val scala213     = "2.13.5"
@@ -46,14 +44,6 @@ val sharedSettings = Seq(
 ) ++ publishSettings
 
 lazy val publishSettings = Seq(
-  publishTo := sonatypePublishToBundle.value,
-  publishMavenStyle := true,
-  scmInfo := Some(
-    ScmInfo(
-      url("https://github.com/eikek/emil.git"),
-      "scm:git:git@github.com:eikek/emil.git"
-    )
-  ),
   developers := List(
     Developer(
       id = "eikek",
@@ -62,24 +52,7 @@ lazy val publishSettings = Seq(
       email = ""
     )
   ),
-  publishArtifact in Test := false,
-  releaseCrossBuild := true,
-  releaseProcess := Seq[ReleaseStep](
-    checkSnapshotDependencies,
-    inquireVersions,
-    runClean,
-    runTest,
-    setReleaseVersion,
-    commitReleaseVersion,
-    tagRelease,
-    //For non cross-build projects, use releaseStepCommand("publishSigned")
-    releaseStepCommandAndRemaining("+publishSigned"),
-    releaseStepCommand("sonatypeBundleRelease"),
-    setNextVersion,
-    commitNextVersion,
-    pushChanges
-  ),
-  sonatypeProjectHosting := Some(GitHubHosting("eikek", "emil", "eike.kettner@posteo.de"))
+  publishArtifact in Test := false
 )
 
 lazy val noPublish = Seq(
@@ -202,7 +175,6 @@ lazy val jsoup = project
 lazy val microsite = project
   .in(file("modules/microsite"))
   .enablePlugins(MicrositesPlugin, MdocPlugin)
-  .disablePlugins(ReleasePlugin)
   .settings(sharedSettings)
   .settings(noPublish)
   .settings(
