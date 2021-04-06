@@ -7,7 +7,7 @@ import cats.Monad
 import cats.effect.Sync
 import cats.implicits._
 import emil._
-import emil.javamail.internal.EmilMimeMessage
+import emil.javamail.internal.{EmilMimeMessage, ThreadClassLoader}
 import jakarta.activation.{DataHandler, DataSource}
 import jakarta.mail._
 import jakarta.mail.internet._
@@ -145,7 +145,9 @@ trait BasicEncode {
         msg.setContent(body.getContent, ct)
       }
       // see https://javaee.github.io/javamail/FAQ#hdrs
-      msg.saveChanges()
+      ThreadClassLoader {
+        msg.saveChanges()
+      }
     }
 
     MsgConv { (session, midEncode, mail) =>
