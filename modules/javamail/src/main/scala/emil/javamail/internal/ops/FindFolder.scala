@@ -1,11 +1,10 @@
 package emil.javamail.internal.ops
 
-import javax.mail.Folder
-
 import cats.effect.Sync
 import emil._
 import emil.javamail.conv.Conv
 import emil.javamail.internal.JavaMailConnection
+import jakarta.mail.Folder
 
 object FindFolder {
 

@@ -3,8 +3,6 @@ package emil.javamail
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import java.nio.charset.StandardCharsets
 import java.util.Properties
-import javax.mail.Session
-import javax.mail.internet.MimeMessage
 
 import cats.effect._
 import cats.implicits._
@@ -12,6 +10,8 @@ import emil._
 import emil.javamail.conv.{Conv, MessageIdEncode, MsgConv}
 import emil.javamail.internal._
 import fs2.{Chunk, Stream}
+import jakarta.mail.Session
+import jakarta.mail.internet.MimeMessage
 import scodec.bits.ByteVector
 
 final class JavaMailEmil[F[_]: Sync: ContextShift] private (

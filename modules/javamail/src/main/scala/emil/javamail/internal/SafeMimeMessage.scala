@@ -1,11 +1,11 @@
 package emil.javamail.internal
 
 import java.time.Instant
-import javax.mail._
-import javax.mail.internet.MimeMessage
 
 import cats.implicits._
 import emil.javamail.internal.SafeMimeMessage._
+import jakarta.mail._
+import jakarta.mail.internet.MimeMessage
 import org.log4s.getLogger
 
 final private[javamail] class SafeMimeMessage(msg: MimeMessage) {
