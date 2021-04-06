@@ -1,6 +1,6 @@
 package emil.javamail.internal
 
-import javax.mail.Session
+import jakarta.mail.Session
 
 object ThreadClassLoader {
 
