@@ -7,9 +7,9 @@ val updateReadme = inputKey[Unit]("Update readme")
 addCommandAlias("ci", "; lint; +test; +publishLocal")
 addCommandAlias(
   "lint",
-  "; scalafmtSbtCheck; scalafmtCheckAll; compile:scalafix --check; test:scalafix --check"
+  "; scalafmtSbtCheck; scalafmtCheckAll; Compile/scalafix --check; Test/scalafix --check"
 )
-addCommandAlias("fix", "; compile:scalafix; test:scalafix; scalafmtSbt; scalafmtAll")
+addCommandAlias("fix", "; Compile/scalafix; Test/scalafix; scalafmtSbt; scalafmtAll")
 
 val sharedSettings = Seq(
   organization := "com.github.eikek",
@@ -38,9 +38,10 @@ val sharedSettings = Seq(
        else
          Nil),
   crossScalaVersions := Seq(scala212, scala213),
-  scalacOptions in (Compile, console) := Seq(),
+  Compile / console / scalacOptions := Seq(),
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
-  homepage := Some(url("https://github.com/eikek/emil"))
+  homepage := Some(url("https://github.com/eikek/emil")),
+  versionScheme := Some("early-semver")
 ) ++ publishSettings
 
 lazy val publishSettings = Seq(
@@ -52,7 +53,7 @@ lazy val publishSettings = Seq(
       email = ""
     )
   ),
-  publishArtifact in Test := false
+  Test / publishArtifact := false
 )
 
 lazy val noPublish = Seq(
@@ -180,7 +181,7 @@ lazy val microsite = project
   .settings(
     name := "emil-microsite",
     publishArtifact := false,
-    skip in publish := true,
+    publish / skip := true,
     micrositeFooterText := Some(
       """
         |<p>&copy; 2020 <a href="https://github.com/eikek/emil">Emil, v{{site.version}}</a></p>
@@ -195,7 +196,7 @@ lazy val microsite = project
     micrositeGithubRepo := "emil",
     micrositeGitterChannel := false,
     micrositeShareOnSocial := false,
-    fork in run := true,
+    run / fork := true,
     scalacOptions := Seq(),
     mdocVariables := Map(
       "VERSION" -> version.value
