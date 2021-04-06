@@ -1,4 +1,19 @@
 pull_request_rules:
+  - name: assign and label scala-steward's PRs
+    conditions:
+      - author=scala-steward
+    actions:
+      assign:
+        users: [eikek]
+      label:
+        add: ["type: dependencies"]
+  - name: label scala-steward's breaking PRs
+    conditions:
+      - author=scala-steward
+      - "body~=(labels: library-update, semver-major)|(labels: sbt-plugin-update, semver-major)"
+    actions:
+      label:
+        add: ["type: breaking"]
   - name: automatically merge Scala Steward PRs on CI success
     conditions:
       - author=scala-steward
@@ -8,10 +23,3 @@ pull_request_rules:
     actions:
       merge:
         method: merge
-  - name: label scala-steward's breaking PRs
-    conditions:
-      - author=scala-steward
-      - "body~=(labels: library-update, semver-major)|(labels: sbt-plugin-update, semver-major)"
-    actions:
-      label:
-        add: ["type: breaking"]
