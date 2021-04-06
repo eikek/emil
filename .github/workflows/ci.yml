@@ -24,6 +24,3 @@ jobs:
   ci:
     runs-on: ubuntu-20.04
     needs: [ci-matrix]
-    steps:
-      - name: Aggregate of lint, and all tests
-        run: echo "ci passed"
