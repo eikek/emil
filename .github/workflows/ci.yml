@@ -24,3 +24,4 @@ jobs:
   ci:
     runs-on: ubuntu-20.04
     needs: [ci-matrix]
+    steps: []
