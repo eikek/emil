@@ -75,7 +75,7 @@ which can be further modified. It is also possible to go from an
 existing <code class="highlighter-rouge">Mail</code> to a <code class="highlighter-rouge">MailBuilder</code> to change certain parts:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">builder</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">asBuilder</span>
-<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@2dd8a273</span>
+<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@4e4af370</span>
 <span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="n">builder</span><span class="o">.</span>
   <span class="n">clearRecipients</span><span class="o">.</span>
   <span class="nf">add</span><span class="o">(</span><span class="nc">To</span><span class="o">(</span><span class="s">"me2@test.com"</span><span class="o">)).</span>
@@ -194,9 +194,9 @@ a <code class="highlighter-rouge">Stream[F, Byte]</code> from somewhere else.</p
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext</span>
 
 <span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@61c5fd78</span>
+<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@593f7d2e</span>
 <span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">fromExecutorService</span><span class="o">(</span><span class="nv">java</span><span class="o">.</span><span class="py">util</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">Executors</span><span class="o">.</span><span class="py">newCachedThreadPool</span><span class="o">()))</span>
-<span class="c1">// blocker: Blocker = cats.effect.Blocker@42503099</span>
+<span class="c1">// blocker: Blocker = cats.effect.Blocker@6e8aea7e</span>
 
 <span class="k">val</span> <span class="nv">mail4</span> <span class="k">=</span> <span class="nv">mail3</span><span class="o">.</span><span class="py">asBuilder</span><span class="o">.</span><span class="py">add</span><span class="o">(</span>
   <span class="nc">AttachUrl</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="nv">getClass</span><span class="o">.</span><span class="py">getResource</span><span class="o">(</span><span class="s">"/files/Test.pdf"</span><span class="o">),</span> <span class="n">blocker</span><span class="o">).</span>
