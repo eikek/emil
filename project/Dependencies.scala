@@ -4,14 +4,14 @@ object Dependencies {
 
   val doobieVersion    = "0.12.1"
   val flexmarkVersion  = "0.62.2"
-  val fs2Version       = "3.0.1"
-  val greenmailVersion = "1.6.3"
+  val fs2Version       = "2.5.4"
+  val greenmailVersion = "2.0.0-alpha-1"
   val h2Version        = "1.4.200"
-  val javaxMailVersion = "1.6.6"
+  val javaxMailVersion = "2.0.1"
   val jsoupVersion     = "1.13.1"
   val log4sVersion     = "1.9.0"
   val logbackVersion   = "1.2.3"
-  val miniTestVersion  = "2.9.3"
+  val miniTestVersion  = "2.9.4"
   val poiVersion       = "5.0.0"
 
   val fs2 = Seq(

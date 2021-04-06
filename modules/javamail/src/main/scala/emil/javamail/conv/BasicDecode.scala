@@ -1,14 +1,13 @@
 package emil.javamail.conv
 
-import javax.mail._
-import javax.mail.internet.{AddressException, InternetAddress, MimeMessage}
-
 import scala.language.postfixOps
 
 import cats.data.{Validated, ValidatedNec}
 import cats.implicits._
 import emil._
 import emil.javamail.internal._
+import jakarta.mail._
+import jakarta.mail.internet.{AddressException, InternetAddress, MimeMessage}
 
 trait BasicDecode {
 

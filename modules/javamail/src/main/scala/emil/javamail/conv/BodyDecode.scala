@@ -3,8 +3,6 @@ package emil.javamail.conv
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.nio.charset.Charset
-import javax.mail.internet.{MimeMessage, MimeUtility}
-import javax.mail.{Header => _, _}
 
 import cats.Applicative
 import cats.effect.Sync
@@ -15,6 +13,8 @@ import emil.javamail.internal.EnumerationConverter._
 import emil.javamail.internal.{ThreadClassLoader, Using, Util}
 import fs2.Chunk.ByteVectorChunk
 import fs2.Stream
+import jakarta.mail.internet.{MimeMessage, MimeUtility}
+import jakarta.mail.{Header => _, _}
 import scodec.bits.ByteVector
 
 /** Read a recursive multipart message into our simplified structure:

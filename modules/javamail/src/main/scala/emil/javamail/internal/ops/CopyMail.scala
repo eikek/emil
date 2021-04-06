@@ -1,13 +1,12 @@
 package emil.javamail.internal.ops
 
-import javax.mail.Folder
-import javax.mail.internet.MimeMessage
-
 import cats.data.Kleisli
 import cats.effect._
 import cats.implicits._
 import emil._
 import emil.javamail.internal.{JavaMailConnection, Logger, Util}
+import jakarta.mail.Folder
+import jakarta.mail.internet.MimeMessage
 
 object CopyMail {
   private[this] val logger = Logger(getClass)

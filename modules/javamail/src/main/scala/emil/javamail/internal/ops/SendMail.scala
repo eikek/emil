@@ -1,13 +1,12 @@
 package emil.javamail.internal.ops
 
-import javax.mail.internet.MimeMessage
-
 import cats.data.NonEmptyList
 import cats.effect.Sync
 import cats.implicits._
 import emil._
 import emil.javamail.conv.{MessageIdEncode, MsgConv}
 import emil.javamail.internal.{JavaMailConnection, Logger, ThreadClassLoader}
+import jakarta.mail.internet.MimeMessage
 
 object SendMail {
   private[this] val logger = Logger(getClass)

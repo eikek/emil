@@ -2,8 +2,6 @@ package emil.javamail
 
 import java.net.URL
 import java.nio.file.Path
-import javax.activation.MimeTypeParseException
-import javax.mail.internet.AddressException
 
 import cats.data.ValidatedNec
 import cats.effect._
@@ -12,6 +10,8 @@ import emil._
 import emil.javamail.conv.MimeTypeDecode
 import emil.javamail.conv.codec._
 import fs2.{Pipe, Stream}
+import jakarta.activation.MimeTypeParseException
+import jakarta.mail.internet.AddressException
 import scodec.bits.ByteVector
 
 object syntax {
