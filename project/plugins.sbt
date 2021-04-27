@@ -1,4 +1,4 @@
-addSbtPlugin("com.47deg"     % "sbt-microsites" % "1.3.3")
+addSbtPlugin("com.47deg"     % "sbt-microsites" % "1.3.4")
 addSbtPlugin("com.eed3si9n"  % "sbt-buildinfo"  % "0.10.0")
 addSbtPlugin("org.scalameta" % "sbt-mdoc"       % "2.2.20")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt"   % "2.4.2")
