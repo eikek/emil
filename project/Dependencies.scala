@@ -11,7 +11,7 @@ object Dependencies {
   val jsoupVersion     = "1.13.1"
   val log4sVersion     = "1.9.0"
   val logbackVersion   = "1.2.3"
-  val miniTestVersion  = "2.9.5"
+  val miniTestVersion  = "2.9.6"
   val poiVersion       = "5.0.0"
 
   val fs2 = Seq(
