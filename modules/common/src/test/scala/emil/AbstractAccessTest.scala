@@ -5,6 +5,7 @@ import java.time.Instant
 import cats.effect._
 import emil.builder._
 import emil.test.GreenmailTestSuite
+import cats.effect.unsafe.implicits.global
 
 abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
   val emil: Emil[IO]
@@ -114,7 +115,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
           To(user1),
           Subject(s"Hello and Attach!"),
           TextBody(s"This is text."),
-          AttachUrl[IO](getClass.getResource("/files/Test.pdf"), blocker)
+          AttachUrl[IO](getClass.getResource("/files/Test.pdf"))
             .withFilename("Test.pdf")
             .withMimeType(MimeType.pdf)
         )
