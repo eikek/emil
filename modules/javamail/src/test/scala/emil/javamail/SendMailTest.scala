@@ -10,6 +10,6 @@ object SendMailTest extends AbstractSendTest[Unit] {
   override def tearDown(env: Unit): Unit = ()
 
   lazy val emil: Emil[IO] =
-    JavaMailEmil[IO](blocker)
+    JavaMailEmil[IO]()
 
 }

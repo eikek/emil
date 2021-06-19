@@ -20,7 +20,7 @@ object PutMail {
       _ <- mailOpF(_ =>
         logger.debugF(s"Append mail ${mail.header.id} to folder ${target.id}")
       )
-      _ = appendMessage(msg, folder)
+      _ <- mailOpF(_ => Sync[F].blocking(appendMessage(msg, folder)))
     } yield ()
 
   private def appendMessage(msg: MimeMessage, folder: Folder): Unit =

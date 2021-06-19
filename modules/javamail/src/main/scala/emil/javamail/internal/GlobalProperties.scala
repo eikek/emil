@@ -70,6 +70,11 @@ object GlobalProperties {
       setAll(props)
     }
 
+  private[javamail] def unsafeApplySystemProperties(): Unit = {
+    import cats.effect.unsafe.implicits.global
+    applySystemProperties[IO].unsafeRunAndForget()
+  }
+
   private[javamail] def findSet(name: String): GlobalProperties =
     name.toLowerCase match {
       case "empty"   => empty

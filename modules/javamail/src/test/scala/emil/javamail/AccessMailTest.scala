@@ -5,7 +5,7 @@ import emil.{AbstractAccessTest, Emil}
 
 object AccessMailTest extends AbstractAccessTest[Unit] {
   lazy val emil: Emil[IO] =
-    JavaMailEmil[IO](blocker)
+    JavaMailEmil[IO]()
 
   override def setup(): Unit = ()
 

@@ -4,6 +4,7 @@ import cats.effect._
 import emil._
 import emil.builder._
 import emil.test.GreenmailTestSuite
+import cats.effect.unsafe.implicits.global
 
 object SendMailNoAuthTest extends GreenmailTestSuite[Unit] {
 
@@ -11,7 +12,7 @@ object SendMailNoAuthTest extends GreenmailTestSuite[Unit] {
   def setup(): Unit             = ()
   def tearDown(env: Unit): Unit = ()
 
-  lazy val emil: Emil[IO] = JavaMailEmil[IO](blocker)
+  lazy val emil: Emil[IO] = JavaMailEmil[IO]()
 
   test("Send mail without auth") { _ =>
     context.server.getManagers.getUserManager.setAuthRequired(false)

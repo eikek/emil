@@ -11,7 +11,7 @@ import emil._
 import emil.javamail.conv.BodyDecode.{Body, BodyAttach}
 import emil.javamail.internal.EnumerationConverter._
 import emil.javamail.internal.{ThreadClassLoader, Using, Util}
-import fs2.Chunk.ByteVectorChunk
+import fs2.Chunk
 import fs2.Stream
 import jakarta.mail.internet.{MimeMessage, MimeUtility}
 import jakarta.mail.{Header => _, _}
@@ -216,11 +216,11 @@ object BodyDecode {
   private def loadInputStream[F[_]](in: InputStream): (Long, Stream[F, Byte]) = {
     val buffer = Array.ofDim[Byte](16 * 1024)
     @annotation.tailrec
-    def go(chunks: Vector[ByteVectorChunk], len: Long): (Long, Vector[ByteVectorChunk]) =
+    def go(chunks: Vector[Chunk[Byte]], len: Long): (Long, Vector[Chunk[Byte]]) =
       in.read(buffer) match {
         case -1 => (len, chunks)
         case n =>
-          val ch = ByteVectorChunk(ByteVector(buffer, 0, n))
+          val ch = Chunk.byteVector(ByteVector(buffer, 0, n))
           go(chunks :+ ch, len + n)
       }
 

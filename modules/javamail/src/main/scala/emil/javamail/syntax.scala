@@ -3,6 +3,7 @@ package emil.javamail
 import java.net.URL
 import java.nio.file.Path
 
+import fs2.io.file.Files
 import cats.data.ValidatedNec
 import cats.effect._
 import cats.implicits._
@@ -37,16 +38,16 @@ object syntax {
     def deserializeByteVector[F[_]: Sync](bv: ByteVector): F[Mail[F]] =
       JavaMailEmil.mailFromByteVector(bv)
 
-    def fromFile[F[_]: Sync: ContextShift](file: Path, blocker: Blocker): F[Mail[F]] =
-      fs2.io.file
-        .readAll(file, blocker, 8192)
+    def fromFile[F[_]: Files: Sync](file: Path): F[Mail[F]] =
+      Files[F]
+        .readAll(file, 8192)
         .through(readBytes[F])
         .compile
         .lastOrError
 
-    def fromURL[F[_]: Sync: ContextShift](url: URL, blocker: Blocker): F[Mail[F]] =
+    def fromURL[F[_]: Sync](url: URL): F[Mail[F]] =
       fs2.io
-        .readInputStream(Sync[F].delay(url.openStream), 8192, blocker, true)
+        .readInputStream(Sync[F].blocking(url.openStream), 8192, true)
         .through(readBytes[F])
         .compile
         .lastOrError

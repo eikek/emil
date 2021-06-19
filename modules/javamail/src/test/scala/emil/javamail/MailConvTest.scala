@@ -2,8 +2,7 @@ package emil.javamail
 
 import java.nio.charset.Charset
 
-import scala.concurrent.ExecutionContext
-
+import cats.effect.unsafe.implicits.global
 import cats.data.NonEmptyList
 import cats.effect._
 import emil._
@@ -12,9 +11,6 @@ import emil.javamail.syntax._
 import minitest._
 
 object MailConvTest extends SimpleTestSuite {
-  implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
-  val blocker     = Blocker.liftExecutionContext(ExecutionContext.global)
-
   def toStringContent(body: MailBody[IO]): MailBody[IO] = {
     def mkString(ios: IO[BodyContent]): BodyContent =
       BodyContent(ios.unsafeRunSync().asString)
@@ -214,7 +210,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read test mail 1") {
     val url  = getClass.getResource("/mails/test.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assertEquals(mail.header.received.size, 7)
@@ -224,7 +220,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read test mail 2") {
     val url  = getClass.getResource("/mails/test2.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assertEquals(mail.header.received.size, 3)
@@ -234,7 +230,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read alternative mail") {
     val url  = getClass.getResource("/mails/alt.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 0)
@@ -246,7 +242,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read latin1 html mail") {
     val url  = getClass.getResource("/mails/latin1-html.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.textPart.unsafeRunSync().isEmpty)
     val htmlBody = mail.body.htmlPart.unsafeRunSync().get
@@ -256,7 +252,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read latin1 html mail2") {
     val url  = getClass.getResource("/mails/latin1-html2.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isEmpty)
     val textBody = mail.body.textPart.unsafeRunSync().get
@@ -266,7 +262,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read latin1 mail without transfer encoding") {
     val url  = getClass.getResource("/mails/latin1-8bit.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().nonEmpty)
     val textBody = mail.body.htmlPart.unsafeRunSync().get
@@ -276,7 +272,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read utf8 mail without transfer encoding") {
     val url  = getClass.getResource("/mails/utf8-8bit.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isEmpty)
     val textBody = mail.body.textPart.unsafeRunSync().get
@@ -286,7 +282,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read utf8 b64 encoded filename from attachment") {
     val url  = getClass.getResource("/mails/filename_b64.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
@@ -300,7 +296,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read mail with mime tree") {
     val url  = getClass.getResource("/mails/bodytree.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assert(mail.body.nonEmpty)
@@ -311,7 +307,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read mail with nested alternative body") {
     val url  = getClass.getResource("/mails/nested-alternative.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assert(mail.body.nonEmpty)
@@ -322,7 +318,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read mail without charset declaration") {
     val url  = getClass.getResource("/mails/latin1-missing-charset.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assert(mail.body.nonEmpty)
@@ -334,7 +330,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read mail with empty headers") {
     val url  = getClass.getResource("/mails/empty-header.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
@@ -353,7 +349,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read mail with empty address <>") {
     val url  = getClass.getResource("/mails/empty-address.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
@@ -368,7 +364,7 @@ object MailConvTest extends SimpleTestSuite {
 
   test("read mail with invalid headers") {
     val url  = getClass.getResource("/mails/broken-header.eml")
-    val mail = Mail.fromURL[IO](url, blocker).unsafeRunSync()
+    val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
