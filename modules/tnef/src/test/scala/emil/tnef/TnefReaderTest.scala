@@ -1,21 +1,18 @@
 package emil.tnef
 
-import scala.concurrent.ExecutionContext
-
 import cats.effect._
 import emil.builder._
 import minitest._
 import scodec.bits.ByteVector
+import cats.effect.unsafe.implicits.global
 
 object TnefReaderTest extends SimpleTestSuite {
-  val blocker     = Blocker.liftExecutionContext(ExecutionContext.global)
-  implicit val CS = IO.contextShift(ExecutionContext.global)
 
   val winmailDatUrl = getClass.getResource("/winmail.dat")
   require(winmailDatUrl != null, "test file not found")
 
   val winmailData =
-    fs2.io.readInputStream(IO(winmailDatUrl.openStream()), 8192, blocker)
+    fs2.io.readInputStream(IO(winmailDatUrl.openStream()), 8192)
 
   test("read tnef file") {
     val data = TnefExtract

@@ -2,7 +2,7 @@ package emil.jsoup
 
 import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
-
+import cats.effect.unsafe.implicits.global
 import cats.effect._
 import emil._
 import emil.builder._

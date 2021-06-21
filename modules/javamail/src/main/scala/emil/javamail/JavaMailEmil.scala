@@ -68,7 +68,7 @@ object JavaMailEmil {
   def mailToByteStream[F[_]: Sync](
       mail: Mail[F]
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): Stream[F, Byte] =
-    Stream.eval(mailToByteArray[F](mail)).flatMap(bs => Stream.chunk(Chunk.byteVector(ByteVector.view(bs))))
+    Stream.eval(mailToByteVector[F](mail)).flatMap(bs => Stream.chunk(Chunk.byteVector(bs)))
 
   def mailFromString[F[_]: Sync](
       str: String

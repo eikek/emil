@@ -1,5 +1,6 @@
 package emil.markdown
 
+import cats.effect.unsafe.implicits.global
 import cats.effect._
 import emil._
 import emil.builder._

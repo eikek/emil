@@ -31,17 +31,17 @@ object TnefExtract {
   /** Extracts the winmail.dat file given as a stream of bytes into a
     * list of attachments.
     */
-  def fromStream[F[_]: ConcurrentEffect](
+  def fromStream[F[_]: Async](
       data: Stream[F, Byte]
   ): Stream[F, Attachment[F]] =
     data
       .through(fs2.io.toInputStream)
-      .flatMap(in => Stream.evalSeq(ConcurrentEffect[F].delay(fromInputStream[F](in))))
+      .flatMap(in => Stream.evalSeq(Sync[F].delay(fromInputStream[F](in))))
 
   /** Return the list of attachments if the given attachment is a tnef
     * file, otherwise return the input
     */
-  def extractSingle[F[_]: ConcurrentEffect](a: Attachment[F]): Stream[F, Attachment[F]] =
+  def extractSingle[F[_]: Async](a: Attachment[F]): Stream[F, Attachment[F]] =
     if (TnefMimeType.matches(a.mimeType))
       fromStream[F](a.content)
     else
@@ -50,7 +50,7 @@ object TnefExtract {
   /** Go through the mail's attachments and replace each tnef attachment
     * with its inner attachments.
     */
-  def replace[F[_]: ConcurrentEffect](mail: Mail[F]): F[Mail[F]] = {
+  def replace[F[_]: Async](mail: Mail[F]): F[Mail[F]] = {
     val attachStream =
       for {
         as  <- Stream.emits(mail.attachments.all)
