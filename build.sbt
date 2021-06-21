@@ -193,8 +193,8 @@ lazy val microsite = project
     publishArtifact := false,
     publish / skip := true,
     micrositeFooterText := Some(
-      """
-        |<p>&copy; 2020 <a href="https://github.com/eikek/emil">Emil, v{{site.version}}</a></p>
+      s"""
+        |<p>&copy; 2020- <a href="https://github.com/eikek/emil">Emil v${latestRelease.value}</a></p>
         |""".stripMargin
     ),
     micrositeName := "Emil",
