@@ -7,10 +7,6 @@
 
 <span class="cm">/* javamail backend */</span>
 <span class="k">import</span> <span class="nn">emil.javamail._</span>
-<span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">scala</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@27edfdf9</span>
-<span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">scala</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// blocker: Blocker = cats.effect.Blocker@32e9c8</span>
 </code></pre></div></div>
 
 <h2 id="creating-an-e-mail">Creating an e-mail</h2>
@@ -24,7 +20,7 @@
   <span class="nc">CustomHeader</span><span class="o">(</span><span class="nc">Header</span><span class="o">(</span><span class="s">"User-Agent"</span><span class="o">,</span> <span class="s">"my-email-client"</span><span class="o">)),</span>
   <span class="nc">TextBody</span><span class="o">(</span><span class="s">"Hello!\n\nThis is a mail."</span><span class="o">),</span>
   <span class="nc">HtmlBody</span><span class="o">(</span><span class="s">"&lt;h1&gt;Hello!&lt;/h1&gt;\n&lt;p&gt;This &lt;b&gt;is&lt;/b&gt; a mail.&lt;/p&gt;"</span><span class="o">),</span>
-  <span class="nc">AttachUrl</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="nv">getClass</span><span class="o">.</span><span class="py">getResource</span><span class="o">(</span><span class="s">"/files/Test.pdf"</span><span class="o">),</span> <span class="n">blocker</span><span class="o">).</span>
+  <span class="nc">AttachUrl</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="nv">getClass</span><span class="o">.</span><span class="py">getResource</span><span class="o">(</span><span class="s">"/files/Test.pdf"</span><span class="o">)).</span>
     <span class="nf">withFilename</span><span class="o">(</span><span class="s">"test.pdf"</span><span class="o">).</span>
     <span class="nf">withMimeType</span><span class="o">(</span><span class="nv">MimeType</span><span class="o">.</span><span class="py">pdf</span><span class="o">)</span>
 <span class="o">)</span>
@@ -56,14 +52,14 @@
 <span class="c1">//   ),</span>
 <span class="c1">//   body = HtmlAndText(</span>
 <span class="c1">//     text = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """Hello!</span>
 <span class="c1">// </span>
 <span class="c1">// This is a mail."""</span>
 <span class="c1">//       )</span>
 <span class="c1">//     ),</span>
 <span class="c1">//     html = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """&lt;h1&gt;Hello!&lt;/h1&gt;</span>
 <span class="c1">// &lt;p&gt;This &lt;b&gt;is&lt;/b&gt; a mail.&lt;/p&gt;"""</span>
 <span class="c1">//       )</span>
@@ -85,8 +81,8 @@
 <p>In order to do something with it, a connection to a server is
 necessary and a concrete emil:</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">blocker</span><span class="o">)</span>
-<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@1e2e5c39</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">]()</span>
+<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@5b26d717</span>
 <span class="k">val</span> <span class="nv">smtpConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"smtp://devmail:25"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// smtpConf: MailConfig = MailConfig(</span>
 <span class="c1">//   url = "smtp://devmail:25",</span>
@@ -102,39 +98,8 @@ necessary and a concrete emil:</p>
 <p>Finally, create a program that sends the mail:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">sendIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">smtpConf</span><span class="o">).</span><span class="py">send</span><span class="o">(</span><span class="n">mail</span><span class="o">)</span>
-<span class="c1">// sendIO: IO[cats.data.NonEmptyList[String]] = Async(</span>
-<span class="c1">//   k = cats.effect.internals.IOAsync$$$Lambda$1383/0x0000000800875c40@6870028,</span>
-<span class="c1">//   trampolineAfter = true,</span>
-<span class="c1">//   trace = StackTrace(</span>
-<span class="c1">//     stackTrace = List(</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.buildFrame(IOTracing.scala:48),</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.buildCachedFrame(IOTracing.scala:39),</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.cached(IOTracing.scala:34),</span>
-<span class="c1">//       cats.effect.internals.IOAsync$.apply(IOAsync.scala:30),</span>
-<span class="c1">//       cats.effect.internals.IOBracket$.apply(IOBracket.scala:54),</span>
-<span class="c1">//       cats.effect.IO.bracketCase(IO.scala:613),</span>
-<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.bracketCase(IO.scala:904),</span>
-<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.bracketCase(IO.scala:863),</span>
-<span class="c1">//       cats.effect.Resource.loop$1(Resource.scala:126),</span>
-<span class="c1">//       cats.effect.Resource.fold(Resource.scala:135),</span>
-<span class="c1">//       cats.effect.Resource.use_(Resource.scala:142),</span>
-<span class="c1">//       cats.effect.ResourceLike.use(ResourceLike.scala:33),</span>
-<span class="c1">//       emil.Emil$$anon$1.run(Emil.scala:20),</span>
-<span class="c1">//       repl.MdocSession$App.&lt;init&gt;(concept.md:47),</span>
-<span class="c1">//       repl.MdocSession$.app(concept.md:3),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$2(DocumentBuilder.scala:89),</span>
-<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
-<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
-<span class="c1">//       scala.Console$.withErr(Console.scala:193),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$1(DocumentBuilder.scala:89),</span>
-<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
-<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
-<span class="c1">//       scala.Console$.withOut(Console.scala:164),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.build(DocumentBuilder.scala:88),</span>
-<span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$.$anonfun$buildDocument$2(MarkdownBuilder.scala:47),</span>
-<span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$$anon$1.run(MarkdownBuilder.scala:103)</span>
-<span class="c1">//     )</span>
-<span class="c1">//   )</span>
+<span class="c1">// sendIO: IO[cats.data.NonEmptyList[String]] = Uncancelable(</span>
+<span class="c1">//   body = cats.effect.IO$$$Lambda$1412/0x000000080093e840@4326a3f7</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
@@ -158,43 +123,12 @@ connection to an imap server is necessary:</p>
 <p>Then run an operation from the <code class="highlighter-rouge">email.access</code> interface:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">readIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nv">myemil</span><span class="o">.</span><span class="py">access</span><span class="o">.</span><span class="py">getInbox</span><span class="o">)</span>
-<span class="c1">// readIO: IO[MailFolder] = Async(</span>
-<span class="c1">//   k = cats.effect.internals.IOAsync$$$Lambda$1383/0x0000000800875c40@5f113675,</span>
-<span class="c1">//   trampolineAfter = true,</span>
-<span class="c1">//   trace = StackTrace(</span>
-<span class="c1">//     stackTrace = List(</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.buildFrame(IOTracing.scala:48),</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.buildCachedFrame(IOTracing.scala:39),</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.cached(IOTracing.scala:34),</span>
-<span class="c1">//       cats.effect.internals.IOAsync$.apply(IOAsync.scala:30),</span>
-<span class="c1">//       cats.effect.internals.IOBracket$.apply(IOBracket.scala:54),</span>
-<span class="c1">//       cats.effect.IO.bracketCase(IO.scala:613),</span>
-<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.bracketCase(IO.scala:904),</span>
-<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.bracketCase(IO.scala:863),</span>
-<span class="c1">//       cats.effect.Resource.loop$1(Resource.scala:126),</span>
-<span class="c1">//       cats.effect.Resource.fold(Resource.scala:135),</span>
-<span class="c1">//       cats.effect.Resource.use_(Resource.scala:142),</span>
-<span class="c1">//       cats.effect.ResourceLike.use(ResourceLike.scala:33),</span>
-<span class="c1">//       emil.Emil$$anon$1.run(Emil.scala:20),</span>
-<span class="c1">//       repl.MdocSession$App.&lt;init&gt;(concept.md:47),</span>
-<span class="c1">//       repl.MdocSession$.app(concept.md:3),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$2(DocumentBuilder.scala:89),</span>
-<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
-<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
-<span class="c1">//       scala.Console$.withErr(Console.scala:193),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$1(DocumentBuilder.scala:89),</span>
-<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
-<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
-<span class="c1">//       scala.Console$.withOut(Console.scala:164),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.build(DocumentBuilder.scala:88),</span>
-<span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$.$anonfun$buildDocument$2(MarkdownBuilder.scala:47),</span>
-<span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$$anon$1.run(MarkdownBuilder.scala:103)</span>
-<span class="c1">//     )</span>
-<span class="c1">//   )</span>
+<span class="c1">// readIO: IO[MailFolder] = Uncancelable(</span>
+<span class="c1">//   body = cats.effect.IO$$$Lambda$1412/0x000000080093e840@3265e21a</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 </div></div></section></main><footer id="site-footer"><div class="container"><div class="row"><p>Emil is designed and developed by <a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer">eikek</a></p></div><div class="row"><div>
-<p>&copy; 2020 <a href="https://github.com/eikek/emil">Emil, v0.9.1</a></p>
+<p>&copy; 2020 <a href="https://github.com/eikek/emil">Emil, v0.9.2+35-6877225c+20210621-1337-SNAPSHOT</a></p>
 </div></div></div></footer><script src="/emil/highlight/highlight.pack.js"></script><script src="/emil/lunr/lunr.js"></script><script>
 // For all code blocks, copy the language from the containing div
 // to the inner code tag (where hljs expects it to be)

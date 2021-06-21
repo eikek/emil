@@ -7,7 +7,7 @@
 
 <p>With sbt:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-doobie" % "0.9.1"
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-doobie" % "0.10.0-M1"
 </code></pre></div></div>
 
 <h2 id="description">Description</h2>
@@ -56,17 +56,8 @@ defined in <code class="highlighter-rouge">emil.doobie.EmilDoobieMeta</code>.</p
   values(${r.from}, ${r.recipients}, ${r.ssl}, ${r.mime})
 """</span><span class="o">.</span><span class="py">update</span><span class="o">.</span><span class="py">run</span>
 <span class="c1">// insertRecord: &lt;none&gt;.&lt;root&gt;.doobie.package.ConnectionIO[Int] = Suspend(</span>
-<span class="c1">//   a = BracketCase(</span>
-<span class="c1">//     acquire = Suspend(</span>
-<span class="c1">//       a = PrepareStatement(</span>
-<span class="c1">//         a = """</span>
-<span class="c1">//   insert into mailaddress(sender, recipients, ssl)</span>
-<span class="c1">//   values(?, ?, ?, ?)</span>
-<span class="c1">// """</span>
-<span class="c1">//       )</span>
-<span class="c1">//     ),</span>
-<span class="c1">//     use = doobie.hi.connection$$$Lambda$2004/0x0000000800c09040@22bd93ab,</span>
-<span class="c1">//     release = cats.effect.Bracket$$Lambda$2006/0x0000000800c0a840@756032a9</span>
+<span class="c1">//   a = Uncancelable(</span>
+<span class="c1">//     body = cats.effect.kernel.MonadCancel$$Lambda$2031/0x0000000800bfc840@4812d5</span>
 <span class="c1">//   )</span>
 <span class="c1">// )</span>
 </code></pre></div></div>

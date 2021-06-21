@@ -7,7 +7,7 @@ mails. It is based on the famous <a href="https://jsoup.org">jsoup</a> library.<
 
 <p>With sbt:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.9.1"
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.10.0-M1"
 </code></pre></div></div>
 
 <h2 id="description">Description</h2>
@@ -59,7 +59,7 @@ documentation of <a href="https://jsoup.org">jsoup</a>.</li>
 <span class="c1">//   additionalHeaders = Headers(all = List()),</span>
 <span class="c1">//   body = Html(</span>
 <span class="c1">//     html = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//       )</span>
 <span class="c1">//     )</span>
@@ -100,41 +100,25 @@ created using the <code class="highlighter-rouge">BodyClean</code>
 <span class="c1">//   additionalHeaders = Headers(all = List()),</span>
 <span class="c1">//   body = Html(</span>
 <span class="c1">//     html = Map(</span>
-<span class="c1">//       source = Pure(</span>
-<span class="c1">//         a = StringContent(</span>
+<span class="c1">//       ioe = Pure(</span>
+<span class="c1">//         value = StringContent(</span>
 <span class="c1">//           asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//         )</span>
 <span class="c1">//       ),</span>
-<span class="c1">//       f = emil.jsoup.BodyClean$$$Lambda$2011/0x0000000800c0e040@5573267,</span>
-<span class="c1">//       trace = StackTrace(</span>
-<span class="c1">//         stackTrace = List(</span>
-<span class="c1">//           cats.effect.internals.IOTracing$.buildFrame(IOTracing.scala:48),</span>
-<span class="c1">//           cats.effect.internals.IOTracing$.buildCachedFrame(IOTracing.scala:39),</span>
-<span class="c1">//           cats.effect.internals.IOTracing$.cached(IOTracing.scala:34),</span>
-<span class="c1">//           cats.effect.IO.map(IO.scala:106),</span>
-<span class="c1">//           cats.effect.IOLowPriorityInstances$IOEffect.map(IO.scala:870),</span>
-<span class="c1">//           cats.effect.IOLowPriorityInstances$IOEffect.map(IO.scala:863),</span>
-<span class="c1">//           cats.Functor$Ops.map(Functor.scala:233),</span>
-<span class="c1">//           cats.Functor$Ops.map$(Functor.scala:233),</span>
-<span class="c1">//           cats.Functor$ToFunctorOps$$anon$4.map(Functor.scala:250),</span>
-<span class="c1">//           emil.jsoup.BodyClean$.modifyBody(BodyClean.scala:55),</span>
-<span class="c1">//           emil.jsoup.BodyClean.$anonfun$apply$1(BodyClean.scala:20),</span>
-<span class="c1">//           emil.Mail.mapBody(Mail.scala:19),</span>
-<span class="c1">//           emil.jsoup.BodyClean.apply(BodyClean.scala:20),</span>
-<span class="c1">//           emil.builder.MailBuilder.$anonfun$build$1(MailBuilder.scala:35),</span>
-<span class="c1">//           scala.collection.IterableOnceOps.foldLeft(IterableOnce.scala:646),</span>
-<span class="c1">//           scala.collection.IterableOnceOps.foldLeft$(IterableOnce.scala:642),</span>
-<span class="c1">//           scala.collection.AbstractIterable.foldLeft(Iterable.scala:919),</span>
-<span class="c1">//           emil.builder.MailBuilder.build(MailBuilder.scala:35),</span>
-<span class="c1">//           repl.MdocSession$App.&lt;init&gt;(jsoup.md:35),</span>
-<span class="c1">// ...</span>
+<span class="c1">//       f = emil.jsoup.BodyClean$$$Lambda$2036/0x0000000800c01040@142e0283</span>
+<span class="c1">//     )</span>
+<span class="c1">//   ),</span>
+<span class="c1">//   attachments = Attachments(all = Vector())</span>
+<span class="c1">// )</span>
 </code></pre></div></div>
 
 <p>This creates a new mail where the body is annotated with a cleaning
 function. This only applies to html parts. When the body is now
 evaluated, the string looks now like this:</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">cleanMail</span><span class="o">.</span><span class="py">body</span><span class="o">.</span><span class="py">htmlPart</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">)).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">cats.effect.unsafe.implicits.global</span>
+
+<span class="nv">cleanMail</span><span class="o">.</span><span class="py">body</span><span class="o">.</span><span class="py">htmlPart</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">asString</span><span class="o">)).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
 <span class="c1">// res0: Option[String] = Some(</span>
 <span class="c1">//   value = "&lt;html&gt;&lt;head&gt;&lt;meta charset=\"UTF-8\"&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;A header&lt;/h1&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;"</span>
 <span class="c1">// )</span>
@@ -155,39 +139,12 @@ For better results here, use the <code class="highlighter-rouge">emil-markdown</
   <span class="nc">Some</span><span class="o">(</span><span class="nv">mail</span><span class="o">.</span><span class="py">header</span><span class="o">)</span>
 <span class="o">)</span>
 <span class="c1">// htmlView: IO[BodyContent] = Map(</span>
-<span class="c1">//   source = Pure(</span>
-<span class="c1">//     a = StringContent(</span>
+<span class="c1">//   ioe = Pure(</span>
+<span class="c1">//     value = StringContent(</span>
 <span class="c1">//       asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   f = emil.jsoup.HtmlBodyView$$$Lambda$2025/0x0000000800c42040@3328c159,</span>
-<span class="c1">//   trace = StackTrace(</span>
-<span class="c1">//     stackTrace = List(</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.buildFrame(IOTracing.scala:48),</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.buildCachedFrame(IOTracing.scala:39),</span>
-<span class="c1">//       cats.effect.internals.IOTracing$.cached(IOTracing.scala:34),</span>
-<span class="c1">//       cats.effect.IO.map(IO.scala:106),</span>
-<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.map(IO.scala:870),</span>
-<span class="c1">//       cats.effect.IOLowPriorityInstances$IOEffect.map(IO.scala:863),</span>
-<span class="c1">//       cats.Functor$Ops.map(Functor.scala:233),</span>
-<span class="c1">//       cats.Functor$Ops.map$(Functor.scala:233),</span>
-<span class="c1">//       cats.Functor$ToFunctorOps$$anon$4.map(Functor.scala:250),</span>
-<span class="c1">//       emil.jsoup.HtmlBodyView$.apply(HtmlBodyView.scala:27),</span>
-<span class="c1">//       repl.MdocSession$App.&lt;init&gt;(jsoup.md:48),</span>
-<span class="c1">//       repl.MdocSession$.app(jsoup.md:3),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$2(DocumentBuilder.scala:89),</span>
-<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
-<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
-<span class="c1">//       scala.Console$.withErr(Console.scala:193),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.$anonfun$build$1(DocumentBuilder.scala:89),</span>
-<span class="c1">//       scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18),</span>
-<span class="c1">//       scala.util.DynamicVariable.withValue(DynamicVariable.scala:59),</span>
-<span class="c1">//       scala.Console$.withOut(Console.scala:164),</span>
-<span class="c1">//       mdoc.internal.document.DocumentBuilder$$doc$.build(DocumentBuilder.scala:88),</span>
-<span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$.$anonfun$buildDocument$2(MarkdownBuilder.scala:47),</span>
-<span class="c1">//       mdoc.internal.markdown.MarkdownBuilder$$anon$1.run(MarkdownBuilder.scala:103)</span>
-<span class="c1">//     )</span>
-<span class="c1">//   )</span>
+<span class="c1">//   f = emil.jsoup.HtmlBodyView$$$Lambda$2050/0x0000000800c2c840@7c8d4a94</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 

@@ -50,14 +50,14 @@ your own easily, too.</p>
 <span class="c1">//   ),</span>
 <span class="c1">//   body = HtmlAndText(</span>
 <span class="c1">//     text = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """Hello!</span>
 <span class="c1">// </span>
 <span class="c1">// This is a mail."""</span>
 <span class="c1">//       )</span>
 <span class="c1">//     ),</span>
 <span class="c1">//     html = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """&lt;h1&gt;Hello!&lt;/h1&gt;</span>
 <span class="c1">// &lt;p&gt;This &lt;b&gt;is&lt;/b&gt; a mail.&lt;/p&gt;"""</span>
 <span class="c1">//       )</span>
@@ -75,7 +75,7 @@ which can be further modified. It is also possible to go from an
 existing <code class="highlighter-rouge">Mail</code> to a <code class="highlighter-rouge">MailBuilder</code> to change certain parts:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">builder</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">asBuilder</span>
-<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@4e4af370</span>
+<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@4d79d187</span>
 <span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="n">builder</span><span class="o">.</span>
   <span class="n">clearRecipients</span><span class="o">.</span>
   <span class="nf">add</span><span class="o">(</span><span class="nc">To</span><span class="o">(</span><span class="s">"me2@test.com"</span><span class="o">)).</span>
@@ -109,14 +109,14 @@ existing <code class="highlighter-rouge">Mail</code> to a <code class="highlight
 <span class="c1">//   ),</span>
 <span class="c1">//   body = HtmlAndText(</span>
 <span class="c1">//     text = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """Hello!</span>
 <span class="c1">// </span>
 <span class="c1">// This is a mail."""</span>
 <span class="c1">//       )</span>
 <span class="c1">//     ),</span>
 <span class="c1">//     html = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """&lt;h1&gt;Hello!&lt;/h1&gt;</span>
 <span class="c1">// &lt;p&gt;This &lt;b&gt;is&lt;/b&gt; a mail.&lt;/p&gt;"""</span>
 <span class="c1">//       )</span>
@@ -166,14 +166,14 @@ list of transformations, too.</p>
 <span class="c1">//   ),</span>
 <span class="c1">//   body = HtmlAndText(</span>
 <span class="c1">//     text = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """Hello!</span>
 <span class="c1">// </span>
 <span class="c1">// This is a mail."""</span>
 <span class="c1">//       )</span>
 <span class="c1">//     ),</span>
 <span class="c1">//     html = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """&lt;h1&gt;Hello!&lt;/h1&gt;</span>
 <span class="c1">// &lt;p&gt;This &lt;b&gt;is&lt;/b&gt; a mail.&lt;/p&gt;"""</span>
 <span class="c1">//       )</span>
@@ -193,13 +193,8 @@ a <code class="highlighter-rouge">Stream[F, Byte]</code> from somewhere else.</p
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext</span>
 
-<span class="k">implicit</span> <span class="k">val</span> <span class="nv">CS</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">global</span><span class="o">)</span>
-<span class="c1">// CS: ContextShift[IO] = cats.effect.internals.IOContextShift@593f7d2e</span>
-<span class="k">val</span> <span class="nv">blocker</span> <span class="k">=</span> <span class="nv">Blocker</span><span class="o">.</span><span class="py">liftExecutionContext</span><span class="o">(</span><span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">fromExecutorService</span><span class="o">(</span><span class="nv">java</span><span class="o">.</span><span class="py">util</span><span class="o">.</span><span class="py">concurrent</span><span class="o">.</span><span class="py">Executors</span><span class="o">.</span><span class="py">newCachedThreadPool</span><span class="o">()))</span>
-<span class="c1">// blocker: Blocker = cats.effect.Blocker@6e8aea7e</span>
-
 <span class="k">val</span> <span class="nv">mail4</span> <span class="k">=</span> <span class="nv">mail3</span><span class="o">.</span><span class="py">asBuilder</span><span class="o">.</span><span class="py">add</span><span class="o">(</span>
-  <span class="nc">AttachUrl</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="nv">getClass</span><span class="o">.</span><span class="py">getResource</span><span class="o">(</span><span class="s">"/files/Test.pdf"</span><span class="o">),</span> <span class="n">blocker</span><span class="o">).</span>
+  <span class="nc">AttachUrl</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="nv">getClass</span><span class="o">.</span><span class="py">getResource</span><span class="o">(</span><span class="s">"/files/Test.pdf"</span><span class="o">)).</span>
     <span class="nf">withFilename</span><span class="o">(</span><span class="s">"test.pdf"</span><span class="o">).</span>
     <span class="nf">withMimeType</span><span class="o">(</span><span class="nv">MimeType</span><span class="o">.</span><span class="py">pdf</span><span class="o">)).</span>
   <span class="n">build</span>
@@ -231,14 +226,14 @@ a <code class="highlighter-rouge">Stream[F, Byte]</code> from somewhere else.</p
 <span class="c1">//   ),</span>
 <span class="c1">//   body = HtmlAndText(</span>
 <span class="c1">//     text = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """Hello!</span>
 <span class="c1">// </span>
 <span class="c1">// This is a mail."""</span>
 <span class="c1">//       )</span>
 <span class="c1">//     ),</span>
 <span class="c1">//     html = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """&lt;h1&gt;Hello!&lt;/h1&gt;</span>
 <span class="c1">// &lt;p&gt;This &lt;b&gt;is&lt;/b&gt; a mail.&lt;/p&gt;"""</span>
 <span class="c1">//       )</span>
@@ -257,11 +252,9 @@ a <code class="highlighter-rouge">Stream[F, Byte]</code> from somewhere else.</p
 
 <p>Emil creates a <code class="highlighter-rouge">Stream[F, Byte]</code> from the <code class="highlighter-rouge">java.net.URL</code> using the
 <a href="https://github.com/functional-streams-for-scala/fs2/tree/master/io/src">fs2-io</a>
-api, that requires a <code class="highlighter-rouge">Blocker</code> and a <code class="highlighter-rouge">ContextShift</code>. The same applies
-when attaching files and <code class="highlighter-rouge">java.io.InputStream</code>s.</p>
-
-<p>Attaching any given <code class="highlighter-rouge">Stream[F, Byte]</code> is the same. It doesn’t require
-<code class="highlighter-rouge">Blocker</code> or <code class="highlighter-rouge">ContextShift</code> then.</p>
+api. The same is available when attaching files and
+<code class="highlighter-rouge">java.io.InputStream</code>s. Any given <code class="highlighter-rouge">Stream[F, Byte]</code> can be attached as
+well:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">fs2.Stream</span>
 
@@ -303,14 +296,14 @@ when attaching files and <code class="highlighter-rouge">java.io.InputStream</co
 <span class="c1">//   ),</span>
 <span class="c1">//   body = HtmlAndText(</span>
 <span class="c1">//     text = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """Hello!</span>
 <span class="c1">// </span>
 <span class="c1">// This is a mail."""</span>
 <span class="c1">//       )</span>
 <span class="c1">//     ),</span>
 <span class="c1">//     html = Pure(</span>
-<span class="c1">//       a = StringContent(</span>
+<span class="c1">//       value = StringContent(</span>
 <span class="c1">//         asString = """&lt;h1&gt;Hello!&lt;/h1&gt;</span>
 <span class="c1">// &lt;p&gt;This &lt;b&gt;is&lt;/b&gt; a mail.&lt;/p&gt;"""</span>
 <span class="c1">//       )</span>
@@ -369,7 +362,7 @@ retrieve attachments, or just to create common headers.</p>
 <span class="c1">//       )</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   body = Text(text = Pure(a = StringContent(asString = "This is a text"))),</span>
+<span class="c1">//   body = Text(text = Pure(value = StringContent(asString = "This is a text"))),</span>
 <span class="c1">//   attachments = Attachments(all = Vector())</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
