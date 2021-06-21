@@ -1,10 +1,10 @@
 package emil
 
 import cats.effect.IO
+import cats.effect.unsafe.implicits.global
 import cats.implicits._
 import emil.builder._
 import emil.test.GreenmailTestSuite
-import cats.effect.unsafe.implicits.global
 
 abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
   val emil: Emil[IO]

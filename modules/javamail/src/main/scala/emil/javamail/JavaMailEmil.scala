@@ -34,8 +34,7 @@ final class JavaMailEmil[F[_]: Sync] private (
 object JavaMailEmil {
   GlobalProperties.unsafeApplySystemProperties()
 
-  def apply[F[_]: Sync](settings: Settings = Settings.defaultSettings
-  ): Emil[F] =
+  def apply[F[_]: Sync](settings: Settings = Settings.defaultSettings): Emil[F] =
     new JavaMailEmil[F](settings)
 
   def mailToString[F[_]: Sync](
@@ -68,7 +67,9 @@ object JavaMailEmil {
   def mailToByteStream[F[_]: Sync](
       mail: Mail[F]
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): Stream[F, Byte] =
-    Stream.eval(mailToByteVector[F](mail)).flatMap(bs => Stream.chunk(Chunk.byteVector(bs)))
+    Stream
+      .eval(mailToByteVector[F](mail))
+      .flatMap(bs => Stream.chunk(Chunk.byteVector(bs)))
 
   def mailFromString[F[_]: Sync](
       str: String

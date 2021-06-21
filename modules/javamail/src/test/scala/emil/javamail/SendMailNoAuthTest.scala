@@ -1,10 +1,10 @@
 package emil.javamail
 
 import cats.effect._
+import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
 import emil.test.GreenmailTestSuite
-import cats.effect.unsafe.implicits.global
 
 object SendMailNoAuthTest extends GreenmailTestSuite[Unit] {
 

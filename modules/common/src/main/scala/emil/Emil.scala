@@ -1,8 +1,8 @@
 package emil
 
 import cats.data.NonEmptyList
-import cats.effect.Resource
 import cats.effect.MonadCancel
+import cats.effect.Resource
 
 trait Emil[F[_]] { self =>
 

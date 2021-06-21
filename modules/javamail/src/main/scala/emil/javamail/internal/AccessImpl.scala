@@ -30,7 +30,9 @@ final class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
     FindFolder[F](parent, name)
 
   def getMessageCount(folder: MailFolder): MailOp[F, JavaMailConnection, Int] =
-    MailOp(conn => conn.folder[F](folder.id).use(f => Sync[F].blocking(f.getMessageCount)))
+    MailOp(conn =>
+      conn.folder[F](folder.id).use(f => Sync[F].blocking(f.getMessageCount))
+    )
 
   def search(folder: MailFolder, max: Int)(
       query: SearchQuery

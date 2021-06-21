@@ -3,9 +3,9 @@ package emil
 import java.time.Instant
 
 import cats.effect._
+import cats.effect.unsafe.implicits.global
 import emil.builder._
 import emil.test.GreenmailTestSuite
-import cats.effect.unsafe.implicits.global
 
 abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
   val emil: Emil[IO]

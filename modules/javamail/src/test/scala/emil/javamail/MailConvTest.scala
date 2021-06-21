@@ -2,9 +2,9 @@ package emil.javamail
 
 import java.nio.charset.Charset
 
-import cats.effect.unsafe.implicits.global
 import cats.data.NonEmptyList
 import cats.effect._
+import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
 import emil.javamail.syntax._

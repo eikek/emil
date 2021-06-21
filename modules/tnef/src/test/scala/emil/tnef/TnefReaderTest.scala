@@ -1,10 +1,10 @@
 package emil.tnef
 
 import cats.effect._
+import cats.effect.unsafe.implicits.global
 import emil.builder._
 import minitest._
 import scodec.bits.ByteVector
-import cats.effect.unsafe.implicits.global
 
 object TnefReaderTest extends SimpleTestSuite {
 

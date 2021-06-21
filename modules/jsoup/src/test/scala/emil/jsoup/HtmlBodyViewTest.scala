@@ -1,7 +1,7 @@
 package emil.jsoup
 
-import cats.effect.unsafe.implicits.global
 import cats.effect._
+import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
 import emil.javamail.syntax._

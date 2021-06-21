@@ -3,13 +3,13 @@ package emil.javamail
 import java.net.URL
 import java.nio.file.Path
 
-import fs2.io.file.Files
 import cats.data.ValidatedNec
 import cats.effect._
 import cats.implicits._
 import emil._
 import emil.javamail.conv.MimeTypeDecode
 import emil.javamail.conv.codec._
+import fs2.io.file.Files
 import fs2.{Pipe, Stream}
 import jakarta.activation.MimeTypeParseException
 import jakarta.mail.internet.AddressException

@@ -1,11 +1,13 @@
 package emil.doobie
 
-import cats.effect.unsafe.implicits.global
+package emil.doobie
+
 import _root_.doobie._
 import _root_.doobie.implicits._
+import _root_.emil._
+import _root_.emil.doobie.EmilDoobieMeta._
 import cats.effect._
-import emil._
-import emil.doobie.EmilDoobieMeta._
+import cats.effect.unsafe.implicits.global
 import minitest._
 
 object EmilDoobieTest extends SimpleTestSuite {

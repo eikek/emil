@@ -1,6 +1,6 @@
 package emil.doobie
 
-import emil._
+import _root_.emil._
 
 case class Record(
     from: MailAddress,

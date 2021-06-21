@@ -11,7 +11,7 @@ object FindMail {
   private[this] val logger = Logger(getClass)
 
   def apply[F[_]: Sync](
-    mh: MailHeader
+      mh: MailHeader
   ): MailOp[F, JavaMailConnection, Option[MimeMessage]] =
     MailOp { conn =>
       Sync[F].blocking {
@@ -22,9 +22,9 @@ object FindMail {
     }
 
   private def findByInternalId(
-    conn: JavaMailConnection,
-    mh: MailHeader,
-    id: InternalId
+      conn: JavaMailConnection,
+      mh: MailHeader,
+      id: InternalId
   ): Option[MimeMessage] =
     id match {
       case InternalId.MessageId(id) =>
@@ -37,9 +37,9 @@ object FindMail {
     }
 
   private def findByUID(
-    conn: JavaMailConnection,
-    mh: MailHeader,
-    uid: Long
+      conn: JavaMailConnection,
+      mh: MailHeader,
+      uid: Long
   ): Option[MimeMessage] = {
     val parent = mh.folder.map(_.id).getOrElse("INBOX");
     conn.store.getFolder(parent) match {
@@ -55,9 +55,9 @@ object FindMail {
   }
 
   private def findByMessageId(
-    conn: JavaMailConnection,
-    mh: MailHeader,
-    mid: String
+      conn: JavaMailConnection,
+      mh: MailHeader,
+      mid: String
   ): Option[MimeMessage] = {
     val parent = mh.folder.map(_.id).getOrElse("INBOX");
     Option(conn.store.getFolder(parent))
