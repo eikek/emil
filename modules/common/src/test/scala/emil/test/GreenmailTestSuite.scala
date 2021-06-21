@@ -1,8 +1,5 @@
 package emil.test
 
-import java.util.concurrent.atomic.AtomicLong
-import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
-
 import emil.test.GreenmailTestSuite.Context
 import emil.{MailAddress, MailConfig}
 import munit._
@@ -21,8 +18,6 @@ abstract class GreenmailTestSuite extends FunSuite {
   override def afterEach(ctx: AfterEach): Unit =
     if (context != null) {
       context.server.stop()
-      context.executor.shutdown()
-      context.executor.awaitTermination(15, TimeUnit.SECONDS)
       context = null
     }
 
@@ -41,17 +36,9 @@ abstract class GreenmailTestSuite extends FunSuite {
 }
 
 object GreenmailTestSuite {
-  private[this] val counter = new AtomicLong(0)
 
-  case class Context(server: GreenmailServer, executor: ExecutorService)
+  case class Context(server: GreenmailServer)
 
   def createContext(users: List[MailAddress]): Context =
-    Context(
-      GreenmailServer.randomPorts(users: _*),
-      Executors.newCachedThreadPool { (r: Runnable) =>
-        val t = Executors.defaultThreadFactory().newThread(r)
-        t.setName(s"test-blocker-${counter.getAndIncrement()}")
-        t
-      }
-    )
+    Context(GreenmailServer.randomPorts(users: _*))
 }

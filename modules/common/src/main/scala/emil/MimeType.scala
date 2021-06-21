@@ -4,7 +4,7 @@ import java.nio.charset.{Charset, StandardCharsets}
 
 import cats.Hash
 
-final case class MimeType private (
+final case class MimeType(
     primary: String,
     sub: String,
     params: Map[String, String]

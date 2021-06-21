@@ -84,7 +84,7 @@ object Received {
         str => go(Vector.empty, str)
       }
 
-      def repsep(sep: P[_]): P[Vector[A]] =
+      def repsep[X](sep: P[X]): P[Vector[A]] =
         ((p <~ sep).rep ~ p.opt).map { case (list, el) =>
           list ++ el.toSeq
         }

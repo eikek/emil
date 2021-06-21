@@ -6,8 +6,7 @@ import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import cats.implicits._
 
-abstract class AbstractSendTest extends GreenmailTestSuite {
-  val emil: Emil[IO]
+abstract class AbstractSendTest(val emil: Emil[IO]) extends GreenmailTestSuite {
 
   val user1 = MailAddress.unsafe(None, "joe@test.com")
   val user2 = MailAddress.unsafe(None, "joan@test.com")

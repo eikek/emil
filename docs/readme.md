@@ -33,6 +33,19 @@ just another wrapper library, but also a bit different:
 
 Write your e-mail related code once and then decide how to execute.
 
+## Usage
+
+With [sbt](https://scala-sbt.org), add the dependencies:
+
+```
+"com.github.eikek" %% "emil-common" % "@VERSION@"  // the core library
+"com.github.eikek" %% "emil-javamail" % "@VERSION@" // implementation module
+// … optionally, other modules analog
+```
+
+Emil is provided for Scala 2.12, 2.13 and 3.
+
+
 ## Examples
 
 Send a mail (returning its `messageID`):

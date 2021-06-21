@@ -7,15 +7,14 @@ import _root_.emil.test.GreenmailTestSuite
 import cats.effect._
 import cats.effect.unsafe.implicits.global
 
-abstract class AbstractAccessTest extends GreenmailTestSuite {
-  val emil: Emil[IO]
+abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite {
 
   val user1 = MailAddress.unsafe(None, "joe@test.com")
   val user2 = MailAddress.unsafe(None, "joan@test.com")
 
   def users: List[MailAddress] = List(user1, user2)
 
-  def user1Imap = emil(imapConf(user1))
+  def user1Imap: Emil.Run[IO, emil.C] = emil(imapConf(user1))
 
   def makeMail(n: Int): Mail[IO] =
     MailBuilder.build[IO](
