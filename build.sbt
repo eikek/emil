@@ -5,7 +5,7 @@ val scala213     = "2.13.6"
 val scala3       = "3.0.0"
 val updateReadme = inputKey[Unit]("Update readme")
 
-addCommandAlias("ci", "; lint; +test; +publishLocal")
+addCommandAlias("ci", "; lint; +test; readme/updateReadme ;microsite/mdoc; +publishLocal")
 addCommandAlias(
   "lint",
   "; scalafmtSbtCheck; scalafmtCheckAll; Compile/scalafix --check; Test/scalafix --check"
