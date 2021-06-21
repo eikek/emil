@@ -6,15 +6,13 @@ import emil._
 import emil.builder._
 import emil.test.GreenmailTestSuite
 
-object SendMailNoAuthTest extends GreenmailTestSuite[Unit] {
+class SendMailNoAuthTest extends GreenmailTestSuite {
 
-  def users                     = Nil
-  def setup(): Unit             = ()
-  def tearDown(env: Unit): Unit = ()
+  def users = Nil
 
   lazy val emil: Emil[IO] = JavaMailEmil[IO]()
 
-  test("Send mail without auth") { _ =>
+  test("Send mail without auth") {
     context.server.getManagers.getUserManager.setAuthRequired(false)
     assertEquals(false, context.server.getManagers.getUserManager.isAuthRequired)
     val htmlBody = "<h1>Hello!</h1>\n<p>This <b>is</b> a mail.</p>"

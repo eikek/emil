@@ -8,9 +8,9 @@ import _root_.emil._
 import _root_.emil.doobie.EmilDoobieMeta._
 import cats.effect._
 import cats.effect.unsafe.implicits.global
-import minitest._
+import munit._
 
-object EmilDoobieTest extends SimpleTestSuite {
+class EmilDoobieTest extends FunSuite {
 
   val xa = Transactor.fromDriverManager[IO](
     "org.h2.Driver",

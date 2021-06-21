@@ -5,20 +5,20 @@ import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
 
 import emil.test.GreenmailTestSuite.Context
 import emil.{MailAddress, MailConfig}
-import minitest.TestSuite
+import munit._
 
-abstract class GreenmailTestSuite[A] extends TestSuite[A] {
+abstract class GreenmailTestSuite extends FunSuite {
 
   var context: Context = _
 
   def users: List[MailAddress]
 
-  override def setupSuite(): Unit = {
+  override def beforeEach(ctx: BeforeEach): Unit = {
     context = GreenmailTestSuite.createContext(users)
     context.server.start()
   }
 
-  override def tearDownSuite(): Unit =
+  override def afterEach(ctx: AfterEach): Unit =
     if (context != null) {
       context.server.stop()
       context.executor.shutdown()

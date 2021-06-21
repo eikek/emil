@@ -1,8 +1,8 @@
 package emil.javamail.internal
 
-import minitest._
+import munit._
 
-object GlobalPropertiesTest extends SimpleTestSuite {
+class GlobalPropertiesTest extends FunSuite {
 
   test("set doesn't override existing values") {
     System.setProperty("a.b.c", "yes")
@@ -21,7 +21,7 @@ object GlobalPropertiesTest extends SimpleTestSuite {
 
   test("find set with empty") {
     val p = GlobalProperties.findSet("empty")
-    assertEquals(p.props, Map.empty)
+    assertEquals(p.props, Map.empty[String, String])
   }
 
   test("find set with lenient") {

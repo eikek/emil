@@ -1,8 +1,8 @@
 package emil
 
-import minitest._
+import munit._
 
-object HeaderTest extends SimpleTestSuite {
+class HeaderTest extends FunSuite {
 
   test("replace headers") {
     val hdrs  = Headers(Header("X-Name", "bla"))

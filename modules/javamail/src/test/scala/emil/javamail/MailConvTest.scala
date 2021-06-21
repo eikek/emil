@@ -8,9 +8,9 @@ import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
 import emil.javamail.syntax._
-import minitest._
+import munit._
 
-object MailConvTest extends SimpleTestSuite {
+class MailConvTest extends FunSuite {
   def toStringContent(body: MailBody[IO]): MailBody[IO] = {
     def mkString(ios: IO[BodyContent]): BodyContent =
       BodyContent(ios.unsafeRunSync().asString)

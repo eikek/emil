@@ -1,12 +1,12 @@
 package emil
 
+import _root_.emil.builder._
+import _root_.emil.test.GreenmailTestSuite
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import cats.implicits._
-import emil.builder._
-import emil.test.GreenmailTestSuite
 
-abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
+abstract class AbstractSendTest extends GreenmailTestSuite {
   val emil: Emil[IO]
 
   val user1 = MailAddress.unsafe(None, "joe@test.com")
@@ -14,7 +14,7 @@ abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
 
   def users: List[MailAddress] = List(user1, user2)
 
-  test("Send and receive mail") { _ =>
+  test("Send and receive mail") {
     val htmlBody = "<h1>Hello!</h1>\n<p>This <b>is</b> a mail.</p>"
     val mail: Mail[IO] = MailBuilder.build(
       From(user1),

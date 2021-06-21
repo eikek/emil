@@ -4,9 +4,9 @@ import cats.effect._
 import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
-import minitest._
+import munit._
 
-object MarkdownBodyTest extends SimpleTestSuite {
+class MarkdownBodyTest extends FunSuite {
 
   test("set markdown body") {
     val md = "## Hello!\n\nThis is a *markdown* mail!"

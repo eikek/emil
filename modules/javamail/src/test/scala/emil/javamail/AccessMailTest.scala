@@ -3,10 +3,8 @@ package emil.javamail
 import cats.effect.IO
 import emil.{AbstractAccessTest, Emil}
 
-object AccessMailTest extends AbstractAccessTest[Unit] {
+class AccessMailTest extends AbstractAccessTest {
   lazy val emil: Emil[IO] =
     JavaMailEmil[IO]()
-
-  override def setup(): Unit = ()
 
 }
