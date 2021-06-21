@@ -1,7 +1,8 @@
 package emil
 
 import cats.data.NonEmptyList
-import cats.effect.{Bracket, Resource}
+import cats.effect.MonadCancel
+import cats.effect.Resource
 
 trait Emil[F[_]] { self =>
 
@@ -13,7 +14,7 @@ trait Emil[F[_]] { self =>
 
   def access: Access[F, C]
 
-  def apply(mc: MailConfig)(implicit F: Bracket[F, Throwable]): Emil.Run[F, C] =
+  def apply(mc: MailConfig)(implicit F: MonadCancel[F, Throwable]): Emil.Run[F, C] =
     new Emil.Run[F, C] {
 
       def run[A](op: MailOp[F, C, A]): F[A] =

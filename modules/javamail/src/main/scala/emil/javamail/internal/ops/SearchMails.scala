@@ -30,7 +30,7 @@ object SearchMails {
       conn
         .folder[F](folder.id, mode = Folder.READ_WRITE)
         .use(f =>
-          Sync[F].delay {
+          Sync[F].blocking {
             logger.debug(s"Searching for deletion: $q")
             val messages =
               if (q == SearchQuery.All) f.getMessages
@@ -51,7 +51,7 @@ object SearchMails {
       conn
         .folder[F](folder.id)
         .use(f =>
-          Sync[F].delay {
+          Sync[F].blocking {
             logger.debug(s"Searching: $q (max: $max)")
             val messages =
               if (q == SearchQuery.All) f.getMessages

@@ -19,7 +19,9 @@ object CopyMail {
       case Some(msg) =>
         msg.getFolder match {
           case f if f != null =>
-            MailOp.of(conn => copy(f, msg, MoveMail.expectTargetFolder(conn, target)))
+            MailOp(conn =>
+              Sync[F].blocking(copy(f, msg, MoveMail.expectTargetFolder(conn, target)))
+            )
           case _ =>
             lift(
               logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")

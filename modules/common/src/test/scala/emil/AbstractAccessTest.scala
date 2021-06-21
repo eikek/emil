@@ -3,6 +3,7 @@ package emil
 import java.time.Instant
 
 import cats.effect._
+import cats.effect.unsafe.implicits.global
 import emil.builder._
 import emil.test.GreenmailTestSuite
 
@@ -114,7 +115,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
           To(user1),
           Subject(s"Hello and Attach!"),
           TextBody(s"This is text."),
-          AttachUrl[IO](getClass.getResource("/files/Test.pdf"), blocker)
+          AttachUrl[IO](getClass.getResource("/files/Test.pdf"))
             .withFilename("Test.pdf")
             .withMimeType(MimeType.pdf)
         )

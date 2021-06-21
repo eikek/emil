@@ -1,6 +1,7 @@
 package emil
 
 import cats.effect.IO
+import cats.effect.unsafe.implicits.global
 import cats.implicits._
 import emil.builder._
 import emil.test.GreenmailTestSuite

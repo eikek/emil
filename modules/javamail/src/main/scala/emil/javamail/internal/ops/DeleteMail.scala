@@ -20,7 +20,7 @@ object DeleteMail {
     )
 
   private def delete[F[_]: Sync](msg: MimeMessage, mh: MailHeader): F[Int] =
-    Sync[F].delay {
+    Sync[F].blocking {
       msg.getFolder match {
         case f: Folder =>
           Util.withWriteFolder(f) { f =>

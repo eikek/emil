@@ -20,12 +20,14 @@ object SendMail {
       logger.debugF(s"Sending ${mails.size} mail(s) using ${conn.config}") *>
         mails.traverse { mail =>
           ThreadClassLoader {
-            cm.convert(conn.session, MessageIdEncode.Random, mail).map { msg =>
+            cm.convert(conn.session, MessageIdEncode.Random, mail).flatMap { msg =>
               val msgId = checkMessageID(msg)
-              logger.debug(s"Sending message: ${infoLine(mail.header)}, $msgId")
-              conn.transport.sendMessage(msg, msg.getAllRecipients)
-              logger.debug("Mail sent")
-              msgId
+              Sync[F].blocking {
+                logger.debug(s"Sending message: ${infoLine(mail.header)}, $msgId")
+                conn.transport.sendMessage(msg, msg.getAllRecipients)
+                logger.debug("Mail sent")
+                msgId
+              }
             }
           }
         }

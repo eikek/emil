@@ -13,10 +13,12 @@ object FindMail {
   def apply[F[_]: Sync](
       mh: MailHeader
   ): MailOp[F, JavaMailConnection, Option[MimeMessage]] =
-    MailOp.of { conn =>
-      val iid = InternalId.readInternalId(mh.id)
-      logger.debug(s"About to find mail with internal id: $iid")
-      iid.toOption.flatMap(id => findByInternalId(conn, mh, id))
+    MailOp { conn =>
+      Sync[F].blocking {
+        val iid = InternalId.readInternalId(mh.id)
+        logger.debug(s"About to find mail with internal id: $iid")
+        iid.toOption.flatMap(id => findByInternalId(conn, mh, id))
+      }
     }
 
   private def findByInternalId(

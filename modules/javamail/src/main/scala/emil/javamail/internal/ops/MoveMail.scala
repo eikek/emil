@@ -21,10 +21,14 @@ object MoveMail {
         msg.getFolder match {
           case imf: IMAPFolder =>
             lift(logger.debugF(s"Move '$mh' via IMAP to '$target'.")) *>
-              MailOp.of(conn => moveNative(imf, msg, expectTargetFolder(conn, target)))
+              MailOp(conn =>
+                Sync[F].blocking(moveNative(imf, msg, expectTargetFolder(conn, target)))
+              )
           case f if f != null =>
             lift(logger.debugF(s"Move '$mh' via Copy to '$target'")) *>
-              MailOp.of(conn => moveViaCopy(f, msg, expectTargetFolder(conn, target)))
+              MailOp(conn =>
+                Sync[F].blocking(moveViaCopy(f, msg, expectTargetFolder(conn, target)))
+              )
           case _ =>
             lift(
               logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")

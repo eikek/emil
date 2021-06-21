@@ -14,11 +14,10 @@ import jakarta.mail.Session
 import jakarta.mail.internet.MimeMessage
 import scodec.bits.ByteVector
 
-final class JavaMailEmil[F[_]: Sync: ContextShift] private (
-    blocker: Blocker,
+final class JavaMailEmil[F[_]: Sync] private (
     settings: Settings
 ) extends Emil[F] {
-  GlobalProperties.applySystemProperties[IO].unsafeRunSync()
+  GlobalProperties.unsafeApplySystemProperties()
 
   type C = JavaMailConnection
 
@@ -26,20 +25,17 @@ final class JavaMailEmil[F[_]: Sync: ContextShift] private (
     ConnectionResource[F](mc, settings)
 
   def sender: Send[F, JavaMailConnection] =
-    new SendImpl[F](blocker)
+    new SendImpl[F]
 
   def access: Access[F, JavaMailConnection] =
-    new AccessImpl[F](blocker)
+    new AccessImpl[F]
 }
 
 object JavaMailEmil {
-  GlobalProperties.applySystemProperties[IO].unsafeRunSync()
+  GlobalProperties.unsafeApplySystemProperties()
 
-  def apply[F[_]: Sync: ContextShift](
-      blocker: Blocker,
-      settings: Settings = Settings.defaultSettings
-  ): Emil[F] =
-    new JavaMailEmil[F](blocker, settings)
+  def apply[F[_]: Sync](settings: Settings = Settings.defaultSettings): Emil[F] =
+    new JavaMailEmil[F](settings)
 
   def mailToString[F[_]: Sync](
       mail: Mail[F]
@@ -71,7 +67,9 @@ object JavaMailEmil {
   def mailToByteStream[F[_]: Sync](
       mail: Mail[F]
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): Stream[F, Byte] =
-    Stream.eval(mailToByteArray[F](mail)).flatMap(bs => Stream.chunk(Chunk.bytes(bs)))
+    Stream
+      .eval(mailToByteVector[F](mail))
+      .flatMap(bs => Stream.chunk(Chunk.byteVector(bs)))
 
   def mailFromString[F[_]: Sync](
       str: String

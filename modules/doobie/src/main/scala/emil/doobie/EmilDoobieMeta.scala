@@ -1,7 +1,6 @@
 package emil.doobie
 
 import cats.Show
-import cats.effect._
 import cats.implicits._
 import doobie.util.invariant._
 import doobie.{Meta, Read, Write}
@@ -34,12 +33,6 @@ trait EmilDoobieMeta {
     Meta[String].timap(parseOrThrow(MailAddress.parseMultiple))(
       _.map(_.asUnicodeString).mkString(",")
     )
-
-  implicit def completeMailMeta[F[_]: Effect]: Meta[Mail[F]] =
-    Meta[String].timap(str => Effect[F].toIO(Mail.deserialize(str)).unsafeRunSync())(m =>
-      Effect[F].toIO(m.serialize).unsafeRunSync()
-    )
-
 }
 
 object EmilDoobieMeta extends EmilDoobieMeta {

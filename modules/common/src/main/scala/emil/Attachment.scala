@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets
 import cats.Applicative
 import cats.effect.Sync
 import cats.implicits._
-import fs2.Chunk.ByteVectorChunk
+import fs2.Chunk
 import fs2.Stream
 import scodec.bits.ByteVector
 
@@ -45,7 +45,7 @@ object Attachment {
     Attachment(
       None,
       mimeType,
-      Stream.chunk(ByteVectorChunk(ByteVector.view(bytes))),
+      Stream.chunk(Chunk.byteVector(ByteVector.view(bytes))),
       bytes.length.toLong.pure[F]
     )
   }

@@ -13,7 +13,7 @@ object CreateFolder {
       c: Conv[Folder, MailFolder]
   ): MailOp[F, JavaMailConnection, MailFolder] =
     MailOp(conn =>
-      Sync[F].delay {
+      Sync[F].blocking {
         val f = parent
           .map(p => conn.store.getFolder(p.id).getFolder(name))
           .getOrElse(conn.store.getFolder(name))

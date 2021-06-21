@@ -2,18 +2,18 @@ package emil
 
 import cats.implicits._
 import fs2.Stream
-import fs2.io.file.{readAll => readFile}
+import fs2.io.file.Files
 import fs2.io.readInputStream
 
 package builder {
 
   import java.io.InputStream
   import java.net.URL
-  import java.nio.file.{Files, Path}
+  import java.nio.file.Path
 
   import cats.Applicative
   import cats.data.NonEmptyList
-  import cats.effect.{Blocker, ContextShift, Sync}
+  import cats.effect._
   import emil.MimeType
   import java.time.Instant
   import java.time.temporal.ChronoField
@@ -177,9 +177,8 @@ package builder {
       Attach(Attachment(filename, mimeType, data))
   }
 
-  case class AttachFile[F[_]: Sync: ContextShift](
+  case class AttachFile[F[_]: Files](
       file: Path,
-      blocker: Blocker,
       mimeType: MimeType = MimeType.octetStream,
       filename: Option[String] = None,
       chunkSize: Int = 8 * 1024
@@ -189,8 +188,8 @@ package builder {
         Attachment(
           filename.orElse(Some(file.getFileName.toString)),
           mimeType,
-          readFile(file, blocker, chunkSize),
-          Sync[F].delay(Files.size(file))
+          Files[F].readAll(file, chunkSize),
+          Files[F].size(file)
         )
       ).apply(mail)
 
@@ -204,9 +203,8 @@ package builder {
       copy(chunkSize = size)
   }
 
-  case class AttachInputStream[F[_]: Sync: ContextShift](
+  case class AttachInputStream[F[_]: Async](
       is: F[InputStream],
-      blocker: Blocker,
       filename: Option[String] = None,
       mimeType: MimeType = MimeType.octetStream,
       length: Option[F[Long]] = None,
@@ -214,7 +212,7 @@ package builder {
   ) extends Trans[F] {
 
     def apply(mail: Mail[F]): Mail[F] = {
-      val data = readInputStream(is, chunkSize, blocker)
+      val data = readInputStream(is, chunkSize)
       Attach(
         length
           .map(len => Attachment(filename, mimeType, data, len))
@@ -239,9 +237,8 @@ package builder {
   }
 
   object AttachUrl {
-    def apply[F[_]: Sync: ContextShift](
+    def apply[F[_]: Async](
         url: URL,
-        blocker: Blocker,
         filename: Option[String] = None,
         mimeType: MimeType = MimeType.octetStream,
         length: Option[F[Long]] = None,
@@ -250,7 +247,6 @@ package builder {
       require(url != null, "Url must not be null")
       AttachInputStream(
         Sync[F].delay(url.openStream()),
-        blocker,
         filename,
         mimeType,
         length,

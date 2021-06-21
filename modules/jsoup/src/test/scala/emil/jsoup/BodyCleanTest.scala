@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 
 import cats.effect._
+import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
 import minitest._

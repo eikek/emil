@@ -3,9 +3,6 @@ package emil.test
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
 
-import scala.concurrent.ExecutionContext
-
-import cats.effect.{Blocker, ContextShift, IO}
 import emil.test.GreenmailTestSuite.Context
 import emil.{MailAddress, MailConfig}
 import minitest.TestSuite
@@ -28,11 +25,6 @@ abstract class GreenmailTestSuite[A] extends TestSuite[A] {
       context.executor.awaitTermination(15, TimeUnit.SECONDS)
       context = null
     }
-
-  implicit val CS: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-
-  lazy val blocker: Blocker =
-    Blocker.liftExecutionContext(ExecutionContext.fromExecutorService(context.executor))
 
   def server: GreenmailServer =
     context.server
