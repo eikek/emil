@@ -5,9 +5,9 @@ import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
 import emil.javamail.syntax._
-import minitest._
+import munit._
 
-object HtmlBodyViewTest extends SimpleTestSuite {
+class HtmlBodyViewTest extends FunSuite {
 
   test("create view") {
     val htmlMail = """<h1>A header</h2><p script="alert('hi!');">Hello</p><p>World<p>"""

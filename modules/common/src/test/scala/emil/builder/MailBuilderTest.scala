@@ -3,9 +3,9 @@ package emil.builder
 import cats.effect._
 import cats.implicits._
 import emil._
-import minitest._
+import munit._
 
-object MailBuilderTest extends SimpleTestSuite {
+class MailBuilderTest extends FunSuite {
 
   test("combine trans") {
     val t = Trans.combineAll[IO](Seq(Subject("test"), From("test@test.com")))

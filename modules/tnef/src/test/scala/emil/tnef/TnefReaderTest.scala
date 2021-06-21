@@ -3,10 +3,10 @@ package emil.tnef
 import cats.effect._
 import cats.effect.unsafe.implicits.global
 import emil.builder._
-import minitest._
+import munit._
 import scodec.bits.ByteVector
 
-object TnefReaderTest extends SimpleTestSuite {
+class TnefReaderTest extends FunSuite {
 
   val winmailDatUrl = getClass.getResource("/winmail.dat")
   require(winmailDatUrl != null, "test file not found")
@@ -42,14 +42,14 @@ object TnefReaderTest extends SimpleTestSuite {
       data.head._2,
       "bea844f30e0fcc20fad419a0d11032a6465da93c1da185a1196949955994409a"
     )
-    assertEquals(data.head._3, 2937)
+    assertEquals(data.head._3, 2937L)
 
     assertEquals(data(1)._1, "bookmark.htm")
     assertEquals(
       data(1)._2,
       "1e08d6e23c75ff80ac992eebc24c2943c7843b7dfee235966b37de5eb4362599"
     )
-    assertEquals(data(1)._3, 85805)
+    assertEquals(data(1)._3, 85805L)
   }
 
   test("change mail") {

@@ -2,10 +2,10 @@ package emil
 
 import java.nio.charset.StandardCharsets
 
-import minitest._
+import munit._
 import scodec.bits.ByteVector
 
-object BodyContentTest extends SimpleTestSuite {
+class BodyContentTest extends FunSuite {
 
   private object CharsetImpl extends Charsets
   val charsets = CharsetImpl.all.values

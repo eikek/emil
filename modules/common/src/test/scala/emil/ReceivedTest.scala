@@ -2,9 +2,9 @@ package emil
 
 import java.time.Instant
 
-import minitest._
+import munit._
 
-object ReceivedTest extends SimpleTestSuite {
+class ReceivedTest extends FunSuite {
 
   test("parse1") {
     val rc1       = """from localhost.localdomain (unknown [IPv6:2000:333:151:2::333:ffff:fff])

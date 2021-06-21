@@ -2,12 +2,12 @@ package emil
 
 import java.time.Instant
 
+import _root_.emil.builder._
+import _root_.emil.test.GreenmailTestSuite
 import cats.effect._
 import cats.effect.unsafe.implicits.global
-import emil.builder._
-import emil.test.GreenmailTestSuite
 
-abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
+abstract class AbstractAccessTest extends GreenmailTestSuite {
   val emil: Emil[IO]
 
   val user1 = MailAddress.unsafe(None, "joe@test.com")
@@ -25,16 +25,20 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
       TextBody(s"This is text $n.")
     )
 
-  override def tearDown(env: A): Unit =
-    server.removeAllMails()
+  override def afterEach(ctx: AfterEach): Unit = {
+    if (server != null) {
+      server.removeAllMails()
+    }
+    super.afterAll()
+  }
 
-  test("get inbox") { _ =>
+  test("get inbox") {
     val op: MailOp[IO, emil.C, MailFolder] = emil.access.getInbox
     val inbox                              = user1Imap.run(op).unsafeRunSync()
     assertEquals(inbox, MailFolder("INBOX", "INBOX"))
   }
 
-  test("create folder") { _ =>
+  test("create folder") {
     val folder = user1Imap.run(emil.access.createFolder(None, "test1")).unsafeRunSync()
     val subfolder =
       user1Imap.run(emil.access.createFolder(Some(folder), "test2")).unsafeRunSync()
@@ -48,7 +52,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assertEquals(inboxSub, MailFolder("INBOX.archived", "archived"))
   }
 
-  test("find folder") { _ =>
+  test("find folder") {
     val makeFolder = for {
       inbox  <- emil.access.getInbox
       folder <- emil.access.createFolder(Some(inbox), "myfolder")
@@ -65,7 +69,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assertEquals(found, Some(inboxSub))
   }
 
-  test("get message count") { _ =>
+  test("get message count") {
     val msgCount = for {
       inbox <- emil.access.getInbox
       count <- emil.access.getMessageCount(inbox)
@@ -83,7 +87,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assertEquals(n1, 5)
   }
 
-  test("search message") { _ =>
+  test("search message") {
     emil(smtpConf(user2))
       .send(makeMail(1), (2 to 5).map(makeMail): _*)
       .unsafeRunSync()
@@ -107,7 +111,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assertSearch((Subject =*= "hello 1") || (Subject =*= "hello 3"), 2)
   }
 
-  test("load mail") { _ =>
+  test("load mail") {
     emil(smtpConf(user2))
       .send(
         MailBuilder.build(
@@ -150,7 +154,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     )
   }
 
-  test("move mail") { _ =>
+  test("move mail") {
     emil(smtpConf(user2))
       .send(
         MailBuilder.build(
@@ -185,7 +189,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assert(movedId.isDefined)
   }
 
-  test("delete mail") { _ =>
+  test("delete mail") {
     emil(smtpConf(user2))
       .send(
         MailBuilder.build(
@@ -215,7 +219,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     user1Imap.run(find).unsafeRunSync()
   }
 
-  test("search delete") { _ =>
+  test("search delete") {
     emil(smtpConf(user2))
       .send(makeMail(1), (2 to 5).map(makeMail): _*)
       .unsafeRunSync()
@@ -241,7 +245,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assertEquals(rest, 3)
   }
 
-  test("copy mail") { _ =>
+  test("copy mail") {
     emil(smtpConf(user2))
       .send(
         MailBuilder.build(
@@ -284,7 +288,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assert(movedId.isDefined)
   }
 
-  test("put mail 1") { _ =>
+  test("put mail 1") {
     val newMail: Mail[IO] = MailBuilder.build(
       From(user2),
       To(user1),
@@ -309,7 +313,7 @@ abstract class AbstractAccessTest[A] extends GreenmailTestSuite[A] {
     assert(inMail.messageId.isDefined)
   }
 
-  test("put mail 2") { _ =>
+  test("put mail 2") {
     val newMail: Mail[IO] = MailBuilder.build(
       From(user2),
       To(user1),

@@ -1,8 +1,8 @@
 package emil
 
-import minitest._
+import munit._
 
-object SSLTypeTest extends SimpleTestSuite {
+class SSLTypeTest extends FunSuite {
 
   test("to name") {
     assertEquals(SSLType.SSL.name, "ssl")

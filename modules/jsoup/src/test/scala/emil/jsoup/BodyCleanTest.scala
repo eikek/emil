@@ -7,10 +7,10 @@ import cats.effect._
 import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
-import minitest._
+import munit._
 import org.jsoup._
 
-object BodyCleanTest extends SimpleTestSuite {
+class BodyCleanTest extends FunSuite {
 
   test("see how jsoup works") {
     val htmlText =
