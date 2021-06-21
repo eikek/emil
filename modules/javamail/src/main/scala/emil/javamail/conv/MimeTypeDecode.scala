@@ -13,7 +13,7 @@ object MimeTypeDecode {
       ps.getNames.asScalaList
         .map(n => (n.toString, Option(ps.get(n.toString)).getOrElse("")))
         .toMap
-    MimeType(jm.getPrimaryType, jm.getSubType, paramMap(jm.getParameters))
+    MimeType(jm.getPrimaryType, jm.getSubType).copy(params = paramMap(jm.getParameters))
   }
 
   def parse(str: String): Either[String, MimeType] =

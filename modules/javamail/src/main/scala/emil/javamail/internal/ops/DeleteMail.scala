@@ -32,7 +32,7 @@ object DeleteMail {
             )
           }
           1
-        case _ =>
+        case null =>
           logger.warn(s"Not deleting message. No folder available.")
           0
       }

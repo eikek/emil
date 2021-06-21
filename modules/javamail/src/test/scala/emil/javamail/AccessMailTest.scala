@@ -1,10 +1,6 @@
 package emil.javamail
 
 import cats.effect.IO
-import emil.{AbstractAccessTest, Emil}
+import emil.AbstractAccessTest
 
-class AccessMailTest extends AbstractAccessTest {
-  lazy val emil: Emil[IO] =
-    JavaMailEmil[IO]()
-
-}
+class AccessMailTest extends AbstractAccessTest(JavaMailEmil[IO]()) {}

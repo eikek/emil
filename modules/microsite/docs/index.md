@@ -39,9 +39,12 @@ With [sbt](https://scala-sbt.org), add the dependencies:
 ```
 "com.github.eikek" %% "emil-common" % "@VERSION@"  // the core library
 "com.github.eikek" %% "emil-javamail" % "@VERSION@" // implementation module
+// … optionally, other modules analog
 ```
 
-Emil is provided for Scala 2.12 and 2.13.
+Emil is provided for Scala 2.12, 2.13 and 3. Note: from 0.10.0 emil is
+builta against CE3. Also from this version onwards, support for scala3
+has been added.
 
 There are [extension modules](extensions) that offer integration
 with other libraries or additional features based on third-party

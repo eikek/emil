@@ -74,11 +74,8 @@ a `Stream[F, Byte]` from somewhere else.
 ```scala mdoc
 import scala.concurrent.ExecutionContext
 
-implicit val CS = IO.contextShift(ExecutionContext.global)
-val blocker = Blocker.liftExecutionContext(ExecutionContext.fromExecutorService(java.util.concurrent.Executors.newCachedThreadPool()))
-
 val mail4 = mail3.asBuilder.add(
-  AttachUrl[IO](getClass.getResource("/files/Test.pdf"), blocker).
+  AttachUrl[IO](getClass.getResource("/files/Test.pdf")).
     withFilename("test.pdf").
     withMimeType(MimeType.pdf)).
   build
@@ -86,11 +83,9 @@ val mail4 = mail3.asBuilder.add(
 
 Emil creates a `Stream[F, Byte]` from the `java.net.URL` using the
 [fs2-io](https://github.com/functional-streams-for-scala/fs2/tree/master/io/src)
-api, that requires a `Blocker` and a `ContextShift`. The same applies
-when attaching files and `java.io.InputStream`s.
-
-Attaching any given `Stream[F, Byte]` is the same. It doesn't require
-`Blocker` or `ContextShift` then.
+api. The same is available when attaching files and
+`java.io.InputStream`s. Any given `Stream[F, Byte]` can be attached as
+well:
 
 ```scala mdoc
 import fs2.Stream

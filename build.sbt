@@ -2,9 +2,10 @@ import com.typesafe.sbt.SbtGit.GitKeys._
 
 val scala212     = "2.12.14"
 val scala213     = "2.13.6"
+val scala3       = "3.0.0"
 val updateReadme = inputKey[Unit]("Update readme")
 
-addCommandAlias("ci", "; lint; +test; +publishLocal")
+addCommandAlias("ci", "; lint; +test; readme/updateReadme ;microsite/mdoc; +publishLocal")
 addCommandAlias(
   "lint",
   "; scalafmtSbtCheck; scalafmtCheckAll; Compile/scalafix --check; Test/scalafix --check"
@@ -29,15 +30,25 @@ val sharedSettings = Seq(
            "-Xlint",
            "-Yno-adapted-args",
            "-Ywarn-dead-code",
-           "-Ywarn-unused-import",
+           "-Ywarn-unused",
            "-Ypartial-unification",
            "-Ywarn-value-discard"
          )
        else if (scalaBinaryVersion.value.startsWith("2.13"))
          List("-Werror", "-Wdead-code", "-Wunused", "-Wvalue-discard")
+       else if (scalaBinaryVersion.value.startsWith("3"))
+         List(
+           "-explain",
+           "-explain-types",
+           "-indent",
+           "-print-lines",
+           "-Ykind-projector",
+           "-Xmigration",
+           "-Xfatal-warnings"
+         )
        else
          Nil),
-  crossScalaVersions := Seq(scala212, scala213),
+  crossScalaVersions := Seq(scala212, scala213, scala3),
   Compile / console / scalacOptions := Seq(),
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
   homepage := Some(url("https://github.com/eikek/emil")),
@@ -198,7 +209,7 @@ lazy val microsite = project
     run / fork := true,
     scalacOptions := Seq(),
     mdocVariables := Map(
-      "VERSION" -> version.value
+      "VERSION" -> latestRelease.value
     )
   )
   .dependsOn(
@@ -240,6 +251,7 @@ val root = project
   .settings(sharedSettings)
   .settings(noPublish)
   .settings(
-    name := "emil-root"
+    name := "emil-root",
+    crossScalaVersions := Nil
   )
   .aggregate(common, javamail, tnef, doobie, markdown, jsoup)

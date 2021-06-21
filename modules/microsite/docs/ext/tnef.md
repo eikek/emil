@@ -34,7 +34,6 @@ import fs2.Stream
 import emil._
 import emil.builder._
 import emil.tnef._
-import scala.concurrent.ExecutionContext
 
 // creating a mail with a TNEF attachment
 val winmailData: Stream[IO, Byte] = Stream.empty
@@ -47,14 +46,9 @@ val mail = MailBuilder.build[IO](
 )
 
 // replaces each TNEF attachment with its content
-implicit val CS: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-
 val mail2: IO[Mail[IO]] = TnefExtract.replace[IO](mail)
 // mail2.unsafeRunSync()
 ```
 
 The extraction must read in the tnef byte stream, therefore the return
-value is inside a `F`. The `ContextShift` is required in scope,
-because the poi library uses java input streams. Converting a
-`Stream[F, Byte]` into a `java.io.InputStream` requires a
-`ContextShift` in scope.
+value is inside a `F`.

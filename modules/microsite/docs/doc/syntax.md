@@ -50,6 +50,7 @@ E-Mail as string:
 ```scala mdoc
 import cats.effect._
 import emil._, emil.builder._
+import cats.effect.unsafe.implicits.global
 
 val mail = MailBuilder.build[IO](
   From("test@test.com"),
