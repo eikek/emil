@@ -218,7 +218,7 @@ lazy val readme = project
     name := "emil-readme",
     scalacOptions := Seq(),
     mdocVariables := Map(
-      "VERSION" -> version.value
+      "VERSION" -> latestRelease.value
     ),
     updateReadme := {
       mdoc.evaluated

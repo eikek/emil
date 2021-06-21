@@ -43,9 +43,6 @@ import cats.data.NonEmptyList
 import emil._, emil.builder._
 import emil.javamail._
 
-implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
-val blocker = Blocker.liftExecutionContext(scala.concurrent.ExecutionContext.global)
-
 val mail: Mail[IO] = MailBuilder.build(
   From("me@test.com"),
   To("test@test.com"),
@@ -53,12 +50,12 @@ val mail: Mail[IO] = MailBuilder.build(
   CustomHeader(Header("User-Agent", "my-email-client")),
   TextBody("Hello!\n\nThis is a mail."),
   HtmlBody("<h1>Hello!</h1>\n<p>This <b>is</b> a mail.</p>"),
-  AttachUrl[IO](getClass.getResource("/files/Test.pdf"), blocker).
+  AttachUrl[IO](getClass.getResource("/files/Test.pdf")).
     withFilename("test.pdf").
     withMimeType(MimeType.pdf)
 )
 
-val myemil = JavaMailEmil[IO](blocker)
+val myemil = JavaMailEmil[IO]()
 val smtpConf = MailConfig("smtp://devmail:25", "dev", "dev", SSLType.NoEncryption)
 
 val sendIO: IO[NonEmptyList[String]] = myemil(smtpConf).send(mail)
@@ -74,10 +71,7 @@ import emil._
 import emil.SearchQuery._
 import emil.javamail._
 
-implicit val CS = IO.contextShift(scala.concurrent.ExecutionContext.global)
-val blocker = Blocker.liftExecutionContext(scala.concurrent.ExecutionContext.global)
-
-val myemil = JavaMailEmil[IO](blocker)
+val myemil = JavaMailEmil[IO]()
 val imapConf = MailConfig("imap://devmail:143", "dev", "dev", SSLType.NoEncryption)
 
 def searchInbox[C](a: Access[IO, C], q: SearchQuery): MailOp[IO, C, SearchResult[MailHeader]] =
