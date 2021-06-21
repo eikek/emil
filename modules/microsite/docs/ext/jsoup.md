@@ -66,6 +66,8 @@ function. This only applies to html parts. When the body is now
 evaluated, the string looks now like this:
 
 ```scala mdoc
+import cats.effect.unsafe.implicits.global
+
 cleanMail.body.htmlPart.map(_.map(_.asString)).unsafeRunSync()
 ```
 

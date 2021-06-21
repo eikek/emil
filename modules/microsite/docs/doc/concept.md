@@ -95,20 +95,12 @@ needs a corresponding connection to some imap server and the
 import emil.javamail._
 import scala.concurrent.ExecutionContext
 
-implicit val CS = IO.contextShift(ExecutionContext.global)
-val blocker = Blocker.liftExecutionContext(ExecutionContext.global)
-
-val myemil = JavaMailEmil[IO](blocker)
+val myemil = JavaMailEmil[IO]()
 val imapConf = MailConfig("imap://devmail:143", "dev", "dev", SSLType.NoEncryption)
 
 val moveIO = myemil(imapConf).run(moveToTrash(myemil.access))
 // moveIO.unsafeRunSync()
 ```
-
-First, we need to create a `ContextShift` instance and a
-`Blocker`. Reason is that JavaMail uses blocking IO and the
-`JavaMailEmil` shifts the execution of all primitive operations onto
-the blocking execution context, given as `Blocker`.
 
 Note: The `emil-javamail` depends on the
 [JavaMail](https://github.com/eclipse-ee4j/mail) library, which has a

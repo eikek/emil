@@ -43,7 +43,9 @@ With [sbt](https://scala-sbt.org), add the dependencies:
 // … optionally, other modules analog
 ```
 
-Emil is provided for Scala 2.12, 2.13 and 3.
+Emil is provided for Scala 2.12, 2.13 and 3. Note: from 0.10.0 emil is
+builta against CE3. Also from this version onwards, support for scala3
+has been added.
 
 
 ## Examples
