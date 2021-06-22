@@ -66,7 +66,7 @@ val mail3 = mail2.asBuilder.
 ## Mails with Attachments
 
 Adding attachments is the same as with other data. Creating
-attachemnts might be more involved, depending on where the data is
+attachments might be more involved, depending on where the data is
 coming from. Emil defines transformations to add attachments from
 files, urls and java's `InputStream` easily. Otherwise you need to get
 a `Stream[F, Byte]` from somewhere else.
