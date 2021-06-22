@@ -153,7 +153,7 @@ trait BasicEncode {
     MsgConv { (session, midEncode, mail) =>
       for {
         attachments <- mail.attachments.all.traverse(ca.convert)
-        mbody   <- cb.convert(mail.body)
+        mbody       <- cb.convert(mail.body)
         msg = ch.convert(session, midEncode, mail.header)
         _   = assemble(mail, msg, mbody, attachments)
       } yield msg
