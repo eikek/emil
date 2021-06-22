@@ -48,7 +48,7 @@ val mail2 = builder.
 ```
 
 The `add` and `set` methods are both doing the same thing: appending
-transfomations. Both names exists for better reading; i.e. a recipient
+transformations. Both names exists for better reading; i.e. a recipient
 is by default appended, but the subject is not. The methods accept a
 list of transformations, too.
 
