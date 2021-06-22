@@ -51,7 +51,7 @@ object MoveMail {
     val folder = conn.store.getFolder(target.id)
     if (folder == null || !folder.exists()) {
       logger.error(s"Target folder expected, but not found: $target")
-      sys.error(s"Target folder '${target.name}' doesn't exsit. Cannot move mail.")
+      sys.error(s"Target folder '${target.name}' doesn't exist. Cannot move mail.")
     }
     folder
   }
