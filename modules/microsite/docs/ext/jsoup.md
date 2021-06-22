@@ -101,7 +101,7 @@ default value that contains:
 - a datetime-formatter and a timezone to use when inserting the e-mail
   date into the document
 - a function to modify the html document tree, which by defaults uses
-  the cleaner from `BodyClean` to remove unwanted contet
+  the cleaner from `BodyClean` to remove unwanted content
 
 The result of the example is:
 
