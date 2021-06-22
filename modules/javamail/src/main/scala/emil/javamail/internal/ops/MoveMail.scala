@@ -31,7 +31,7 @@ object MoveMail {
               )
           case _ =>
             lift(
-              logger.debugF(s"Append '$mh' to folder '$target', no soruce folder found.")
+              logger.debugF(s"Append '$mh' to folder '$target', no source folder found.")
             ) *>
               MailOp.of(conn =>
                 expectTargetFolder(conn, target).appendMessages(Array(msg))
