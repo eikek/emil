@@ -14,7 +14,7 @@ import scodec.bits.ByteVector
   *
   * The byte-array variant is then needed, if a mail is decoded from a
   * mime-representation. A content part may use different character
-  * encodings and a html part may specifiy this encoding in its
+  * encodings and a html part may specify this encoding in its
   * content, too. Thus it sometimes is necessary to get to the same
   * bytes as in the original mail.
   */
