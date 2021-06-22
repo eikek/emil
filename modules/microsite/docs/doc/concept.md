@@ -85,7 +85,7 @@ creates a `Resource[F, JavaMailConnection]` given some
 The `Emil` trait exists to make this more convenient. It simply
 combines the `ConnectionResource` and the implementations for the
 primitive `MailOp`s (defined in `Access` and `Send` trait). The
-`emil-javamail` modul provides this as `JavaMailEmil`.
+`emil-javamail` module provides this as `JavaMailEmil`.
 
 For example, to execute the *"moveToTrash"* operation from above, one
 needs a corresponding connection to some imap server and the
