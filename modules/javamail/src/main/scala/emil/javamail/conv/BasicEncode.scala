@@ -129,15 +129,15 @@ trait BasicEncode {
         mail: Mail[F],
         msg: MimeMessage,
         body: MimeBodyPart,
-        attachs: Vector[MimeBodyPart]
+        attachments: Vector[MimeBodyPart]
     ): Unit = {
       mail.additionalHeaders.all
         .filter(h => h.noneOf("Content-Type", "MIME-Version"))
         .foreach(h => h.value.toList.foreach(v => msg.addHeader(h.name, v)))
-      if (attachs.nonEmpty) {
+      if (attachments.nonEmpty) {
         val content = new MimeMultipart()
         content.addBodyPart(body)
-        attachs.foreach(content.addBodyPart)
+        attachments.foreach(content.addBodyPart)
         msg.setContent(content)
       } else {
         val ct =
@@ -152,10 +152,10 @@ trait BasicEncode {
 
     MsgConv { (session, midEncode, mail) =>
       for {
-        attachs <- mail.attachments.all.traverse(ca.convert)
-        mbody   <- cb.convert(mail.body)
+        attachments <- mail.attachments.all.traverse(ca.convert)
+        mbody       <- cb.convert(mail.body)
         msg = ch.convert(session, midEncode, mail.header)
-        _   = assemble(mail, msg, mbody, attachs)
+        _   = assemble(mail, msg, mbody, attachments)
       } yield msg
     }
   }

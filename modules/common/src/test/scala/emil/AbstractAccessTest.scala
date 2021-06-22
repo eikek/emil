@@ -281,9 +281,9 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     } yield mail.messageId
 
     val movedId = user1Imap.run(check1).unsafeRunSync()
-    val existid = user1Imap.run(check2).unsafeRunSync()
+    val existId = user1Imap.run(check2).unsafeRunSync()
     assertEquals(movedId, orgId)
-    assertEquals(movedId, existid)
+    assertEquals(movedId, existId)
     assert(movedId.isDefined)
   }
 

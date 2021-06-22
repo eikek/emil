@@ -10,7 +10,7 @@ import cats.effect._
   * But the defaults are not good enough and it is tedious to always
   * run the apps with a correctly configured command line. So this
   * class holds certain system properties related to java mail that
-  * are set programatically at a point where no javamail classes
+  * are set programmatically at a point where no javamail classes
   * should have been loaded yet (when using emil only).
   *
   * This class collects some javamail related system properties. They

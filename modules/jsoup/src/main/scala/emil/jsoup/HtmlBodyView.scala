@@ -33,7 +33,7 @@ object HtmlBodyView {
       cfg: HtmlBodyViewConfig
   ): BodyContent = {
     val change: Document => Document =
-      cfg.modify.andThen(meta.map(ammendMeta(cfg)).getOrElse(identity))
+      cfg.modify.andThen(meta.map(amendMeta(cfg)).getOrElse(identity))
     BodyClean.modifyContent(change)(in)
   }
 
@@ -45,7 +45,7 @@ object HtmlBodyView {
       BodyContent(ByteVector.view(f(str).getBytes(c.charsetOrUtf8)), cs)
   }
 
-  private def ammendMeta(
+  private def amendMeta(
       cfg: HtmlBodyViewConfig
   )(header: MailHeader)(doc: Document): Document = {
     val el = makeMeta(header, cfg.dateFormat, cfg.zone)

@@ -20,11 +20,11 @@ trait EmilDoobieMeta {
   implicit val mailAddressMeta: Meta[MailAddress] =
     Meta[String].timap(parseOrThrow(MailAddress.parse))(_.asUnicodeString)
 
-  val mailAddressMulicolumnRead: Read[MailAddress] =
+  val mailAddressMulticolumnRead: Read[MailAddress] =
     Read[(Option[String], String)]
       .map(parseOrThrow({ case (n, a) => MailAddress.parseAddressAndName(n, a) }))
 
-  val mailAddressMulicolumnWrite: Write[MailAddress] =
+  val mailAddressMulticolumnWrite: Write[MailAddress] =
     Write[(Option[String], String)].contramap { mailAddress =>
       (mailAddress.name, mailAddress.address)
     }

@@ -6,7 +6,7 @@ permalink: doc/reading
 
 # {{ page.title }}
 
-The `emil.Access` trait defines primitve `MailOp`s for retrieving
+The `emil.Access` trait defines primitive `MailOp`s for retrieving
 mails and working with folders.
 
 Mails can retrieved by searching a folder. So at first a folder must
@@ -42,7 +42,7 @@ def searchInbox[C](a: Access[IO, C], q: SearchQuery) =
 The `20` defines a maximum count. Just use `Int.MaxValue` to return
 all.
 
-Returning mail headers only from a search saves bandwith and is
+Returning mail headers only from a search saves bandwidth and is
 fast. If you really want to load all mails found, use the
 `searchAndLoad` operation.
 
