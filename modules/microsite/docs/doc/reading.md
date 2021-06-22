@@ -6,7 +6,7 @@ permalink: doc/reading
 
 # {{ page.title }}
 
-The `emil.Access` trait defines primitve `MailOp`s for retrieving
+The `emil.Access` trait defines primitive `MailOp`s for retrieving
 mails and working with folders.
 
 Mails can retrieved by searching a folder. So at first a folder must
