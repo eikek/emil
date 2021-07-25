@@ -1,13 +1,13 @@
 <!DOCTYPE html><html><head><title>Emil: Jsoup</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="eikek" /><meta name="description" content="Emil – E-Mail library for Scala" /><meta name="og:image" content="/emil/img/poster.png" /><meta name="image" property="og:image" content="/emil/img/poster.png" /><meta name="og:title" content="Emil: Jsoup" /><meta name="title" property="og:title" content="Emil: Jsoup" /><meta name="og:site_name" content="Emil" /><meta name="og:url" content="https://github.com/eikek/emil" /><meta name="og:type" content="website" /><meta name="og:description" content="Emil – E-Mail library for Scala" /><link rel="icon" type="image/png" href="/emil/img/favicon.png" /><meta name="twitter:title" content="Emil: Jsoup" /><meta name="twitter:image" content="/emil/img/poster.png" /><meta name="twitter:description" content="Emil – E-Mail library for Scala" /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="35x35" href="/emil/img/favicon.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/emil/highlight/styles/vs.css" /><link rel="stylesheet" href="/emil/css/light-style.css" /><link rel="stylesheet" href="/emil/css/emil.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><div id="sidebar-brand"><a href="/emil/" class="brand"><div class="brand-wrapper"></div><span>Emil</span></a><button id="main-toggle" class="sidebar-toggle"><span class="close"></span></button></div><div class="sidebar-nav"> <div class="sidebar-nav-item  "><a href="/emil/index.html" title="Home" class="">Home</a></div> <div class="sidebar-nav-item  "><a href="/emil/examples" title="Examples" class="">Examples</a></div> <div class="sidebar-nav-item  "><a href="/emil/doc" title="Documentation" class="drop-nested">Documentation</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/doc/concept" title="Concept" class="">Concept</a> <a href="/emil/doc/building" title="Creating Mails" class="">Creating Mails</a> <a href="/emil/doc/reading" title="Obtaining Mails" class="">Obtaining Mails</a> <a href="/emil/doc/syntax" title="Syntax Utilities" class="">Syntax Utilities</a></div></div> <div class="sidebar-nav-item  open"><a href="/emil/extensions" title="Extension Modules" class="drop-nested">Extension Modules</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/ext/tnef" title="Extract TNEF" class="">Extract TNEF</a> <a href="/emil/ext/doobie" title="Doobie Integration" class="">Doobie Integration</a> <a href="/emil/ext/markdown" title="Markdown Bodies" class="">Markdown Bodies</a> <a href="/emil/ext/jsoup" title="Jsoup" class="active">Jsoup</a></div></div></div></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li class="search-nav"><div id="search-dropdown"><label><i class="fa fa-search"></i>Search</label><input id="search-bar" type="text" placeholder="Enter keywords here..." onclick="displayToggleSearch(event)" /><ul id="search-dropdown-content" class="dropdown dropdown-content"></ul></div></li><li id="gh-eyes-item" class="hidden-xs to-uppercase"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-eye"></i><span>Watchers<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs to-uppercase"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-star-o"></i><span>Stars<span id="stars" class="label label-default">--</span></span></a></li></ul></div></div></div></div><div id="content" data-github-owner="eikek" data-github-repo="emil"><div class="content-wrapper"><section><h1 id="jsoup">Jsoup</h1>
 
-<p>The module <code class="highlighter-rouge">emil-jsoup</code> can be used for easier dealing with html
+<p>The module <code class="language-plaintext highlighter-rouge">emil-jsoup</code> can be used for easier dealing with html
 mails. It is based on the famous <a href="https://jsoup.org">jsoup</a> library.</p>
 
 <h2 id="usage">Usage</h2>
 
 <p>With sbt:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.10.0-M1"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "com.github.eikek" %% "emil-jsoup" % "0.10.0-M2"
 </code></pre></div></div>
 
 <h2 id="description">Description</h2>
@@ -70,8 +70,8 @@ documentation of <a href="https://jsoup.org">jsoup</a>.</li>
 
 <h3 id="cleaning-html">Cleaning HTML</h3>
 
-<p>Note the evil <code class="highlighter-rouge">onclick</code> and the malformed html. A clean content can be
-created using the <code class="highlighter-rouge">BodyClean</code>
+<p>Note the evil <code class="language-plaintext highlighter-rouge">onclick</code> and the malformed html. A clean content can be
+created using the <code class="language-plaintext highlighter-rouge">BodyClean</code>
 <a href="../doc/building#custom-transformations">transformation</a>:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">emil.jsoup._</span>
@@ -105,7 +105,7 @@ created using the <code class="highlighter-rouge">BodyClean</code>
 <span class="c1">//           asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//         )</span>
 <span class="c1">//       ),</span>
-<span class="c1">//       f = emil.jsoup.BodyClean$$$Lambda$2036/0x0000000800c01040@142e0283</span>
+<span class="c1">//       f = emil.jsoup.BodyClean$$$Lambda$1981/2125032742@59489572</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
 <span class="c1">//   attachments = Attachments(all = Vector())</span>
@@ -128,9 +128,9 @@ evaluated, the string looks now like this:</p>
 
 <h3 id="html-view">Html View</h3>
 
-<p>The <code class="highlighter-rouge">HtmlBodyView</code> class can be used to create a unified view of an
+<p>The <code class="language-plaintext highlighter-rouge">HtmlBodyView</code> class can be used to create a unified view of an
 e-mail body. It produces HTML, converting a text-only body into html.
-For better results here, use the <code class="highlighter-rouge">emil-markdown</code> module.</p>
+For better results here, use the <code class="language-plaintext highlighter-rouge">emil-markdown</code> module.</p>
 
 <p>Example:</p>
 
@@ -144,24 +144,24 @@ For better results here, use the <code class="highlighter-rouge">emil-markdown</
 <span class="c1">//       asString = "&lt;h1&gt;A header&lt;/h2&gt;&lt;p onclick=\"alert('hi!');\"&gt;Hello&lt;/p&gt;&lt;p&gt;World&lt;p&gt;"</span>
 <span class="c1">//     )</span>
 <span class="c1">//   ),</span>
-<span class="c1">//   f = emil.jsoup.HtmlBodyView$$$Lambda$2050/0x0000000800c2c840@7c8d4a94</span>
+<span class="c1">//   f = emil.jsoup.HtmlBodyView$$$Lambda$1995/572704211@5d767956</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 
-<p>If the <code class="highlighter-rouge">mailHeader</code> is given (second argument), a short header with
+<p>If the <code class="language-plaintext highlighter-rouge">mailHeader</code> is given (second argument), a short header with
 the sender, receiver and subject is included into the result. The
-third argument is a config object <code class="highlighter-rouge">HtmlBodyViewConfig</code> that has a
+third argument is a config object <code class="language-plaintext highlighter-rouge">HtmlBodyViewConfig</code> that has a
 default value that contains:</p>
 
 <ul>
   <li>a function to convert a text-only body into html. This uses a very
 basic string replacement approach and also escapes html entities in
-the text. Use the <code class="highlighter-rouge">emil-markdown</code> module for more sophisticated
+the text. Use the <code class="language-plaintext highlighter-rouge">emil-markdown</code> module for more sophisticated
 text-to-html conversion.</li>
   <li>a datetime-formatter and a timezone to use when inserting the e-mail
 date into the document</li>
   <li>a function to modify the html document tree, which by defaults uses
-the cleaner from <code class="highlighter-rouge">BodyClean</code> to remove unwanted contet</li>
+the cleaner from <code class="language-plaintext highlighter-rouge">BodyClean</code> to remove unwanted content</li>
 </ul>
 
 <p>The result of the example is:</p>

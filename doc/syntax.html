@@ -1,10 +1,10 @@
 <!DOCTYPE html><html><head><title>Emil: Syntax Utilities</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="eikek" /><meta name="description" content="Emil – E-Mail library for Scala" /><meta name="og:image" content="/emil/img/poster.png" /><meta name="image" property="og:image" content="/emil/img/poster.png" /><meta name="og:title" content="Emil: Syntax Utilities" /><meta name="title" property="og:title" content="Emil: Syntax Utilities" /><meta name="og:site_name" content="Emil" /><meta name="og:url" content="https://github.com/eikek/emil" /><meta name="og:type" content="website" /><meta name="og:description" content="Emil – E-Mail library for Scala" /><link rel="icon" type="image/png" href="/emil/img/favicon.png" /><meta name="twitter:title" content="Emil: Syntax Utilities" /><meta name="twitter:image" content="/emil/img/poster.png" /><meta name="twitter:description" content="Emil – E-Mail library for Scala" /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="35x35" href="/emil/img/favicon.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/emil/highlight/styles/vs.css" /><link rel="stylesheet" href="/emil/css/light-style.css" /><link rel="stylesheet" href="/emil/css/emil.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><div id="sidebar-brand"><a href="/emil/" class="brand"><div class="brand-wrapper"></div><span>Emil</span></a><button id="main-toggle" class="sidebar-toggle"><span class="close"></span></button></div><div class="sidebar-nav"> <div class="sidebar-nav-item  "><a href="/emil/index.html" title="Home" class="">Home</a></div> <div class="sidebar-nav-item  "><a href="/emil/examples" title="Examples" class="">Examples</a></div> <div class="sidebar-nav-item  open"><a href="/emil/doc" title="Documentation" class="drop-nested">Documentation</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/doc/concept" title="Concept" class="">Concept</a> <a href="/emil/doc/building" title="Creating Mails" class="">Creating Mails</a> <a href="/emil/doc/reading" title="Obtaining Mails" class="">Obtaining Mails</a> <a href="/emil/doc/syntax" title="Syntax Utilities" class="active">Syntax Utilities</a></div></div> <div class="sidebar-nav-item  "><a href="/emil/extensions" title="Extension Modules" class="drop-nested">Extension Modules</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/ext/tnef" title="Extract TNEF" class="">Extract TNEF</a> <a href="/emil/ext/doobie" title="Doobie Integration" class="">Doobie Integration</a> <a href="/emil/ext/markdown" title="Markdown Bodies" class="">Markdown Bodies</a> <a href="/emil/ext/jsoup" title="Jsoup" class="">Jsoup</a></div></div></div></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li class="search-nav"><div id="search-dropdown"><label><i class="fa fa-search"></i>Search</label><input id="search-bar" type="text" placeholder="Enter keywords here..." onclick="displayToggleSearch(event)" /><ul id="search-dropdown-content" class="dropdown dropdown-content"></ul></div></li><li id="gh-eyes-item" class="hidden-xs to-uppercase"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-eye"></i><span>Watchers<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs to-uppercase"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-star-o"></i><span>Stars<span id="stars" class="label label-default">--</span></span></a></li></ul></div></div></div></div><div id="content" data-github-owner="eikek" data-github-repo="emil"><div class="content-wrapper"><section><h1 id="syntax-utilities">Syntax Utilities</h1>
 
-<p>The <code class="highlighter-rouge">emil-common</code> module doesn’t provide utilities for parsing mails
-or mail addresses from text. This is provided by the <code class="highlighter-rouge">emil-javamail</code>
+<p>The <code class="language-plaintext highlighter-rouge">emil-common</code> module doesn’t provide utilities for parsing mails
+or mail addresses from text. This is provided by the <code class="language-plaintext highlighter-rouge">emil-javamail</code>
 module, because the implementation from JavaMail is used.</p>
 
-<p>There is a <code class="highlighter-rouge">syntax</code> object that has some common utilities when
+<p>There is a <code class="language-plaintext highlighter-rouge">syntax</code> object that has some common utilities when
 reading/writing e-mail.</p>
 
 <h2 id="parsing-mimetype-from-string">Parsing MimeType from String</h2>
@@ -101,10 +101,10 @@ reading/writing e-mail.</p>
 <span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
 
 <span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span><span class="o">()</span>
-<span class="c1">// mailStr: String = """Date: Mon, 21 Jun 2021 14:14:42 +0000 (GMT)</span>
+<span class="c1">// mailStr: String = """Date: Sun, 25 Jul 2021 10:32:42 +0000 (GMT)</span>
 <span class="c1">// From: test@test.com</span>
 <span class="c1">// To: test@test.com</span>
-<span class="c1">// Message-ID: &lt;1768960424.0.1624284882357@kythira&gt;</span>
+<span class="c1">// Message-ID: &lt;1148190128.0.1627209162596@kalamos&gt;</span>
 <span class="c1">// Subject: Hello</span>
 <span class="c1">// MIME-Version: 1.0</span>
 <span class="c1">// Content-Type: text/html; charset=utf-8</span>
@@ -118,8 +118,8 @@ reading/writing e-mail.</p>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
 <span class="c1">// mail2: Mail[IO] = Mail(</span>
 <span class="c1">//   header = MailHeader(</span>
-<span class="c1">//     id = "messageId:&lt;1768960424.0.1624284882357@kythira&gt;",</span>
-<span class="c1">//     messageId = Some(value = "&lt;1768960424.0.1624284882357@kythira&gt;"),</span>
+<span class="c1">//     id = "messageId:&lt;1148190128.0.1627209162596@kalamos&gt;",</span>
+<span class="c1">//     messageId = Some(value = "&lt;1148190128.0.1627209162596@kalamos&gt;"),</span>
 <span class="c1">//     folder = None,</span>
 <span class="c1">//     recipients = Recipients(</span>
 <span class="c1">//       to = List(MailAddress(name = None, address = "test@test.com")),</span>
@@ -129,7 +129,7 @@ reading/writing e-mail.</p>
 <span class="c1">//     sender = None,</span>
 <span class="c1">//     from = Some(value = MailAddress(name = None, address = "test@test.com")),</span>
 <span class="c1">//     replyTo = None,</span>
-<span class="c1">//     originationDate = Some(value = 2021-06-21T14:14:42Z),</span>
+<span class="c1">//     originationDate = Some(value = 2021-07-25T10:32:42Z),</span>
 <span class="c1">//     subject = "Hello",</span>
 <span class="c1">//     received = List(),</span>
 <span class="c1">//     flags = Set()</span>
@@ -155,7 +155,7 @@ reading/writing e-mail.</p>
 <span class="c1">//       value = ByteContent(</span>
 <span class="c1">//         bytes = Chunk(</span>
 <span class="c1">//           bytes = View(</span>
-<span class="c1">//             at = scodec.bits.ByteVector$AtArray@4fe3d15f,</span>
+<span class="c1">//             at = scodec.bits.ByteVector$AtArray@7a0c046e,</span>
 <span class="c1">//             offset = 0L,</span>
 <span class="c1">//             size = 19L</span>
 <span class="c1">//           )</span>
