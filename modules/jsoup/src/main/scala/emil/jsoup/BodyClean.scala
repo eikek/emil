@@ -25,7 +25,7 @@ object BodyClean {
 
   /** Default `change' function for the BodyClean constructor.
     */
-  def whitelistClean(whitelist: Whitelist): Document => Document =
+  def whitelistClean(whitelist: Safelist): Document => Document =
     doc => {
       val cleaner = new Cleaner(whitelist)
       val body    = cleaner.clean(doc).body
@@ -33,12 +33,12 @@ object BodyClean {
       doc
     }
 
-  def apply[F[_]: Applicative](whitelist: Whitelist): Trans[F] =
+  def apply[F[_]: Applicative](whitelist: Safelist): Trans[F] =
     BodyClean[F](whitelistClean(whitelist))
 
   def default[F[_]: Applicative] = apply[F](EmailWhitelist.default)
 
-  def cleanBody[F[_]: Applicative](whitelist: Whitelist)(body: MailBody[F]): MailBody[F] =
+  def cleanBody[F[_]: Applicative](whitelist: Safelist)(body: MailBody[F]): MailBody[F] =
     modifyBody(whitelistClean(whitelist))(body)
 
   def modifyBody[F[_]: Applicative](

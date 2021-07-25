@@ -12,7 +12,7 @@ import org.jsoup.safety._
 object EmailWhitelist {
 
   val default =
-    Whitelist.relaxed
+    Safelist.relaxed
       .addTags("font", "center")
       .addAttributes(
         ":all",
