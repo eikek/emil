@@ -2,14 +2,13 @@ package emil
 
 import cats.implicits._
 import fs2.Stream
-import fs2.io.file.Files
+import fs2.io.file.{Files, Flags, Path}
 import fs2.io.readInputStream
 
 package builder {
 
   import java.io.InputStream
   import java.net.URL
-  import java.nio.file.Path
 
   import cats.Applicative
   import cats.data.NonEmptyList
@@ -181,14 +180,14 @@ package builder {
       file: Path,
       mimeType: MimeType = MimeType.octetStream,
       filename: Option[String] = None,
-      chunkSize: Int = 8 * 1024
+      chunkSize: Int = 64 * 1024
   ) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       Attach(
         Attachment(
-          filename.orElse(Some(file.getFileName.toString)),
+          filename.orElse(Some(file.fileName.toString)),
           mimeType,
-          Files[F].readAll(file, chunkSize),
+          Files[F].readAll(file, chunkSize, Flags.Read),
           Files[F].size(file)
         )
       ).apply(mail)

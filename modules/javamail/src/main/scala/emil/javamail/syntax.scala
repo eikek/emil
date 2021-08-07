@@ -1,7 +1,6 @@
 package emil.javamail
 
 import java.net.URL
-import java.nio.file.Path
 
 import cats.data.ValidatedNec
 import cats.effect._
@@ -9,7 +8,7 @@ import cats.implicits._
 import emil._
 import emil.javamail.conv.MimeTypeDecode
 import emil.javamail.conv.codec._
-import fs2.io.file.Files
+import fs2.io.file.{Files, Path}
 import fs2.{Pipe, Stream}
 import jakarta.activation.MimeTypeParseException
 import jakarta.mail.internet.AddressException
@@ -40,7 +39,7 @@ object syntax {
 
     def fromFile[F[_]: Files: Sync](file: Path): F[Mail[F]] =
       Files[F]
-        .readAll(file, 8192)
+        .readAll(file)
         .through(readBytes[F])
         .compile
         .lastOrError

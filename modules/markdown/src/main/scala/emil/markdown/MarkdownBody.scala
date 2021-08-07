@@ -28,7 +28,7 @@ case class MarkdownBody[F[_]: Applicative](
 object MarkdownBody {
 
   def fromBytes[F[_]: Sync](bytes: Stream[F, Byte]): MarkdownBody[F] =
-    fromUtf8String(bytes.through(fs2.text.utf8Decode))
+    fromUtf8String(bytes.through(fs2.text.utf8.decode))
 
   def fromUtf8String[F[_]: Sync](str: Stream[F, String]): MarkdownBody[F] =
     MarkdownBody(str.foldMonoid.compile.lastOrError)
