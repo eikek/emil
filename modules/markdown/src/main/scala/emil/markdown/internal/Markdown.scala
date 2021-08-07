@@ -36,7 +36,7 @@ object Markdown {
   }
 
   def bytesToHtml[F[_]: Sync](data: Stream[F, Byte], cfg: MarkdownConfig): F[String] =
-    stringToHtml(data.through(fs2.text.utf8Decode), cfg)
+    stringToHtml(data.through(fs2.text.utf8.decode), cfg)
 
   def stringToHtml[F[_]: Sync](data: Stream[F, String], cfg: MarkdownConfig): F[String] =
     data.compile.foldMonoid.map(str => toHtml(str, cfg))
