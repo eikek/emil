@@ -73,7 +73,9 @@ object syntax {
     def parse(str: String): Either[String, MailAddress] =
       mailAddressParse.convert(str)
 
-    /** Parses an email address returning a cats `ValidatedNec` with `AddressException` as the error in case of malformed address. */
+    /** Parses an email address returning a cats `ValidatedNec` with `AddressException` as
+      * the error in case of malformed address.
+      */
     def parseValidated(str: String): ValidatedNec[AddressException, MailAddress] =
       mailAddressParseValidated.convert(str)
 
@@ -84,7 +86,9 @@ object syntax {
     ): Either[String, MailAddress] =
       mailAddressParseNameAndAddress.convert((name, address))
 
-    /** Parses an email address from two parts returning a cats `ValidatedNec` with `AddressException` as the error in case of malformed address. */
+    /** Parses an email address from two parts returning a cats `ValidatedNec` with
+      * `AddressException` as the error in case of malformed address.
+      */
     def parseAddressAndNameValidated(
         name: Option[String],
         address: String
@@ -99,16 +103,16 @@ object syntax {
     def parseMultiple(str: String): Either[String, List[MailAddress]] =
       str.split(Array(',', ';')).toList.map(_.trim).traverse(parse)
 
-    /** Reads a comma-separated list of e-mail addresses,
-      *  returning a cats `ValidatedNec` with `AddressException` as the error in case of malformed addresses.
+    /** Reads a comma-separated list of e-mail addresses, returning a cats `ValidatedNec`
+      * with `AddressException` as the error in case of malformed addresses.
       */
     def parseMultipleValidated(
         str: String
     ): ValidatedNec[AddressException, List[MailAddress]] =
       str.split(Array(',', ';')).toList.map(_.trim).traverse(parseValidated)
 
-    /** Reads a comma-separated list of e-mail addresses, throwing
-      * exceptions if something fails.
+    /** Reads a comma-separated list of e-mail addresses, throwing exceptions if something
+      * fails.
       */
     def parseMultipleUnsafe(str: String): List[MailAddress] =
       parseMultiple(str).fold(sys.error, identity)

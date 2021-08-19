@@ -38,13 +38,13 @@ object Received {
 
     implicit final class POps[A](p: P[A]) {
       def map[B](f: A => B): P[B] =
-        in => p(in).map({ case (rest, a) => (rest, f(a)) })
+        in => p(in).map { case (rest, a) => (rest, f(a)) }
 
       def emap[B](f: A => Either[String, B]): P[B] =
         in =>
-          p(in).flatMap({ case (rest, a) =>
+          p(in).flatMap { case (rest, a) =>
             f(a).map(b => rest -> b)
-          })
+          }
 
       def ~[B](n: P[B]): P[(A, B)] =
         in =>
@@ -64,7 +64,7 @@ object Received {
         (p ~ n).map(_._1)
 
       def ++(n: P[A])(implicit S: Semigroup[A]): P[A] =
-        (p ~ n).map({ case (a, b) => S.combine(a, b) })
+        (p ~ n).map { case (a, b) => S.combine(a, b) }
 
       def opt: P[Option[A]] =
         in =>
@@ -110,10 +110,9 @@ object Received {
       }
 
     def const(str: String): P[String] =
-      in => {
+      in =>
         if (in.startsWith(str)) Right(in.substring(str.length) -> str)
         else Left(s"Expected $str, but got: $in")
-      }
 
     def ws: P[String] =
       stringIn(" \t\n\r".toSet)

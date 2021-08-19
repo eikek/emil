@@ -11,10 +11,9 @@ import scodec.bits.ByteVector
 
 /** Creates a valid html document given a `MailBody'.
   *
-  * Often, html body parts are only html snippets, missing a valid
-  * `html' declaration. If the body is text/plain, it is converted
-  * into basic html. The `emil-markdown' module should be included to
-  * supply a more sophisticated text->html conversion.
+  * Often, html body parts are only html snippets, missing a valid `html' declaration. If
+  * the body is text/plain, it is converted into basic html. The `emil-markdown' module
+  * should be included to supply a more sophisticated text->html conversion.
   */
 object HtmlBodyView {
 
@@ -77,7 +76,7 @@ object HtmlBodyView {
      |<strong>From:</strong> <code>${mail(header.from)}</code><br>
      |<strong>To:</strong> <code>${mails(header.recipients.to)}</code><br>
      |<strong>Subject:</strong> <code>${header.subject}</code><br>
-     |<strong>Date:</strong> <code>${dateStr}</code>
+     |<strong>Date:</strong> <code>$dateStr</code>
      |</div>
      |""".stripMargin
   }

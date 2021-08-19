@@ -8,15 +8,18 @@ import org.jsoup.nodes._
 
 /** Settings for creating a html document from a mail body.
   *
-  * @param textToHtml in case there is only a plain text body, it must
-  * be converted to html. The default is a very simple approach, it is
-  * recommended to use the emil-markdown module for a more
-  * sophisticated variant.
-  * @param modify: Allows to modify the parsed html tree. By default a
-  * cleaner is used with the default `EmailWhiteList`
-  * @param dateFormat If a mail header is supplied, html is amended
-  * with the datetime where this formatter is used
-  * @param zone the timezone to use when formatting the datetime
+  * @param textToHtml
+  *   in case there is only a plain text body, it must be converted to html. The default
+  *   is a very simple approach, it is recommended to use the emil-markdown module for a
+  *   more sophisticated variant.
+  * @param modify:
+  *   Allows to modify the parsed html tree. By default a cleaner is used with the default
+  *   `EmailWhiteList`
+  * @param dateFormat
+  *   If a mail header is supplied, html is amended with the datetime where this formatter
+  *   is used
+  * @param zone
+  *   the timezone to use when formatting the datetime
   */
 case class HtmlBodyViewConfig(
     textToHtml: String => String = Defaults.defaultTxtToHtml,

@@ -16,8 +16,8 @@ sealed trait MailBody[F[_]] {
       both: MailBody.HtmlAndText[F] => A
   ): A
 
-  /** Return the html or the text content. If only text is available, it
-    * is applied to the given function that may convert it into html.
+  /** Return the html or the text content. If only text is available, it is applied to the
+    * given function that may convert it into html.
     */
   def htmlContent(
       txtToHtml: BodyContent => BodyContent

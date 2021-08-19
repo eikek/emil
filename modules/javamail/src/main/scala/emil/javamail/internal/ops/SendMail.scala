@@ -36,7 +36,7 @@ object SendMail {
   private def checkMessageID(msg: MimeMessage): String =
     Option(msg.getMessageID) match {
       case Some(id) => id
-      case None     => sys.error("No messageID found for mail being prepared for sending.")
+      case None => sys.error("No messageID found for mail being prepared for sending.")
     }
 
   private def infoLine(mh: MailHeader): String =

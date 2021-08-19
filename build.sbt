@@ -48,11 +48,11 @@ val sharedSettings = Seq(
          )
        else
          Nil),
-  crossScalaVersions := Seq(scala212, scala213, scala3),
+  crossScalaVersions                := Seq(scala212, scala213, scala3),
   Compile / console / scalacOptions := Seq(),
-  licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
-  homepage := Some(url("https://github.com/eikek/emil")),
-  versionScheme := Some("early-semver")
+  licenses                          := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
+  homepage                          := Some(url("https://github.com/eikek/emil")),
+  versionScheme                     := Some("early-semver")
 ) ++ publishSettings
 
 lazy val publishSettings = Seq(
@@ -68,8 +68,8 @@ lazy val publishSettings = Seq(
 )
 
 lazy val noPublish = Seq(
-  publish := {},
-  publishLocal := {},
+  publish         := {},
+  publishLocal    := {},
   publishArtifact := false
 )
 
@@ -189,25 +189,25 @@ lazy val microsite = project
   .settings(sharedSettings)
   .settings(noPublish)
   .settings(
-    name := "emil-microsite",
+    name            := "emil-microsite",
     publishArtifact := false,
-    publish / skip := true,
+    publish / skip  := true,
     micrositeFooterText := Some(
       s"""
         |<p>&copy; 2020- <a href="https://github.com/eikek/emil">Emil v${latestRelease.value}</a></p>
         |""".stripMargin
     ),
-    micrositeName := "Emil",
-    micrositeDescription := "Emil – E-Mail library for Scala",
-    micrositeFavicons := Seq(microsites.MicrositeFavicon("favicon.png", "35x35")),
-    micrositeBaseUrl := "/emil",
-    micrositeAuthor := "eikek",
-    micrositeGithubOwner := "eikek",
-    micrositeGithubRepo := "emil",
+    micrositeName          := "Emil",
+    micrositeDescription   := "Emil – E-Mail library for Scala",
+    micrositeFavicons      := Seq(microsites.MicrositeFavicon("favicon.png", "35x35")),
+    micrositeBaseUrl       := "/emil",
+    micrositeAuthor        := "eikek",
+    micrositeGithubOwner   := "eikek",
+    micrositeGithubRepo    := "emil",
     micrositeGitterChannel := false,
     micrositeShareOnSocial := false,
-    run / fork := true,
-    scalacOptions := Seq(),
+    run / fork             := true,
+    scalacOptions          := Seq(),
     mdocVariables := Map(
       "VERSION" -> latestRelease.value
     )
@@ -226,7 +226,7 @@ lazy val readme = project
   .settings(sharedSettings)
   .settings(noPublish)
   .settings(
-    name := "emil-readme",
+    name          := "emil-readme",
     scalacOptions := Seq(),
     mdocVariables := Map(
       "VERSION" -> latestRelease.value
@@ -251,7 +251,7 @@ val root = project
   .settings(sharedSettings)
   .settings(noPublish)
   .settings(
-    name := "emil-root",
+    name               := "emil-root",
     crossScalaVersions := Nil
   )
   .aggregate(common, javamail, tnef, doobie, markdown, jsoup)
