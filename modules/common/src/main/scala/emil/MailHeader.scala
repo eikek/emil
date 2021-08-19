@@ -30,9 +30,9 @@ final case class MailHeader(
   def withOriginationDate(date: Instant): MailHeader =
     copy(originationDate = Some(date))
 
-  /** Return the date closest to the received date. It is the latest
-    * date from a `Received' headers and the originationDate (which
-    * usually corresponds to the sent date).
+  /** Return the date closest to the received date. It is the latest date from a
+    * `Received' headers and the originationDate (which usually corresponds to the sent
+    * date).
     */
   def date: Option[Instant] =
     (received.map(_.date) ++ originationDate).sortBy(-_.toEpochMilli).headOption

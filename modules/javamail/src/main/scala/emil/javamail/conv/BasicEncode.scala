@@ -70,7 +70,7 @@ trait BasicEncode {
       b
     }
 
-    Conv({
+    Conv {
       case MailBody.Empty() =>
         mkTextPart(BodyContent.empty).pure[F]
       case MailBody.Text(txt) =>
@@ -82,7 +82,7 @@ trait BasicEncode {
           tp <- txt
           hp <- html
         } yield mkAlternative(tp, hp)
-    })
+    }
   }
 
   implicit def mailHeaderEncode(implicit

@@ -7,9 +7,8 @@ import emil._
 import emil.builder.Trans
 import fs2.Stream
 
-/** A transformation function to use with `emil.builder' package that
-  * takes a plain text string and converts it into a html mail body
-  * using markdown.
+/** A transformation function to use with `emil.builder' package that takes a plain text
+  * string and converts it into a html mail body using markdown.
   */
 case class MarkdownBody[F[_]: Applicative](
     md: F[String],

@@ -22,7 +22,7 @@ trait EmilDoobieMeta {
 
   val mailAddressMulticolumnRead: Read[MailAddress] =
     Read[(Option[String], String)]
-      .map(parseOrThrow({ case (n, a) => MailAddress.parseAddressAndName(n, a) }))
+      .map(parseOrThrow { case (n, a) => MailAddress.parseAddressAndName(n, a) })
 
   val mailAddressMulticolumnWrite: Write[MailAddress] =
     Write[(Option[String], String)].contramap { mailAddress =>

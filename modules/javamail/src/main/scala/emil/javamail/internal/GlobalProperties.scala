@@ -2,24 +2,20 @@ package emil.javamail.internal
 
 import cats.effect._
 
-/** JavaMail uses various system properties to configure internals.
-  * Those properties are often read at class loading time and then
-  * cached in a static variable. Thus, it must be set as a system
-  * property to be surely existent before any class loading happens.
+/** JavaMail uses various system properties to configure internals. Those properties are
+  * often read at class loading time and then cached in a static variable. Thus, it must
+  * be set as a system property to be surely existent before any class loading happens.
   *
-  * But the defaults are not good enough and it is tedious to always
-  * run the apps with a correctly configured command line. So this
-  * class holds certain system properties related to java mail that
-  * are set programmatically at a point where no javamail classes
-  * should have been loaded yet (when using emil only).
+  * But the defaults are not good enough and it is tedious to always run the apps with a
+  * correctly configured command line. So this class holds certain system properties
+  * related to java mail that are set programmatically at a point where no javamail
+  * classes should have been loaded yet (when using emil only).
   *
-  * This class collects some javamail related system properties. They
-  * are applied early enough (wrt to emil library). By default the
-  * `lenient' set is applied. Properties are only set, if the current
-  * value is absent. Thus, any system properties applied before are
-  * retained and not overwritten by this class. To skip this, specify
-  * the system property `emil.javamail.globalproperties=empty'. In
-  * this case nothing is applied.
+  * This class collects some javamail related system properties. They are applied early
+  * enough (wrt to emil library). By default the `lenient' set is applied. Properties are
+  * only set, if the current value is absent. Thus, any system properties applied before
+  * are retained and not overwritten by this class. To skip this, specify the system
+  * property `emil.javamail.globalproperties=empty'. In this case nothing is applied.
   */
 case class GlobalProperties(props: Map[String, String]) {
 

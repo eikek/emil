@@ -13,7 +13,7 @@ final class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
       .andThen(optMf =>
         optMf match {
           case Some(mf) => mf.pure[F]
-          case None     => Sync[F].raiseError(new Exception("Folder INBOX doesn't exist."))
+          case None => Sync[F].raiseError(new Exception("Folder INBOX doesn't exist."))
         }
       )
 

@@ -3,8 +3,7 @@ import cats.data.NonEmptyList
 
 trait Send[F[_], C] {
 
-  /** Return an operation that sends a list of mails and returns the
-    * generated messageIDs.
+  /** Return an operation that sends a list of mails and returns the generated messageIDs.
     */
   def sendMails(mails: NonEmptyList[Mail[F]]): MailOp[F, C, NonEmptyList[String]]
 

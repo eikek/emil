@@ -12,8 +12,7 @@ import org.apache.poi.hmef.HMEFMessage
 
 object TnefExtract {
 
-  /** Extracts the winmail.dat given as input stream file into a list of
-    * attachments.
+  /** Extracts the winmail.dat given as input stream file into a list of attachments.
     */
   def fromInputStream[F[_]: Applicative](in: InputStream): Vector[Attachment[F]] = {
     val message = new HMEFMessage(in)
@@ -28,8 +27,7 @@ object TnefExtract {
       }
   }
 
-  /** Extracts the winmail.dat file given as a stream of bytes into a
-    * list of attachments.
+  /** Extracts the winmail.dat file given as a stream of bytes into a list of attachments.
     */
   def fromStream[F[_]: Async](
       data: Stream[F, Byte]
@@ -38,8 +36,8 @@ object TnefExtract {
       .through(fs2.io.toInputStream)
       .flatMap(in => Stream.evalSeq(Sync[F].delay(fromInputStream[F](in))))
 
-  /** Return the list of attachments if the given attachment is a tnef
-    * file, otherwise return the input
+  /** Return the list of attachments if the given attachment is a tnef file, otherwise
+    * return the input
     */
   def extractSingle[F[_]: Async](a: Attachment[F]): Stream[F, Attachment[F]] =
     if (TnefMimeType.matches(a.mimeType))
@@ -47,8 +45,8 @@ object TnefExtract {
     else
       Stream.emit(a)
 
-  /** Go through the mail's attachments and replace each tnef attachment
-    * with its inner attachments.
+  /** Go through the mail's attachments and replace each tnef attachment with its inner
+    * attachments.
     */
   def replace[F[_]: Async](mail: Mail[F]): F[Mail[F]] = {
     val attachStream =

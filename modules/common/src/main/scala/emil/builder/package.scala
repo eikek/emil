@@ -96,8 +96,8 @@ package builder {
       if (header.isEmpty) mail
       else mail.mapHeaders(_.add(header))
 
-    /** By default, empty headers are ignored and not set into the mail.
-      * This allows to set headers to an empty value.
+    /** By default, empty headers are ignored and not set into the mail. This allows to
+      * set headers to an empty value.
       */
     def allowEmpty: Trans[F] =
       Trans(_.mapHeaders(_.add(header)))

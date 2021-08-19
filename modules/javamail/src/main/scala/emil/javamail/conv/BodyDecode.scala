@@ -19,8 +19,8 @@ import scodec.bits.ByteVector
 
 /** Read a recursive multipart message into our simplified structure:
   *
-  * - the first text, html or alternative part is defining MailBody
-  * - all other parts are flattened into a list of attachments
+  *   - the first text, html or alternative part is defining MailBody
+  *   - all other parts are flattened into a list of attachments
   */
 trait BodyDecode {
 

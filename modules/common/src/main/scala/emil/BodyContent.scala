@@ -7,16 +7,14 @@ import scodec.bits.ByteVector
 
 /** Content part of the mail body.
   *
-  * The mail body may be alternative content of text/plain, text/html
-  * or both. A body content may be specified by a String or a
-  * byte-array + charset. For encoding body contents from a string,
-  * the UTF-8 encoding is used.
+  * The mail body may be alternative content of text/plain, text/html or both. A body
+  * content may be specified by a String or a byte-array + charset. For encoding body
+  * contents from a string, the UTF-8 encoding is used.
   *
   * The byte-array variant is then needed, if a mail is decoded from a
-  * mime-representation. A content part may use different character
-  * encodings and a html part may specify this encoding in its
-  * content, too. Thus it sometimes is necessary to get to the same
-  * bytes as in the original mail.
+  * mime-representation. A content part may use different character encodings and a html
+  * part may specify this encoding in its content, too. Thus it sometimes is necessary to
+  * get to the same bytes as in the original mail.
   */
 sealed trait BodyContent {
 
