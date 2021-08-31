@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
 
-  val doobieVersion    = "1.0.0-M5"
+  val doobieVersion    = "1.0.0-RC1"
   val flexmarkVersion  = "0.62.2"
   val fs2Version       = "3.1.1"
   val greenmailVersion = "2.0.0-alpha-1"
