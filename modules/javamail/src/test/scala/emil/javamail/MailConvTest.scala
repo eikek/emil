@@ -38,15 +38,15 @@ class MailConvTest extends FunSuite {
     assertEquals(
       str,
       """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
-                        |From: test@test.com
-                        |To: test@test.com
-                        |Message-ID: <bla>
-                        |Subject: Hello
-                        |MIME-Version: 1.0
-                        |Content-Type: text/plain; charset=utf-8
-                        |Content-Transfer-Encoding: 7bit
-                        |
-                        |This is text""".stripMargin.replace("\n", "\r\n")
+        |From: test@test.com
+        |To: test@test.com
+        |Message-ID: <bla>
+        |Subject: Hello
+        |MIME-Version: 1.0
+        |Content-Type: text/plain; charset=utf-8
+        |Content-Transfer-Encoding: 7bit
+        |
+        |This is text""".stripMargin.replace("\n", "\r\n")
     )
   }
 
@@ -65,15 +65,15 @@ class MailConvTest extends FunSuite {
     assertEquals(
       str,
       """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
-                        |From: test@test.com
-                        |To: test@test.com
-                        |Message-ID: <bla>
-                        |Subject: Hello
-                        |MIME-Version: 1.0
-                        |Content-Type: text/html; charset=utf-8
-                        |Content-Transfer-Encoding: 7bit
-                        |
-                        |<p>This is html</p>""".stripMargin.replace("\n", "\r\n")
+        |From: test@test.com
+        |To: test@test.com
+        |Message-ID: <bla>
+        |Subject: Hello
+        |MIME-Version: 1.0
+        |Content-Type: text/html; charset=utf-8
+        |Content-Transfer-Encoding: 7bit
+        |
+        |<p>This is html</p>""".stripMargin.replace("\n", "\r\n")
     )
   }
 
@@ -91,15 +91,15 @@ class MailConvTest extends FunSuite {
     assertEquals(
       str,
       """Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
-                        |From: test@test.com
-                        |To: test@test.com
-                        |Message-ID: <bla>
-                        |Subject: Hello
-                        |MIME-Version: 1.0
-                        |Content-Type: text/plain; charset=utf-8
-                        |Content-Transfer-Encoding: 7bit
-                        |
-                        |""".stripMargin.replace("\n", "\r\n")
+        |From: test@test.com
+        |To: test@test.com
+        |Message-ID: <bla>
+        |Subject: Hello
+        |MIME-Version: 1.0
+        |Content-Type: text/plain; charset=utf-8
+        |Content-Transfer-Encoding: 7bit
+        |
+        |""".stripMargin.replace("\n", "\r\n")
     )
   }
 
@@ -123,26 +123,26 @@ class MailConvTest extends FunSuite {
       .getOrElse(sys.error("no part boundary found"))
 
     val expected = s"""Date: Sun, 27 Oct 2019 10:15:36 +0100 (CET)
-                       |From: test@test.com
-                       |To: test@test.com
-                       |Message-ID: <bla>
-                       |Subject: Hello
-                       |MIME-Version: 1.0
-                       |Content-Type: multipart/alternative;[]
-                       |{}boundary="$partChars"
-                       |
-                       |--$partChars
-                       |Content-Type: text/plain; charset=utf-8
-                       |Content-Transfer-Encoding: 7bit
-                       |
-                       |This is html as text
-                       |--$partChars
-                       |Content-Type: text/html; charset=utf-8
-                       |Content-Transfer-Encoding: 7bit
-                       |
-                       |<p>This is html</p>
-                       |--$partChars--
-                       |""".stripMargin
+                      |From: test@test.com
+                      |To: test@test.com
+                      |Message-ID: <bla>
+                      |Subject: Hello
+                      |MIME-Version: 1.0
+                      |Content-Type: multipart/alternative;[]
+                      |{}boundary="$partChars"
+                      |
+                      |--$partChars
+                      |Content-Type: text/plain; charset=utf-8
+                      |Content-Transfer-Encoding: 7bit
+                      |
+                      |This is html as text
+                      |--$partChars
+                      |Content-Type: text/html; charset=utf-8
+                      |Content-Transfer-Encoding: 7bit
+                      |
+                      |<p>This is html</p>
+                      |--$partChars--
+                      |""".stripMargin
       .replace("\n", "\r\n")
       .replace("{}", "\t")
       .replace("[]", " ")
@@ -209,7 +209,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read test mail 1") {
-    val url  = getClass.getResource("/mails/test.eml")
+    val url = getClass.getResource("/mails/test.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -219,7 +219,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read test mail 2") {
-    val url  = getClass.getResource("/mails/test2.eml")
+    val url = getClass.getResource("/mails/test2.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -229,7 +229,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read alternative mail") {
-    val url  = getClass.getResource("/mails/alt.eml")
+    val url = getClass.getResource("/mails/alt.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -241,7 +241,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read latin1 html mail") {
-    val url  = getClass.getResource("/mails/latin1-html.eml")
+    val url = getClass.getResource("/mails/latin1-html.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.textPart.unsafeRunSync().isEmpty)
@@ -251,7 +251,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read latin1 html mail2") {
-    val url  = getClass.getResource("/mails/latin1-html2.eml")
+    val url = getClass.getResource("/mails/latin1-html2.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isEmpty)
@@ -261,7 +261,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read latin1 mail without transfer encoding") {
-    val url  = getClass.getResource("/mails/latin1-8bit.eml")
+    val url = getClass.getResource("/mails/latin1-8bit.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().nonEmpty)
@@ -271,7 +271,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read utf8 mail without transfer encoding") {
-    val url  = getClass.getResource("/mails/utf8-8bit.eml")
+    val url = getClass.getResource("/mails/utf8-8bit.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isEmpty)
@@ -281,7 +281,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read utf8 b64 encoded filename from attachment") {
-    val url  = getClass.getResource("/mails/filename_b64.eml")
+    val url = getClass.getResource("/mails/filename_b64.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -295,7 +295,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read mail with mime tree") {
-    val url  = getClass.getResource("/mails/bodytree.eml")
+    val url = getClass.getResource("/mails/bodytree.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -306,7 +306,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read mail with nested alternative body") {
-    val url  = getClass.getResource("/mails/nested-alternative.eml")
+    val url = getClass.getResource("/mails/nested-alternative.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -317,7 +317,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read mail without charset declaration") {
-    val url  = getClass.getResource("/mails/latin1-missing-charset.eml")
+    val url = getClass.getResource("/mails/latin1-missing-charset.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -329,7 +329,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read mail with empty headers") {
-    val url  = getClass.getResource("/mails/empty-header.eml")
+    val url = getClass.getResource("/mails/empty-header.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -348,7 +348,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read mail with empty address <>") {
-    val url  = getClass.getResource("/mails/empty-address.eml")
+    val url = getClass.getResource("/mails/empty-address.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)
@@ -363,7 +363,7 @@ class MailConvTest extends FunSuite {
   }
 
   test("read mail with invalid headers") {
-    val url  = getClass.getResource("/mails/broken-header.eml")
+    val url = getClass.getResource("/mails/broken-header.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     //test decoding
     toStringContent(mail.body)

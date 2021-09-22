@@ -11,8 +11,8 @@ sealed trait SSLType { self: Product =>
 
 object SSLType {
 
-  case object SSL          extends SSLType
-  case object StartTLS     extends SSLType
+  case object SSL extends SSLType
+  case object StartTLS extends SSLType
   case object NoEncryption extends SSLType
 
   def fromString(str: String): Either[String, SSLType] =

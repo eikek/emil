@@ -33,9 +33,9 @@ final case class MimeType(
 object MimeType {
 
   val octetStream = application("octet-stream")
-  val textHtml    = text("html").withUtf8Charset
-  val textPlain   = text("plain").withUtf8Charset
-  val pdf         = application("pdf")
+  val textHtml = text("html").withUtf8Charset
+  val textPlain = text("plain").withUtf8Charset
+  val pdf = application("pdf")
 
   def apply(primary: String, sub: String): MimeType =
     MimeType(primary, sub, Map.empty)

@@ -35,8 +35,8 @@ trait BodyDecode {
       } else {
         val mt =
           MimeTypeDecode.parse(bp.getContentType).toOption.getOrElse(MimeType.octetStream)
-        val data                = bp.getDataHandler.getInputStream
-        val filename            = Option(bp.getFileName)
+        val data = bp.getDataHandler.getInputStream
+        val filename = Option(bp.getFileName)
         val (len, dataAsStream) = BodyDecode.loadInputStream(data)
         Attachments(Attachment(filename, mt, dataAsStream, len.pure[F]))
       }
@@ -157,9 +157,9 @@ object BodyDecode {
       else if (other.body.isEmpty)
         BodyAttach(body, attachments ++ other.attachments)
       else {
-        val html  = other.body.html.map(c => Attachment.content[F](c, MimeType.textHtml))
+        val html = other.body.html.map(c => Attachment.content[F](c, MimeType.textHtml))
         val plain = other.body.text.map(c => Attachment.content[F](c, MimeType.textPlain))
-        val all   = Attachments(html.toVector ++ plain.toVector)
+        val all = Attachments(html.toVector ++ plain.toVector)
         BodyAttach(
           body,
           attachments ++ other.attachments ++ all
@@ -232,7 +232,7 @@ object BodyDecode {
   }
 
   private def loadBytes(in: InputStream): ByteVector = {
-    val baos   = new ByteArrayOutputStream()
+    val baos = new ByteArrayOutputStream()
     val buffer = Array.ofDim[Byte](8 * 1024)
 
     @scala.annotation.tailrec

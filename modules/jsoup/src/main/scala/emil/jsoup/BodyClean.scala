@@ -12,8 +12,7 @@ import org.jsoup.nodes._
 import org.jsoup.safety._
 import scodec.bits.ByteVector
 
-/** Modifies/cleans html bodies.
-  */
+/** Modifies/cleans html bodies. */
 case class BodyClean[F[_]: Applicative](change: Document => Document) extends Trans[F] {
 
   def apply(mail: Mail[F]): Mail[F] =
@@ -23,12 +22,11 @@ case class BodyClean[F[_]: Applicative](change: Document => Document) extends Tr
 
 object BodyClean {
 
-  /** Default `change' function for the BodyClean constructor.
-    */
+  /** Default `change' function for the BodyClean constructor. */
   def whitelistClean(whitelist: Safelist): Document => Document =
     doc => {
       val cleaner = new Cleaner(whitelist)
-      val body    = cleaner.clean(doc).body
+      val body = cleaner.clean(doc).body
       doc.body.replaceWith(body)
       doc
     }

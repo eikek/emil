@@ -29,8 +29,7 @@ sealed trait MailBody[F[_]] {
       both => both.html
     )
 
-  /** Return only the text part if present.
-    */
+  /** Return only the text part if present. */
   def textPart(implicit ev: Applicative[F]): F[Option[BodyContent]] =
     fold(
       _ => (None: Option[BodyContent]).pure[F],
@@ -39,8 +38,7 @@ sealed trait MailBody[F[_]] {
       both => both.text.map(_.some)
     )
 
-  /** Return only the html part if present.
-    */
+  /** Return only the html part if present. */
   def htmlPart(implicit ev: Applicative[F]): F[Option[BodyContent]] =
     fold(
       _ => (None: Option[BodyContent]).pure[F],

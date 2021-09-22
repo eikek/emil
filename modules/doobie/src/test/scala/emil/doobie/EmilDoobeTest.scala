@@ -36,7 +36,7 @@ class EmilDoobieTest extends FunSuite {
       """
 
     for {
-      _  <- createTable.update.run
+      _ <- createTable.update.run
       id <- insertRecord.update.withUniqueGeneratedKeys[Long]("id")
     } yield id
   }
@@ -59,7 +59,7 @@ class EmilDoobieTest extends FunSuite {
     )
 
     val op = for {
-      id   <- insertRecord(record)
+      id <- insertRecord(record)
       load <- loadRecord(id)
     } yield load
 

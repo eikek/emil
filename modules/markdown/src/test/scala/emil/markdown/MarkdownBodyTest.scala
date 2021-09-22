@@ -20,19 +20,19 @@ class MarkdownBodyTest extends FunSuite {
     assertEquals(mail.body.textPart.unsafeRunSync().map(_.asString), Some(md))
 
     val expectedHtml = """<!DOCTYPE html>
-        |<html>
-        |<head>
-        |<meta charset="utf-8"/>
-        |<style>
-        |body { font-size: 10pt; font-family: sans-serif; }
-        |</style>
-        |</head>
-        |<body>
-        |<h2>Hello!</h2>
-        |<p>This is a <em>markdown</em> mail!</p>
-        |</body>
-        |</html>
-        |""".stripMargin
+                         |<html>
+                         |<head>
+                         |<meta charset="utf-8"/>
+                         |<style>
+                         |body { font-size: 10pt; font-family: sans-serif; }
+                         |</style>
+                         |</head>
+                         |<body>
+                         |<h2>Hello!</h2>
+                         |<p>This is a <em>markdown</em> mail!</p>
+                         |</body>
+                         |</html>
+                         |""".stripMargin
 
     assertEquals(mail.body.htmlPart.unsafeRunSync().map(_.asString), Some(expectedHtml))
   }

@@ -33,7 +33,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
   test("get inbox") {
     val op: MailOp[IO, emil.C, MailFolder] = emil.access.getInbox
-    val inbox                              = user1Imap.run(op).unsafeRunSync()
+    val inbox = user1Imap.run(op).unsafeRunSync()
     assertEquals(inbox, MailFolder("INBOX", "INBOX"))
   }
 
@@ -53,18 +53,18 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
   test("find folder") {
     val makeFolder = for {
-      inbox  <- emil.access.getInbox
+      inbox <- emil.access.getInbox
       folder <- emil.access.createFolder(Some(inbox), "myfolder")
     } yield folder
 
     def find(name: String) =
       for {
-        inbox  <- emil.access.getInbox
+        inbox <- emil.access.getInbox
         folder <- emil.access.findFolder(Some(inbox), name)
       } yield folder
 
     val inboxSub = user1Imap.run(makeFolder).unsafeRunSync()
-    val found    = user1Imap.run(find("myfolder")).unsafeRunSync()
+    val found = user1Imap.run(find("myfolder")).unsafeRunSync()
     assertEquals(found, Some(inboxSub))
   }
 
@@ -95,7 +95,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     def assertSearch(q: SearchQuery, count: Int) =
       user1Imap
         .run(for {
-          inbox  <- emil.access.getInbox
+          inbox <- emil.access.getInbox
           result <- emil.access.search(inbox, Int.MaxValue)(q)
           _ = assertEquals(result.count, count)
         } yield ())
@@ -129,7 +129,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     val mail = user1Imap
       .run(for {
         inbox <- emil.access.getInbox
-        mail  <- emil.access.searchAndLoad(inbox, 1)(SearchQuery.All)
+        mail <- emil.access.searchAndLoad(inbox, 1)(SearchQuery.All)
       } yield mail)
       .unsafeRunSync()
       .mails
@@ -168,10 +168,10 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val findAndMove = for {
       inbox <- emil.access.getInbox
-      res   <- emil.access.search(inbox, 1)(SearchQuery.All)
+      res <- emil.access.search(inbox, 1)(SearchQuery.All)
       mail = res.mails.head
       target <- emil.access.getOrCreateFolder(None, "TestFolder")
-      _      <- emil.access.moveMail(mail, target)
+      _ <- emil.access.moveMail(mail, target)
     } yield mail.messageId
 
     val orgId = user1Imap.run(findAndMove).unsafeRunSync()
@@ -203,7 +203,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val findAndDelete = for {
       inbox <- emil.access.getInbox
-      res   <- emil.access.search(inbox, 1)(SearchQuery.All)
+      res <- emil.access.search(inbox, 1)(SearchQuery.All)
       mail = res.mails.head
       _ <- emil.access.deleteMail(mail)
     } yield ()
@@ -212,7 +212,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val find = for {
       inbox <- emil.access.getInbox
-      n     <- emil.access.getMessageCount(inbox)
+      n <- emil.access.getMessageCount(inbox)
       _ = assertEquals(n, 0)
     } yield ()
     user1Imap.run(find).unsafeRunSync()
@@ -238,7 +238,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val findRest = for {
       inbox <- emil.access.getInbox
-      res   <- emil.access.search(inbox, 10)(SearchQuery.All)
+      res <- emil.access.search(inbox, 10)(SearchQuery.All)
     } yield res.count
     val rest = user1Imap.run(findRest).unsafeRunSync()
     assertEquals(rest, 3)
@@ -259,10 +259,10 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val findAndCopy = for {
       inbox <- emil.access.getInbox
-      res   <- emil.access.search(inbox, 1)(SearchQuery.All)
+      res <- emil.access.search(inbox, 1)(SearchQuery.All)
       mail = res.mails.head
       target <- emil.access.getOrCreateFolder(None, "TestFolder")
-      _      <- emil.access.copyMail(mail, target)
+      _ <- emil.access.copyMail(mail, target)
     } yield mail.messageId
 
     val orgId = user1Imap.run(findAndCopy).unsafeRunSync()
@@ -276,7 +276,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val check2 = for {
       inbox <- emil.access.getInbox
-      res   <- emil.access.search(inbox, 1)(SearchQuery.All)
+      res <- emil.access.search(inbox, 1)(SearchQuery.All)
       mail = res.mails.head
     } yield mail.messageId
 
@@ -297,13 +297,13 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val put = for {
       inbox <- emil.access.getInbox
-      _     <- emil.access.putMail(newMail, inbox)
+      _ <- emil.access.putMail(newMail, inbox)
     } yield ()
     user1Imap.run(put).unsafeRunSync()
 
     val check = for {
       inbox <- emil.access.getInbox
-      res   <- emil.access.search(inbox, 1)(SearchQuery.All)
+      res <- emil.access.search(inbox, 1)(SearchQuery.All)
       mail = res.mails.head
     } yield mail
     val inMail = user1Imap.run(check).unsafeRunSync()
@@ -323,13 +323,13 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
     val put = for {
       inbox <- emil.access.getInbox
-      _     <- emil.access.putMail(newMail, inbox)
+      _ <- emil.access.putMail(newMail, inbox)
     } yield ()
     user1Imap.run(put).unsafeRunSync()
 
     val check = for {
       inbox <- emil.access.getInbox
-      res   <- emil.access.search(inbox, 1)(SearchQuery.All)
+      res <- emil.access.search(inbox, 1)(SearchQuery.All)
       mail = res.mails.head
     } yield mail
     val inMail = user1Imap.run(check).unsafeRunSync()

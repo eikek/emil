@@ -67,7 +67,7 @@ object BodyContent {
   implicit lazy val hash: Hash[BodyContent] = Hash.fromUniversalHashCode[BodyContent]
 
   final case class StringContent(asString: String) extends BodyContent {
-    lazy val bytes               = ByteVector.view(asString.getBytes(UTF8))
+    lazy val bytes = ByteVector.view(asString.getBytes(UTF8))
     val charset: Option[Charset] = Some(UTF8)
 
     def isEmpty: Boolean = asString.isEmpty
@@ -75,7 +75,7 @@ object BodyContent {
 
   final case class ByteContent(bytes: ByteVector, charset: Option[Charset])
       extends BodyContent {
-    def asString         = contentDecode.fold(placeholder, identity)
+    def asString = contentDecode.fold(placeholder, identity)
     def isEmpty: Boolean = bytes.isEmpty
 
     private def placeholder(ex: Throwable): String =
