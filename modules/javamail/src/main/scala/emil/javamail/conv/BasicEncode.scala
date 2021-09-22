@@ -51,13 +51,13 @@ trait BasicEncode {
   implicit def bodyEncode[F[_]: Monad]: Conv[MailBody[F], F[MimeBodyPart]] = {
     def mkTextPart(str: BodyContent): MimeBodyPart = {
       val part = new MimeBodyPart()
-      val cs   = str.charsetOrUtf8.name
+      val cs = str.charsetOrUtf8.name
       part.setText(str.asString, cs.toLowerCase(), "plain")
       part
     }
     def mkHtmlPart(str: BodyContent): MimeBodyPart = {
       val part = new MimeBodyPart()
-      val cs   = str.charsetOrUtf8.name
+      val cs = str.charsetOrUtf8.name
       part.setText(str.asString, cs.toLowerCase(), "html")
       part
     }
@@ -153,9 +153,9 @@ trait BasicEncode {
     MsgConv { (session, midEncode, mail) =>
       for {
         attachments <- mail.attachments.all.traverse(ca.convert)
-        mbody       <- cb.convert(mail.body)
+        mbody <- cb.convert(mail.body)
         msg = ch.convert(session, midEncode, mail.header)
-        _   = assemble(mail, msg, mbody, attachments)
+        _ = assemble(mail, msg, mbody, attachments)
       } yield msg
     }
   }

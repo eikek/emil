@@ -12,8 +12,7 @@ import org.apache.poi.hmef.HMEFMessage
 
 object TnefExtract {
 
-  /** Extracts the winmail.dat given as input stream file into a list of attachments.
-    */
+  /** Extracts the winmail.dat given as input stream file into a list of attachments. */
   def fromInputStream[F[_]: Applicative](in: InputStream): Vector[Attachment[F]] = {
     val message = new HMEFMessage(in)
     message
@@ -21,8 +20,8 @@ object TnefExtract {
       .toVector
       .map { a =>
         val bytes = a.getContents
-        val cnt   = Stream.chunk(Chunk.array(bytes))
-        val name  = Option(a.getFilename()).map(_.trim).filter(_.nonEmpty)
+        val cnt = Stream.chunk(Chunk.array(bytes))
+        val name = Option(a.getFilename()).map(_.trim).filter(_.nonEmpty)
         Attachment(name, MimeType.octetStream, cnt, bytes.length.toLong.pure[F])
       }
   }
@@ -51,7 +50,7 @@ object TnefExtract {
   def replace[F[_]: Async](mail: Mail[F]): F[Mail[F]] = {
     val attachStream =
       for {
-        as  <- Stream.emits(mail.attachments.all)
+        as <- Stream.emits(mail.attachments.all)
         ext <- extractSingle[F](as)
       } yield ext
 

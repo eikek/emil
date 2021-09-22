@@ -13,12 +13,12 @@ import org.slf4j.LoggerFactory
 
 class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
 
-  private[this] val logger           = LoggerFactory.getLogger(getClass)
+  private[this] val logger = LoggerFactory.getLogger(getClass)
   private val started: AtomicBoolean = new AtomicBoolean(false)
   private val greenMail = {
     val imap = new ServerSetup(imapPort, "localhost", ServerSetup.PROTOCOL_IMAP)
     val smtp = new ServerSetup(smtpPort, "localhost", ServerSetup.PROTOCOL_SMTP)
-    val gm   = new GreenMail(Array(imap, smtp))
+    val gm = new GreenMail(Array(imap, smtp))
     users.foreach { user =>
       gm.getManagers.getUserManager.createUser(user.address, user.address, user.address)
     }
@@ -90,7 +90,7 @@ object GreenmailServer {
     if (tries == 0)
       throw new IllegalStateException("Cannot obtain an unused port.");
     val random = new SecureRandom();
-    val port   = random.nextInt(20000) + 1024;
+    val port = random.nextInt(20000) + 1024;
     try {
       val socket = new Socket(null: String, port)
       socket.close()

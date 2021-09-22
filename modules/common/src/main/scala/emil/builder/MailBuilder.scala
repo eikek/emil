@@ -16,18 +16,15 @@ final class MailBuilder[F[_]](parts: Vector[Trans[F]], initial: Mail[F]) {
   def prepend(p: Trans[F]): MailBuilder[F] =
     new MailBuilder[F](p +: parts, initial)
 
-  /** Prepends an action that clears all recipients.
-    */
+  /** Prepends an action that clears all recipients. */
   def clearRecipients: MailBuilder[F] =
     prepend(Trans(m => m.mapMailHeader(_.mapRecipients(_ => Recipients.empty))))
 
-  /** Prepends an action that clears all attachments.
-    */
+  /** Prepends an action that clears all attachments. */
   def clearAttachments: MailBuilder[F] =
     prepend(Trans(m => m.copy(attachments = Attachments.empty)))
 
-  /** Prepends an action that clears the body.
-    */
+  /** Prepends an action that clears the body. */
   def clearBody: MailBuilder[F] =
     prepend(Trans(m => m.mapBody(_ => MailBody.Empty[F]())))
 

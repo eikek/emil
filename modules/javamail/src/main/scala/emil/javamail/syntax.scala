@@ -98,8 +98,7 @@ object syntax {
     def parseUnsafe(str: String): MailAddress =
       parseValidated(str).fold(nec => throw nec.head, identity)
 
-    /** Reads a comma-separated list of e-mail addresses.
-      */
+    /** Reads a comma-separated list of e-mail addresses. */
     def parseMultiple(str: String): Either[String, List[MailAddress]] =
       str.split(Array(',', ';')).toList.map(_.trim).traverse(parse)
 

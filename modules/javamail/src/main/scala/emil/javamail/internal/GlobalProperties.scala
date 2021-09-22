@@ -46,7 +46,7 @@ object GlobalProperties {
       // Interestingly, without these properties certain attachments
       // that are transfer-encoded using uuencode/uudecode fail. With
       // these properties they are correctly read.
-      "mail.mime.uudecode.ignoreerrors"          -> "true",
+      "mail.mime.uudecode.ignoreerrors" -> "true",
       "mail.mime.uudecode.ignoremissingbeginend" -> "true",
       // Encode and decode filenames
       "mail.mime.encodefilename" -> "true",

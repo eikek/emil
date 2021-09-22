@@ -73,11 +73,11 @@ object HtmlBodyView {
     val dateStr = header.date.map(_.atZone(zone).format(fmt)).getOrElse("-")
 
     s"""<div style="padding-bottom: 0.8em;">
-     |<strong>From:</strong> <code>${mail(header.from)}</code><br>
-     |<strong>To:</strong> <code>${mails(header.recipients.to)}</code><br>
-     |<strong>Subject:</strong> <code>${header.subject}</code><br>
-     |<strong>Date:</strong> <code>$dateStr</code>
-     |</div>
-     |""".stripMargin
+       |<strong>From:</strong> <code>${mail(header.from)}</code><br>
+       |<strong>To:</strong> <code>${mails(header.recipients.to)}</code><br>
+       |<strong>Subject:</strong> <code>${header.subject}</code><br>
+       |<strong>Date:</strong> <code>$dateStr</code>
+       |</div>
+       |""".stripMargin
   }
 }

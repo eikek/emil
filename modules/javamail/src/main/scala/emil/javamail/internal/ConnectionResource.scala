@@ -62,8 +62,8 @@ object ConnectionResource {
   }
 
   private def createSession(mc: MailConfig, settings: Settings): Session = {
-    val host  = mc.urlParts.host
-    val port  = mc.urlParts.port
+    val host = mc.urlParts.host
+    val port = mc.urlParts.port
     val proto = mc.urlParts.protocol
 
     val props = new Properties()

@@ -47,8 +47,7 @@ object JavaMailEmil {
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[ByteVector] =
     mailToByteArray[F](mail).map(ByteVector.view)
 
-  /** Creates a new allocated byte array containing the give mail.
-    */
+  /** Creates a new allocated byte array containing the give mail. */
   def mailToByteArray[F[_]: Sync](
       mail: Mail[F]
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[Array[Byte]] =

@@ -35,7 +35,7 @@ class HtmlBodyViewTest extends FunSuite {
   }
 
   test("create from iso transferred utf8 html") {
-    val url  = getClass.getResource("/mails/html-utf8-as-iso.eml")
+    val url = getClass.getResource("/mails/html-utf8-as-iso.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
     val htmlView = HtmlBodyView(
       mail.body,

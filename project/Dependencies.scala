@@ -2,21 +2,21 @@ import sbt._
 
 object Dependencies {
 
-  val doobieVersion    = "1.0.0-RC1"
-  val flexmarkVersion  = "0.62.2"
-  val fs2Version       = "3.1.2"
+  val doobieVersion = "1.0.0-RC1"
+  val flexmarkVersion = "0.62.2"
+  val fs2Version = "3.1.2"
   val greenmailVersion = "2.0.0-alpha-2"
-  val h2Version        = "1.4.200"
-  val munitVersion     = "0.7.29"
+  val h2Version = "1.4.200"
+  val munitVersion = "0.7.29"
   val javaxMailVersion = "2.0.1"
-  val jsoupVersion     = "1.14.2"
-  val log4sVersion     = "1.10.0"
-  val logbackVersion   = "1.2.6"
-  val miniTestVersion  = "2.9.6"
-  val poiVersion       = "5.0.0"
+  val jsoupVersion = "1.14.2"
+  val log4sVersion = "1.10.0"
+  val logbackVersion = "1.2.6"
+  val miniTestVersion = "2.9.6"
+  val poiVersion = "5.0.0"
 
   val munit = Seq(
-    "org.scalameta" %% "munit"            % munitVersion,
+    "org.scalameta" %% "munit" % munitVersion,
     "org.scalameta" %% "munit-scalacheck" % munitVersion
   )
 
@@ -31,7 +31,7 @@ object Dependencies {
   val miniTest = Seq(
     // https://github.com/monix/minitest
     // Apache 2.0
-    "io.monix" %% "minitest"      % miniTestVersion,
+    "io.monix" %% "minitest" % miniTestVersion,
     "io.monix" %% "minitest-laws" % miniTestVersion
   )
 
@@ -51,7 +51,7 @@ object Dependencies {
   val greenmail = Seq(
     ("com.icegreen" % "greenmail" % greenmailVersion).excludeAll(
       "com.sun.mail" % "javax.mail",
-      "junit"        % "junit",
+      "junit" % "junit",
       "org.hamcrest" % "hamcrest-core",
       "org.hamcrest" % "hamcrest-all"
     )
@@ -75,8 +75,8 @@ object Dependencies {
   )
 
   val flexmark = Seq(
-    "com.vladsch.flexmark" % "flexmark"                       % flexmarkVersion,
-    "com.vladsch.flexmark" % "flexmark-ext-tables"            % flexmarkVersion,
+    "com.vladsch.flexmark" % "flexmark" % flexmarkVersion,
+    "com.vladsch.flexmark" % "flexmark-ext-tables" % flexmarkVersion,
     "com.vladsch.flexmark" % "flexmark-ext-gfm-strikethrough" % flexmarkVersion
   ).map(
     _.excludeAll(

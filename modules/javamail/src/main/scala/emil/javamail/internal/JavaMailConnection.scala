@@ -25,7 +25,7 @@ final case class JavaMailConnection(
   ): Resource[F, Folder] =
     Resource
       .make(Sync[F].delay {
-        val f      = store.getFolder(name)
+        val f = store.getFolder(name)
         val doOpen = f != null && !f.isOpen
         if (doOpen)
           f.open(mode)
