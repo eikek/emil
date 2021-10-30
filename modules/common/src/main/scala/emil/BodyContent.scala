@@ -31,7 +31,7 @@ sealed trait BodyContent {
     charset match {
       case Some(cs) =>
         val e = bytes.decodeString(cs)
-        //note: .orElse is 2.13 only
+        // note: .orElse is 2.13 only
         e.fold(_ => PreferredCharsets.decode(bytes), _ => e)
 
       case None =>
