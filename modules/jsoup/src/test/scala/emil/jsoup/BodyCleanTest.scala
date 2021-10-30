@@ -29,7 +29,7 @@ class BodyCleanTest extends FunSuite {
       Jsoup
         .parse(
           new ByteArrayInputStream(htmlText.getBytes(StandardCharsets.ISO_8859_1)),
-          null, //null charset should use one from header
+          null, // null charset should use one from header
           ""
         )
         .charset,

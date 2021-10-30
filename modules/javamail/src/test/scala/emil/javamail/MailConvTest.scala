@@ -211,7 +211,7 @@ class MailConvTest extends FunSuite {
   test("read test mail 1") {
     val url = getClass.getResource("/mails/test.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assertEquals(mail.header.received.size, 7)
     assertEquals(mail.attachments.size, 1)
@@ -221,7 +221,7 @@ class MailConvTest extends FunSuite {
   test("read test mail 2") {
     val url = getClass.getResource("/mails/test2.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assertEquals(mail.header.received.size, 3)
     assertEquals(mail.attachments.size, 0)
@@ -231,7 +231,7 @@ class MailConvTest extends FunSuite {
   test("read alternative mail") {
     val url = getClass.getResource("/mails/alt.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 0)
     assert(mail.body.nonEmpty)
@@ -283,7 +283,7 @@ class MailConvTest extends FunSuite {
   test("read utf8 b64 encoded filename from attachment") {
     val url = getClass.getResource("/mails/filename_b64.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
     assertEquals(mail.header.subject, "Öffnung der Therapiestelle der Stiftung")
@@ -297,7 +297,7 @@ class MailConvTest extends FunSuite {
   test("read mail with mime tree") {
     val url = getClass.getResource("/mails/bodytree.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isDefined)
@@ -308,7 +308,7 @@ class MailConvTest extends FunSuite {
   test("read mail with nested alternative body") {
     val url = getClass.getResource("/mails/nested-alternative.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isDefined)
@@ -319,7 +319,7 @@ class MailConvTest extends FunSuite {
   test("read mail without charset declaration") {
     val url = getClass.getResource("/mails/latin1-missing-charset.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assert(mail.body.nonEmpty)
     assert(mail.body.htmlPart.unsafeRunSync().isEmpty)
@@ -331,7 +331,7 @@ class MailConvTest extends FunSuite {
   test("read mail with empty headers") {
     val url = getClass.getResource("/mails/empty-header.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
     assertEquals(mail.header.subject, "Testing")
@@ -350,7 +350,7 @@ class MailConvTest extends FunSuite {
   test("read mail with empty address <>") {
     val url = getClass.getResource("/mails/empty-address.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
     assertEquals(mail.header.subject, "Testing")
@@ -365,7 +365,7 @@ class MailConvTest extends FunSuite {
   test("read mail with invalid headers") {
     val url = getClass.getResource("/mails/broken-header.eml")
     val mail = Mail.fromURL[IO](url).unsafeRunSync()
-    //test decoding
+    // test decoding
     toStringContent(mail.body)
     assertEquals(mail.attachments.size, 2)
     assertEquals(mail.header.subject, "Testing")
