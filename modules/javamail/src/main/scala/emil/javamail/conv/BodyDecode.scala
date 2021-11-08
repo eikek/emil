@@ -1,7 +1,5 @@
 package emil.javamail.conv
 
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
 import java.nio.charset.Charset
 
 import cats.Applicative
@@ -10,9 +8,8 @@ import cats.implicits._
 import emil._
 import emil.javamail.conv.BodyDecode.{Body, BodyAttach}
 import emil.javamail.internal.EnumerationConverter._
-import emil.javamail.internal.{ThreadClassLoader, Using, Util}
-import fs2.Chunk
-import fs2.Stream
+import emil.javamail.internal.{ThreadClassLoader, Util}
+import fs2.{Chunk, Stream}
 import jakarta.mail.internet.{MimeMessage, MimeUtility}
 import jakarta.mail.{Header => _, _}
 import scodec.bits.ByteVector
@@ -35,9 +32,10 @@ trait BodyDecode {
       } else {
         val mt =
           MimeTypeDecode.parse(bp.getContentType).toOption.getOrElse(MimeType.octetStream)
-        val data = bp.getDataHandler.getInputStream
+
         val filename = Option(bp.getFileName)
-        val (len, dataAsStream) = BodyDecode.loadInputStream(data)
+        val bytes = BodyDecode.loadPart(bp)
+        val (len, dataAsStream) = (bytes.length, Stream.chunk(Chunk.byteVector(bytes)))
         Attachments(Attachment(filename, mt, dataAsStream, len.pure[F]))
       }
     }
@@ -196,7 +194,7 @@ object BodyDecode {
       .map(cs => moreCharsets.getOrElse(cs.toLowerCase, cs))
       .flatMap(cs => Either.catchNonFatal(Charset.forName(cs)).toOption)
 
-    val bv = Using.resource(p.getInputStream)(loadBytes)
+    val bv = loadPart(p)
     BodyContent(bv, charset)
   }
 
@@ -213,39 +211,13 @@ object BodyDecode {
       .flatMap(ct => MimeTypeDecode.parse(ct).toOption)
       .exists(mt => mt.sub.equalsIgnoreCase("alternative"))
 
-  private def loadInputStream[F[_]](in: InputStream): (Long, Stream[F, Byte]) = {
-    val buffer = Array.ofDim[Byte](16 * 1024)
-    @annotation.tailrec
-    def go(chunks: Vector[Chunk[Byte]], len: Long): (Long, Vector[Chunk[Byte]]) =
-      in.read(buffer) match {
-        case -1 => (len, chunks)
-        case n =>
-          val ch = Chunk.byteVector(ByteVector(buffer, 0, n))
-          go(chunks :+ ch, len + n)
-      }
-
-    val (len, bv) = go(Vector.empty, 0)
-    in.close()
-
-    val empty: Stream[F, Byte] = Stream.empty.covary[F]
-    (len, bv.map(Stream.chunk).map(_.covary[F]).foldLeft(empty)(_ ++ _))
-  }
-
-  private def loadBytes(in: InputStream): ByteVector = {
-    val baos = new ByteArrayOutputStream()
-    val buffer = Array.ofDim[Byte](8 * 1024)
-
-    @scala.annotation.tailrec
-    def go(): Unit = {
-      val len = in.read(buffer)
-      if (len <= 0) ()
-      else {
-        baos.write(buffer, 0, len)
-        go()
-      }
-    }
-
-    go()
-    ByteVector.view(baos.toByteArray)
+  private def loadPart(p: Part): ByteVector = {
+    val bout = new java.io.ByteArrayOutputStream()
+    val in = p.getDataHandler().getInputStream()
+    val buffer = Array.ofDim[Byte](64 * 1024)
+    var len = -1
+    while ({ len = in.read(buffer); len } > -1)
+      bout.write(buffer, 0, len)
+    ByteVector.view(bout.toByteArray())
   }
 }
