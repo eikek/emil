@@ -63,4 +63,9 @@ final class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
 
   def deleteMails(mhs: Seq[MailHeader]): MailOp[F, JavaMailConnection, DeleteResult] =
     mhs.toVector.traverse(DeleteMail[F]).map(v => DeleteResult(v.sum))
+
+  def listFolders(
+      parent: Option[MailFolder]
+  ): MailOp[F, JavaMailConnection, Vector[MailFolder]] =
+    ListFolders[F](parent)
 }

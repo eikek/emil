@@ -49,4 +49,8 @@ trait Access[F[_], C] {
       query: SearchQuery
   )(implicit ev: FlatMap[F]): MailOp[F, C, DeleteResult] =
     search(folder, max)(query).flatMap(result => deleteMails(result.mails))
+
+  def listFolders(
+      parent: Option[MailFolder]
+  ): MailOp[F, C, Vector[MailFolder]]
 }
