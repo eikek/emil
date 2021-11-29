@@ -337,4 +337,36 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     assertEquals(newMail.header.subject, inMail.subject)
     assertEquals(inMail.messageId, Some("<my-id-2>"))
   }
+
+  test("list inbox folders") {
+    val makeFolders = for {
+      inbox <- emil.access.getInbox
+      folder1 <- emil.access.createFolder(Some(inbox), "myfolder1")
+      folder2 <- emil.access.createFolder(Some(inbox), "myfolder2")
+    } yield Vector(folder1, folder2)
+
+    def listInbox() =
+      for {
+        inbox <- emil.access.getInbox
+        folders <- emil.access.listFolders(Some(inbox))
+      } yield folders
+
+    val inboxFolders = user1Imap.run(makeFolders).unsafeRunSync()
+    val listed = user1Imap.run(listInbox()).unsafeRunSync()
+    assertEquals(listed, inboxFolders)
+  }
+
+  test("list root folders") {
+    val makeFolders = for {
+      folder1 <- emil.access.createFolder(None, "myfolder1")
+      folder2 <- emil.access.createFolder(None, "myfolder2")
+    } yield Vector(folder1, folder2)
+
+    val inbox = user1Imap.run(emil.access.getInbox).unsafeRunSync()
+
+    val folders = user1Imap.run(makeFolders).unsafeRunSync()
+    val foldersWithInbox = Vector(inbox) ++ folders
+    val listed = user1Imap.run(emil.access.listFolders(None)).unsafeRunSync()
+    assertEquals(listed, foldersWithInbox)
+  }
 }
