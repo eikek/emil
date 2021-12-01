@@ -34,7 +34,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
   test("get inbox") {
     val op: MailOp[IO, emil.C, MailFolder] = emil.access.getInbox
     val inbox = user1Imap.run(op).unsafeRunSync()
-    assertEquals(inbox, MailFolder("INBOX", "INBOX"))
+    assertEquals(inbox, MailFolder("INBOX", "INBOX", '.'))
   }
 
   test("create folder") {
@@ -42,13 +42,13 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     val subfolder =
       user1Imap.run(emil.access.createFolder(Some(folder), "test2")).unsafeRunSync()
 
-    assertEquals(folder, MailFolder("test1", "test1"))
-    assertEquals(subfolder, MailFolder("test1.test2", "test2"))
+    assertEquals(folder, MailFolder("test1", "test1", '.'))
+    assertEquals(subfolder, MailFolder("test1.test2", "test2", '.'))
 
     val inbox = user1Imap.run(emil.access.getInbox).unsafeRunSync()
     val inboxSub =
       user1Imap.run(emil.access.createFolder(Some(inbox), "archived")).unsafeRunSync()
-    assertEquals(inboxSub, MailFolder("INBOX.archived", "archived"))
+    assertEquals(inboxSub, MailFolder("INBOX.archived", "archived", '.'))
   }
 
   test("find folder") {
@@ -354,6 +354,9 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     val inboxFolders = user1Imap.run(makeFolders).unsafeRunSync()
     val listed = user1Imap.run(listInbox()).unsafeRunSync()
     assertEquals(listed, inboxFolders)
+
+    assertEquals(listed(0).pathSegments.toList, List("INBOX", "myfolder1"))
+    assertEquals(listed(1).pathSegments.toList, List("INBOX", "myfolder2"))
   }
 
   test("list root folders") {
@@ -368,5 +371,9 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     val foldersWithInbox = Vector(inbox) ++ folders
     val listed = user1Imap.run(emil.access.listFolders(None)).unsafeRunSync()
     assertEquals(listed, foldersWithInbox)
+
+    assertEquals(listed(0).pathSegments.toList, List("INBOX"))
+    assertEquals(listed(1).pathSegments.toList, List("myfolder1"))
+    assertEquals(listed(2).pathSegments.toList, List("myfolder2"))
   }
 }

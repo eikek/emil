@@ -15,7 +15,7 @@ trait BasicDecode {
     Conv(flag => if (flag == Flags.Flag.FLAGGED) Some(Flag.Flagged) else None)
 
   implicit def folderConv: Conv[Folder, MailFolder] =
-    Conv(f => MailFolder(f.getFullName, f.getName))
+    Conv(f => MailFolder(f.getFullName, f.getName, f.getSeparator))
 
   implicit def mailAddressDecode: Conv[Address, MailAddress] =
     Conv {
