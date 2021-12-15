@@ -53,4 +53,14 @@ trait Access[F[_], C] {
   def listFolders(
       parent: Option[MailFolder]
   ): MailOp[F, C, Vector[MailFolder]]
+
+  /** List all subfolders of the optionally given @p parent folder recursively.
+    * @param parent
+    *   Optional parent folder, for which to return the recursive subfolder listing.
+    * @return
+    *   Recursive folder structure, flattened into a list of MailFolders.
+    */
+  def listFoldersRecursive(
+      parent: Option[MailFolder]
+  ): MailOp[F, C, Vector[MailFolder]]
 }

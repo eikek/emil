@@ -68,4 +68,9 @@ final class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
       parent: Option[MailFolder]
   ): MailOp[F, JavaMailConnection, Vector[MailFolder]] =
     ListFolders[F](parent)
+
+  def listFoldersRecursive(
+      parent: Option[MailFolder]
+  ): emil.MailOp[F, JavaMailConnection, Vector[MailFolder]] =
+    ListFoldersRecursive[F](parent)
 }
