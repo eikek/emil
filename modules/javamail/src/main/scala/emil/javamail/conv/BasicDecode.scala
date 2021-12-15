@@ -2,7 +2,7 @@ package emil.javamail.conv
 
 import scala.language.postfixOps
 
-import cats.data.{Validated, ValidatedNec}
+import cats.data.{NonEmptyList, Validated, ValidatedNec}
 import cats.implicits._
 import emil._
 import emil.javamail.internal._
@@ -14,8 +14,16 @@ trait BasicDecode {
   implicit def flagDecode: Conv[Flags.Flag, Option[Flag]] =
     Conv(flag => if (flag == Flags.Flag.FLAGGED) Some(Flag.Flagged) else None)
 
+  /** The full name of the folder should never be empty, therefore
+    * NonEmptyList.fromListUnsafe is used
+    */
   implicit def folderConv: Conv[Folder, MailFolder] =
-    Conv(f => MailFolder(f.getFullName, f.getName))
+    Conv(f =>
+      MailFolder(
+        f.getFullName,
+        NonEmptyList.fromListUnsafe(f.getFullName.split(f.getSeparator).toList)
+      )
+    )
 
   implicit def mailAddressDecode: Conv[Address, MailAddress] =
     Conv {
