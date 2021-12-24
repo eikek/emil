@@ -30,12 +30,13 @@ object Using {
       case t: Throwable =>
         toThrow = t
         null.asInstanceOf[A] // compiler doesn't know `finally` will throw
-    } finally if (toThrow eq null) resource.close()
-    else
-      try resource.close()
-      catch {
-        case other: Throwable => toThrow = preferentiallySuppress(toThrow, other)
-      } finally throw toThrow
+    } finally
+      if (toThrow eq null) resource.close()
+      else
+        try resource.close()
+        catch {
+          case other: Throwable => toThrow = preferentiallySuppress(toThrow, other)
+        } finally throw toThrow
   }
 
   private def preferentiallySuppress(
