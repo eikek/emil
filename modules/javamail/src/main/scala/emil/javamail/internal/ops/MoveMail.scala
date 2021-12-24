@@ -57,10 +57,12 @@ object MoveMail {
   }
 
   private def moveNative(source: IMAPFolder, msg: MimeMessage, target: Folder): Unit =
-    try Util.withWriteFolder(source) { _ =>
-      logger.trace(s"Move mail using imap protocol to '$target'.")
-      source.moveMessages(Array[Message](msg), target)
-    } catch {
+    try
+      Util.withWriteFolder(source) { _ =>
+        logger.trace(s"Move mail using imap protocol to '$target'.")
+        source.moveMessages(Array[Message](msg), target)
+      }
+    catch {
       case ex: MessagingException =>
         logger.warn(
           s"Moving via imap protocol failed (${ex.getMessage}). Trying via copy."
