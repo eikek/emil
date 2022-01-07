@@ -12,24 +12,23 @@ object ListFoldersRecursive {
   ): MailOp[F, JavaMailConnection, Vector[MailFolder]] =
     MailOp(conn =>
       Sync[F].blocking {
-        listRecursive(
+        listRecursiveExcludeFolder(
           parent
             .map(pf => conn.store.getFolder(pf.id))
             .getOrElse(conn.store.getDefaultFolder)
-        )
-          .map(c.convert)
-          .toVector
+        ).map(c.convert)
       }
     )
 
-  private def listRecursive(
-      folder: Folder
-  ): List[Folder] = {
-    val list = folder.list().toList
-    if (list.isEmpty) {
-      list
-    } else {
-      list ++ list.flatMap(f => listRecursive(f))
-    }
-  }
+  def listRecursiveExcludeFolder(folder: Folder): Vector[Folder] = listRecursive(
+    folder.list().toVector
+  )
+
+  @annotation.tailrec
+  def listRecursive(
+      folder: Vector[Folder],
+      result: Vector[Folder] = Vector.empty
+  ): Vector[Folder] =
+    if (folder.isEmpty) result
+    else listRecursive(folder.flatMap(_.list().toVector), folder ++ result)
 }
