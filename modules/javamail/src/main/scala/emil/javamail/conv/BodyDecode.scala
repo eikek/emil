@@ -1,5 +1,6 @@
 package emil.javamail.conv
 
+import java.io.InputStream
 import java.nio.charset.Charset
 
 import cats.Applicative
@@ -126,6 +127,18 @@ trait BodyDecode {
         }
       }
     }
+
+  implicit lazy val mailDecodeRaw: Conv[MimeMessage, ByteVector] =
+    Conv { msg =>
+      ThreadClassLoader {
+        Util.withReadFolder(msg) { _ =>
+          val in = msg.getRawInputStream
+          try BodyDecode.streamToByteVector(in)
+          finally in.close()
+        }
+      }
+    }
+
 }
 
 object BodyDecode {
@@ -211,13 +224,15 @@ object BodyDecode {
       .flatMap(ct => MimeTypeDecode.parse(ct).toOption)
       .exists(mt => mt.sub.equalsIgnoreCase("alternative"))
 
-  private def loadPart(p: Part): ByteVector = {
+  private def streamToByteVector(in: InputStream): ByteVector = {
     val bout = new java.io.ByteArrayOutputStream()
-    val in = p.getDataHandler().getInputStream()
     val buffer = Array.ofDim[Byte](64 * 1024)
     var len = -1
     while ({ len = in.read(buffer); len } > -1)
       bout.write(buffer, 0, len)
     ByteVector.view(bout.toByteArray())
   }
+
+  private def loadPart(p: Part): ByteVector =
+    streamToByteVector(p.getDataHandler().getInputStream())
 }
