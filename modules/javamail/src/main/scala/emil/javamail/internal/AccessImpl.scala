@@ -7,6 +7,7 @@ import emil._
 import emil.javamail.conv.codec._
 import emil.javamail.internal.BlockingSyntax._
 import emil.javamail.internal.ops._
+import scodec.bits.ByteVector
 
 final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     extends Access[F, JavaMailConnection] {
@@ -52,6 +53,9 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
 
   def loadMail(mh: MailHeader): MailOp[F, JavaMailConnection, Option[Mail[F]]] =
     LoadMail(mh).blockOn(blocker)
+
+  def loadMailRaw(mh: MailHeader): MailOp[F, JavaMailConnection, Option[ByteVector]] =
+    LoadMailRaw(mh)
 
   def moveMail(mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
     MoveMail(mh, target).blockOn(blocker)

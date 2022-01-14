@@ -128,6 +128,18 @@ trait BodyDecode {
         }
       }
     }
+
+  implicit lazy val mailDecodeRaw: Conv[MimeMessage, ByteVector] =
+    Conv { msg =>
+      ThreadClassLoader {
+        Util.withReadFolder(msg) { _ =>
+          val in = msg.getRawInputStream
+          try BodyDecode.loadBytes(in)
+          finally in.close()
+        }
+      }
+    }
+
 }
 
 object BodyDecode {
