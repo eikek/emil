@@ -78,7 +78,7 @@ abstract class AbstractSendTest(val emil: Emil[IO]) extends GreenmailTestSuite {
         |hello world!
         |------=_Part_1_272299100.1642183145458--""".stripMargin
     def normalize(s: String): String =
-      s.replaceAll("\\d\\d\\d\\d\\d+", "").replace("\r\n", "\n")
+      s.replaceAll("\\d+", "").replace("\r\n", "\n")
     val actualNormalized = normalize(actual)
     val expectedNormalized = normalize(expected)
     assertEquals(actualNormalized, expectedNormalized)
