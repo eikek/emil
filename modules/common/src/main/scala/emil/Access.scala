@@ -1,6 +1,7 @@
 package emil
 
 import cats.{Applicative, FlatMap}
+import scodec.bits.ByteVector
 
 trait Access[F[_], C] {
 
@@ -33,6 +34,8 @@ trait Access[F[_], C] {
   ): MailOp[F, C, SearchResult[Mail[F]]]
 
   def loadMail(mh: MailHeader): MailOp[F, C, Option[Mail[F]]]
+
+  def loadMailRaw(mh: MailHeader): MailOp[F, C, Option[ByteVector]]
 
   def moveMail(mh: MailHeader, target: MailFolder): MailOp[F, C, Unit]
 

@@ -6,6 +6,7 @@ import cats.implicits._
 import emil._
 import emil.javamail.conv.codec._
 import emil.javamail.internal.ops._
+import scodec.bits.ByteVector
 
 final class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
   def getInbox: MailOp[F, JavaMailConnection, MailFolder] =
@@ -51,6 +52,9 @@ final class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
 
   def loadMail(mh: MailHeader): MailOp[F, JavaMailConnection, Option[Mail[F]]] =
     LoadMail(mh)
+
+  def loadMailRaw(mh: MailHeader): MailOp[F, JavaMailConnection, Option[ByteVector]] =
+    LoadMailRaw(mh)
 
   def moveMail(mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
     MoveMail(mh, target)
