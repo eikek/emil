@@ -1,12 +1,13 @@
 package emil
 
+import java.nio.charset.StandardCharsets
+
 import _root_.emil.builder._
 import _root_.emil.test.GreenmailTestSuite
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import cats.implicits._
 import scodec.bits.ByteVector
-import java.nio.charset.StandardCharsets
 
 abstract class AbstractSendTest(val emil: Emil[IO]) extends GreenmailTestSuite {
 
