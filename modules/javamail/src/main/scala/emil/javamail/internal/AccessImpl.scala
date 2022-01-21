@@ -7,6 +7,7 @@ import emil._
 import emil.javamail.conv.codec._
 import emil.javamail.internal.BlockingSyntax._
 import emil.javamail.internal.ops._
+import jakarta.mail.UIDFolder
 import scodec.bits.ByteVector
 
 final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
@@ -36,6 +37,26 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
   def getMessageCount(folder: MailFolder): MailOp[F, JavaMailConnection, Int] =
     MailOp(conn => conn.folder[F](folder.id).use(f => Sync[F].delay(f.getMessageCount)))
 
+  def getFolderNextUid(folder: MailFolder): MailOp[F, JavaMailConnection, MailUid] =
+    MailOp[F, JavaMailConnection, MailUid] {
+      _.folder[F](folder.id).use { f =>
+        Sync[F].delay {
+          MailUid(f.asInstanceOf[UIDFolder].getUIDNext)
+        }
+      }
+    }.blockOn(blocker)
+
+  def getFolderUidValidity(
+      folder: MailFolder
+  ): MailOp[F, JavaMailConnection, MailUidValidity] =
+    MailOp[F, JavaMailConnection, MailUidValidity] {
+      _.folder[F](folder.id).use { f =>
+        Sync[F].delay {
+          MailUidValidity(f.asInstanceOf[UIDFolder].getUIDValidity)
+        }
+      }
+    }.blockOn(blocker)
+
   def search(folder: MailFolder, max: Int)(
       query: SearchQuery
   ): MailOp[F, JavaMailConnection, SearchResult[MailHeader]] =
@@ -54,8 +75,46 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
   def loadMail(mh: MailHeader): MailOp[F, JavaMailConnection, Option[Mail[F]]] =
     LoadMail(mh).blockOn(blocker)
 
+  override def loadMail(
+      folder: MailFolder,
+      uid: MailUid
+  ): MailOp[F, JavaMailConnection, Option[Mail[F]]] =
+    LoadMail.byUid[F](folder, uid).blockOn(blocker)
+
+  override def loadMail(
+      folder: MailFolder,
+      start: MailUid,
+      end: MailUid
+  ): MailOp[F, JavaMailConnection, List[Mail[F]]] =
+    LoadMail.byUid[F](folder, start, end).blockOn(blocker)
+
+  override def loadMail(
+      folder: MailFolder,
+      uids: List[MailUid]
+  ): MailOp[F, JavaMailConnection, List[Mail[F]]] =
+    LoadMail.byUid[F](folder, uids).blockOn(blocker)
+
   def loadMailRaw(mh: MailHeader): MailOp[F, JavaMailConnection, Option[ByteVector]] =
-    LoadMailRaw(mh)
+    LoadMailRaw(mh).blockOn(blocker)
+
+  override def loadMailRaw(
+      folder: MailFolder,
+      uid: MailUid
+  ): MailOp[F, JavaMailConnection, Option[ByteVector]] =
+    LoadMailRaw.byUid[F](folder, uid).blockOn(blocker)
+
+  override def loadMailRaw(
+      folder: MailFolder,
+      start: MailUid,
+      end: MailUid
+  ): MailOp[F, JavaMailConnection, List[ByteVector]] =
+    LoadMailRaw.byUid[F](folder, start, end).blockOn(blocker)
+
+  override def loadMailRaw(
+      folder: MailFolder,
+      uids: List[MailUid]
+  ): MailOp[F, JavaMailConnection, List[ByteVector]] =
+    LoadMailRaw.byUid[F](folder, uids).blockOn(blocker)
 
   def moveMail(mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
     MoveMail(mh, target).blockOn(blocker)
