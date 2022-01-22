@@ -75,20 +75,20 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
   def loadMail(mh: MailHeader): MailOp[F, JavaMailConnection, Option[Mail[F]]] =
     LoadMail(mh).blockOn(blocker)
 
-  override def loadMail(
+  def loadMail(
       folder: MailFolder,
       uid: MailUid
   ): MailOp[F, JavaMailConnection, Option[Mail[F]]] =
     LoadMail.byUid[F](folder, uid).blockOn(blocker)
 
-  override def loadMail(
+  def loadMail(
       folder: MailFolder,
       start: MailUid,
       end: MailUid
   ): MailOp[F, JavaMailConnection, List[Mail[F]]] =
     LoadMail.byUid[F](folder, start, end).blockOn(blocker)
 
-  override def loadMail(
+  def loadMail(
       folder: MailFolder,
       uids: List[MailUid]
   ): MailOp[F, JavaMailConnection, List[Mail[F]]] =
@@ -97,20 +97,20 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
   def loadMailRaw(mh: MailHeader): MailOp[F, JavaMailConnection, Option[ByteVector]] =
     LoadMailRaw(mh).blockOn(blocker)
 
-  override def loadMailRaw(
+  def loadMailRaw(
       folder: MailFolder,
       uid: MailUid
   ): MailOp[F, JavaMailConnection, Option[ByteVector]] =
     LoadMailRaw.byUid[F](folder, uid).blockOn(blocker)
 
-  override def loadMailRaw(
+  def loadMailRaw(
       folder: MailFolder,
       start: MailUid,
       end: MailUid
   ): MailOp[F, JavaMailConnection, List[ByteVector]] =
     LoadMailRaw.byUid[F](folder, start, end).blockOn(blocker)
 
-  override def loadMailRaw(
+  def loadMailRaw(
       folder: MailFolder,
       uids: List[MailUid]
   ): MailOp[F, JavaMailConnection, List[ByteVector]] =
