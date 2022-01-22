@@ -55,7 +55,7 @@ final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     LoadMail(mh).blockOn(blocker)
 
   def loadMailRaw(mh: MailHeader): MailOp[F, JavaMailConnection, Option[ByteVector]] =
-    LoadMailRaw(mh)
+    LoadMailRaw(mh).blockOn(blocker)
 
   def moveMail(mh: MailHeader, target: MailFolder): MailOp[F, JavaMailConnection, Unit] =
     MoveMail(mh, target).blockOn(blocker)
