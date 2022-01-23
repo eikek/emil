@@ -9,7 +9,7 @@ import emil.javamail.internal.BlockingSyntax._
 import emil.javamail.internal.ops._
 import scodec.bits.ByteVector
 
-final class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
+class AccessImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     extends Access[F, JavaMailConnection] {
   def getInbox: MailOp[F, JavaMailConnection, MailFolder] =
     FindFolder(None, "INBOX")

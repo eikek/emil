@@ -3,7 +3,7 @@ package emil
 import cats.{Applicative, FlatMap}
 import scodec.bits.ByteVector
 
-trait Access[F[_], C] {
+trait Access[F[_], -C] {
 
   def getInbox: MailOp[F, C, MailFolder]
 

@@ -4,17 +4,21 @@ import cats.effect.{Resource, Sync}
 import emil.{Connection, MailConfig}
 import jakarta.mail._
 
-final case class JavaMailConnection(
+final case class JavaMailConnectionGeneric[
+    +Str <: Store,
+    +Trns <: Transport,
+    +Fldr <: Folder
+](
     config: MailConfig,
     session: Session,
-    mailStore: Option[Store],
-    mailTransport: Option[Transport]
+    mailStore: Option[Str],
+    mailTransport: Option[Trns]
 ) extends Connection {
 
-  def store: Store =
+  def store: Str =
     mailStore.getOrElse(sys.error(s"No store available for connection: ${config.url}"))
 
-  def transport: Transport =
+  def transport: Trns =
     mailTransport.getOrElse(
       sys.error(s"No transport available for connection: ${config.url}")
     )
@@ -22,10 +26,10 @@ final case class JavaMailConnection(
   def folder[F[_]: Sync](
       name: String,
       mode: Int = Folder.READ_ONLY
-  ): Resource[F, Folder] =
+  ): Resource[F, Fldr] =
     Resource
       .make(Sync[F].delay {
-        val f      = store.getFolder(name)
+        val f      = store.getFolder(name).asInstanceOf[Fldr]
         val doOpen = f != null && !f.isOpen
         if (doOpen)
           f.open(mode)
