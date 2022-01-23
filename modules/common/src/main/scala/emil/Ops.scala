@@ -6,7 +6,7 @@ import cats.{Applicative, ApplicativeError}
 
 trait Ops {
 
-  type MailOp[F[_], C, A] = Kleisli[F, C, A]
+  type MailOp[F[_], -C, A] = Kleisli[F, C, A]
 
   object MailOp {
     def apply[F[_], C, A](run: C => F[A]): MailOp[F, C, A] =

@@ -3,7 +3,7 @@ package emil
 import cats.{Applicative, FlatMap}
 import scodec.bits.ByteVector
 
-trait Access[F[_], C] {
+trait Access[F[_], -C] {
 
   def getInbox: MailOp[F, C, MailFolder]
 
@@ -25,10 +25,6 @@ trait Access[F[_], C] {
 
   def getMessageCount(folder: MailFolder): MailOp[F, C, Int]
 
-  def getFolderNextUid(folder: MailFolder): MailOp[F, C, MailUid]
-
-  def getFolderUidValidity(folder: MailFolder): MailOp[F, C, MailUidValidity]
-
   def search(folder: MailFolder, max: Int)(
       query: SearchQuery
   ): MailOp[F, C, SearchResult[MailHeader]]
@@ -39,27 +35,7 @@ trait Access[F[_], C] {
 
   def loadMail(mh: MailHeader): MailOp[F, C, Option[Mail[F]]]
 
-  def loadMail(folder: MailFolder, uid: MailUid): MailOp[F, C, Option[Mail[F]]]
-
-  def loadMail(
-      folder: MailFolder,
-      start: MailUid,
-      end: MailUid
-  ): MailOp[F, C, List[Mail[F]]]
-
-  def loadMail(folder: MailFolder, uids: List[MailUid]): MailOp[F, C, List[Mail[F]]]
-
   def loadMailRaw(mh: MailHeader): MailOp[F, C, Option[ByteVector]]
-
-  def loadMailRaw(folder: MailFolder, uid: MailUid): MailOp[F, C, Option[ByteVector]]
-
-  def loadMailRaw(
-      folder: MailFolder,
-      start: MailUid,
-      end: MailUid
-  ): MailOp[F, C, List[ByteVector]]
-
-  def loadMailRaw(folder: MailFolder, uids: List[MailUid]): MailOp[F, C, List[ByteVector]]
 
   def moveMail(mh: MailHeader, target: MailFolder): MailOp[F, C, Unit]
 
