@@ -6,7 +6,7 @@ trait AccessImap[F[_], -C] extends Access[F, C] {
 
   def getFolderNextUid(folder: MailFolder): MailOp[F, C, MailUid]
 
-  def getFolderUidValidity(folder: MailFolder): MailOp[F, C, MailUidValidity]
+  def getFolderUidValidity(folder: MailFolder): MailOp[F, C, MailFolderUidValidity]
 
   def loadMail(folder: MailFolder, uid: MailUid): MailOp[F, C, Option[Mail[F]]]
 

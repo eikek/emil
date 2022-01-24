@@ -19,10 +19,10 @@ class AccessImapImpl[F[_]: Sync]
 
   def getFolderUidValidity(
       folder: MailFolder
-  ): MailOp[F, JavaMailImapConnection, MailUidValidity] =
-    MailOp[F, JavaMailImapConnection, MailUidValidity] {
+  ): MailOp[F, JavaMailImapConnection, MailFolderUidValidity] =
+    MailOp[F, JavaMailImapConnection, MailFolderUidValidity] {
       _.folder[F](folder.id).use { f =>
-        Sync[F].blocking(MailUidValidity(f.getUIDValidity))
+        Sync[F].blocking(MailFolderUidValidity(f.getUIDValidity))
       }
     }
 
