@@ -7,7 +7,7 @@ import emil.javamail.internal.ops._
 import scodec.bits.ByteVector
 
 class AccessImapImpl[F[_]: Sync]
-    extends AccessImpl
+    extends AccessImpl[F]
     with AccessImap[F, JavaMailImapConnection] {
 
   def getFolderNextUid(folder: MailFolder): MailOp[F, JavaMailImapConnection, MailUid] =

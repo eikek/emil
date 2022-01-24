@@ -14,7 +14,7 @@ addCommandAlias("fix", "; Compile/scalafix; Test/scalafix; scalafmtSbt; scalafmt
 
 val sharedSettings = Seq(
   organization := "com.github.eikek",
-  scalaVersion := scala213,
+  scalaVersion := scala3,
   scalacOptions ++=
     Seq(
       "-feature",
