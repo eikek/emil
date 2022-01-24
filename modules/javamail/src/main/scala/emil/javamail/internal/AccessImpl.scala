@@ -8,7 +8,7 @@ import emil.javamail.conv.codec._
 import emil.javamail.internal.ops._
 import scodec.bits.ByteVector
 
-final class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
+class AccessImpl[F[_]: Sync] extends Access[F, JavaMailConnection] {
   def getInbox: MailOp[F, JavaMailConnection, MailFolder] =
     FindFolder(None, "INBOX")
       .andThen(optMf =>

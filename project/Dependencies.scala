@@ -51,6 +51,7 @@ object Dependencies {
   val greenmail = Seq(
     ("com.icegreen" % "greenmail" % greenmailVersion).excludeAll(
       "com.sun.mail" % "javax.mail",
+      "com.sun.mail" % "jakarta.mail",
       "junit" % "junit",
       "org.hamcrest" % "hamcrest-core",
       "org.hamcrest" % "hamcrest-all"

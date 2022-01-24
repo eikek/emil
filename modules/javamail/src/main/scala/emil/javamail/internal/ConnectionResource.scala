@@ -30,10 +30,10 @@ object ConnectionResource {
       val session = createSession(mc, settings)
       if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
         val store = createImapStore(session, mc)
-        JavaMailConnection(mc, session, Some(store), None)
+        JavaMailConnectionGeneric(mc, session, Some(store), None)
       } else {
         val tp = createSmtpTransport(session, mc)
-        JavaMailConnection(mc, session, None, Some(tp))
+        JavaMailConnectionGeneric(mc, session, None, Some(tp))
       }
     }
 
