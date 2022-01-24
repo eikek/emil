@@ -380,4 +380,81 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     assertEquals(listed(1).path, NonEmptyList.one("myfolder1"))
     assertEquals(listed(2).path, NonEmptyList.one("myfolder2"))
   }
+
+  test("list root folder recursively") {
+    val makeFolders = for {
+      folder1 <- emil.access.createFolder(None, "myfolder1")
+      folder11 <- emil.access.createFolder(Some(folder1), "myfolder11")
+      folder12 <- emil.access.createFolder(Some(folder1), "myfolder12")
+      folder13 <- emil.access.createFolder(Some(folder1), "myfolder13")
+      folder2 <- emil.access.createFolder(None, "myfolder2")
+      folder21 <- emil.access.createFolder(Some(folder2), "myfolder21")
+      folder211 <- emil.access.createFolder(Some(folder21), "myfolder211")
+    } yield Vector(folder1, folder11, folder12, folder13, folder2, folder21, folder211)
+
+    val inbox = user1Imap.run(emil.access.getInbox).unsafeRunSync()
+
+    val folders = user1Imap.run(makeFolders).unsafeRunSync()
+    val foldersWithInbox = Vector(inbox) ++ folders
+    val listed = user1Imap.run(emil.access.listFoldersRecursive(None)).unsafeRunSync()
+
+    assert(listed.size == foldersWithInbox.size)
+
+    assert(listed.exists(x => x.path == NonEmptyList.one("INBOX")))
+    assert(listed.exists(x => x.path == NonEmptyList.one("myfolder1")))
+    assert(listed.exists(x => x.path == NonEmptyList.one("myfolder2")))
+    assert(listed.exists(x => x.path == NonEmptyList.of("myfolder1", "myfolder11")))
+    assert(listed.exists(x => x.path == NonEmptyList.of("myfolder1", "myfolder12")))
+    assert(listed.exists(x => x.path == NonEmptyList.of("myfolder1", "myfolder13")))
+    assert(listed.exists(x => x.path == NonEmptyList.of("myfolder2", "myfolder21")))
+    assert(
+      listed.exists(x =>
+        x.path == NonEmptyList.of("myfolder2", "myfolder21", "myfolder211")
+      )
+    )
+  }
+
+  test("list folder recursively") {
+    val makeFolders = for {
+      folder1 <- emil.access.createFolder(None, "myfolder1")
+      folder11 <- emil.access.createFolder(Some(folder1), "myfolder11")
+      folder12 <- emil.access.createFolder(Some(folder1), "myfolder12")
+      folder13 <- emil.access.createFolder(Some(folder1), "myfolder13")
+      folder131 <- emil.access.createFolder(Some(folder13), "myfolder131")
+      folder2 <- emil.access.createFolder(None, "myfolder2")
+      folder21 <- emil.access.createFolder(Some(folder2), "myfolder21")
+      folder211 <- emil.access.createFolder(Some(folder21), "myfolder211")
+    } yield Vector(
+      folder1,
+      folder11,
+      folder12,
+      folder13,
+      folder131,
+      folder2,
+      folder21,
+      folder211
+    )
+
+    def listFolderRecursively(name: String) =
+      for {
+        folder <- emil.access.findFolder(None, name)
+        folders <- emil.access.listFoldersRecursive(folder)
+      } yield folders
+
+    user1Imap.run(makeFolders).unsafeRunSync()
+    val listed = user1Imap.run(listFolderRecursively("myfolder1")).unsafeRunSync()
+
+    assert(listed.size == 4)
+
+    assert(!listed.exists(x => x.path == NonEmptyList.one("myfolder1")))
+
+    assert(listed.exists(x => x.path == NonEmptyList.of("myfolder1", "myfolder11")))
+    assert(listed.exists(x => x.path == NonEmptyList.of("myfolder1", "myfolder12")))
+    assert(listed.exists(x => x.path == NonEmptyList.of("myfolder1", "myfolder13")))
+    assert(
+      listed.exists(x =>
+        x.path == NonEmptyList.of("myfolder1", "myfolder13", "myfolder131")
+      )
+    )
+  }
 }
