@@ -27,7 +27,7 @@ object FindMail {
   ): MailOp[F, JavaMailImapConnection, Option[MimeMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
-        Sync[F].delay {
+        Sync[F].blocking {
           logger.debug(s"About to find mail $uid")
           Option(folder.getMessageByUID(uid.n))
             .collect { case m: MimeMessage => m }
@@ -42,7 +42,7 @@ object FindMail {
   ): MailOp[F, JavaMailImapConnection, List[MimeMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
-        Sync[F].delay {
+        Sync[F].blocking {
           logger.debug(s"About to find mail from $start to $end")
           folder
             .getMessagesByUID(start.n, end.n)
@@ -58,7 +58,7 @@ object FindMail {
   ): MailOp[F, JavaMailImapConnection, List[MimeMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
-        Sync[F].delay {
+        Sync[F].blocking {
           logger.debug(s"About to find mail with $uids")
           folder
             .getMessagesByUID(uids.toArray.map(_.n))

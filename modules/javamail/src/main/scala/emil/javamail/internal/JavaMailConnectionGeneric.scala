@@ -28,14 +28,14 @@ final case class JavaMailConnectionGeneric[
       mode: Int = Folder.READ_ONLY
   ): Resource[F, Fldr] =
     Resource
-      .make(Sync[F].delay {
+      .make(Sync[F].blocking {
         val f = store.getFolder(name).asInstanceOf[Fldr]
         val doOpen = f != null && !f.isOpen
         if (doOpen)
           f.open(mode)
         (f, doOpen)
       })(t =>
-        Sync[F].delay {
+        Sync[F].blocking {
           if (t._2 && t._1.isOpen)
             t._1.close(true)
         }

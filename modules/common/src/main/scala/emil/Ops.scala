@@ -13,7 +13,7 @@ trait Ops {
       Kleisli(run)
 
     def of[F[_]: Sync, C, A](run: C => A): MailOp[F, C, A] =
-      MailOp(conn => Sync[F].delay(run(conn)))
+      MailOp(conn => Sync[F].blocking(run(conn)))
 
     def error[F[_], C, A](
         msg: String

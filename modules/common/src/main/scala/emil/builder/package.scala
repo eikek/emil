@@ -245,7 +245,7 @@ package builder {
     ): AttachInputStream[F] = {
       require(url != null, "Url must not be null")
       AttachInputStream(
-        Sync[F].delay(url.openStream()),
+        Sync[F].blocking(url.openStream()),
         filename,
         mimeType,
         length,
