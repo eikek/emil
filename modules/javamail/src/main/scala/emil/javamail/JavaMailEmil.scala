@@ -28,7 +28,7 @@ final class JavaMailEmil[F[_]: Sync] private (
     new SendImpl[F]
 
   def access: Access[F, JavaMailConnection] =
-    new AccessImpl[F]
+    new AccessImapImpl[F]
 }
 
 object JavaMailEmil {

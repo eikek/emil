@@ -6,14 +6,14 @@ import cats.{Applicative, ApplicativeError}
 
 trait Ops {
 
-  type MailOp[F[_], C, A] = Kleisli[F, C, A]
+  type MailOp[F[_], -C, A] = Kleisli[F, C, A]
 
   object MailOp {
     def apply[F[_], C, A](run: C => F[A]): MailOp[F, C, A] =
       Kleisli(run)
 
     def of[F[_]: Sync, C, A](run: C => A): MailOp[F, C, A] =
-      MailOp(conn => Sync[F].delay(run(conn)))
+      MailOp(conn => Sync[F].blocking(run(conn)))
 
     def error[F[_], C, A](
         msg: String

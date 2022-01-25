@@ -19,21 +19,21 @@ object ConnectionResource {
       settings: Settings
   ): Resource[F, JavaMailConnection] =
     Resource.make(make(mc, settings))(conn =>
-      Sync[F].delay {
+      Sync[F].blocking {
         conn.mailStore.foreach(_.close())
         conn.mailTransport.foreach(_.close())
       }
     )
 
   def make[F[_]: Sync](mc: MailConfig, settings: Settings): F[JavaMailConnection] =
-    Sync[F].delay {
+    Sync[F].blocking {
       val session = createSession(mc, settings)
       if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
         val store = createImapStore(session, mc)
-        JavaMailConnection(mc, session, Some(store), None)
+        JavaMailConnectionGeneric(mc, session, Some(store), None)
       } else {
         val tp = createSmtpTransport(session, mc)
-        JavaMailConnection(mc, session, None, Some(tp))
+        JavaMailConnectionGeneric(mc, session, None, Some(tp))
       }
     }
 

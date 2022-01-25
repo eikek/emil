@@ -1,7 +1,7 @@
 package emil
 import cats.data.NonEmptyList
 
-trait Send[F[_], C] {
+trait Send[F[_], -C] {
 
   /** Return an operation that sends a list of mails and returns the generated messageIDs.
     */
