@@ -3,9 +3,10 @@ package emil.javamail.internal.ops
 import cats.data.Kleisli
 import cats.effect.Sync
 import cats.implicits._
+import com.sun.mail.gimap.{GmailFolder, GmailMessage, GmailStore}
 import com.sun.mail.imap.IMAPFolder
 import emil._
-import emil.javamail.internal.{JavaMailConnection, Logger, Util}
+import emil.javamail.internal._
 import jakarta.mail._
 import jakarta.mail.internet.MimeMessage
 
@@ -72,4 +73,27 @@ object MoveMail {
       source.expunge()
       ()
     }
+
+  def setGmailLabels[F[_]: Sync](
+      folder: MailFolder,
+      uid: MailUid,
+      labels: Set[GmailLabel],
+      set: Boolean
+  ): MailOp[
+    F,
+    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
+    Unit
+  ] = MailOp {
+    _.folder[F](folder.id, Folder.READ_WRITE)
+      .use { folder =>
+        Sync[F].delay {
+          logger.debug(s"About to set labels in for mail $uid in folder $folder")
+          val _ = Option(folder.getMessageByUID(uid.n))
+            .collect { case m: GmailMessage =>
+              m.setLabels(labels.toArray.map(_.value), set)
+            }
+          ()
+        }
+      }
+  }
 }

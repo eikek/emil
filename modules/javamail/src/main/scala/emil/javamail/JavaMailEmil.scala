@@ -29,7 +29,7 @@ final class JavaMailEmil[F[_]: Sync: ContextShift] private (
     new SendImpl[F](blocker)
 
   def access: Access[F, JavaMailConnection] =
-    new AccessImapImpl[F](blocker)
+    new AccessGimapImpl[F](blocker)
 }
 
 object JavaMailEmil {

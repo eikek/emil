@@ -39,8 +39,14 @@ object Dependencies {
   )
 
   val javaxMail = Seq(
-    "com.sun.mail" % "jakarta.mail" % javaxMailVersion
+//    "com.sun.mail" % "jakarta.mail"  % javaxMailVersion,
+    "com.sun.mail" % "imap"  % javaxMailVersion,
+    "com.sun.mail" % "gimap" % javaxMailVersion
   )
+
+//  val javaxMailGmail = Seq(
+//    "com.sun.mail" % "gimap" % javaxMailVersion
+//  )
 
   val greenmail = Seq(
     ("com.icegreen" % "greenmail" % greenmailVersion).excludeAll(

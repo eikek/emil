@@ -1,7 +1,7 @@
 package emil.javamail.internal.ops
 
 import cats.effect.Sync
-import com.sun.mail.imap.IMAPFolder
+import com.sun.mail.imap._
 import emil._
 import emil.javamail.internal._
 import jakarta.mail.internet.MimeMessage
@@ -22,13 +22,13 @@ object FindMail {
   def byUid[F[_]: Sync](
       folder: MailFolder,
       uid: MailUid
-  ): MailOp[F, JavaMailImapConnection, Option[MimeMessage]] = MailOp {
+  ): MailOp[F, JavaMailImapConnection, Option[IMAPMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
         Sync[F].delay {
           logger.debug(s"About to find mail $uid")
           Option(folder.getMessageByUID(uid.n))
-            .collect { case m: MimeMessage => m }
+            .collect { case m: IMAPMessage => m }
         }
       }
   }
@@ -37,34 +37,60 @@ object FindMail {
       folder: MailFolder,
       start: MailUid,
       end: MailUid
-  ): MailOp[F, JavaMailImapConnection, List[MimeMessage]] = MailOp {
+  ): MailOp[F, JavaMailImapConnection, Map[MailUid, IMAPMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
         Sync[F].delay {
           logger.debug(s"About to find mail from $start to $end")
           folder
             .getMessagesByUID(start.n, end.n)
-            .collect { case m: MimeMessage => m }
-            .toList
+            .collect { case m: IMAPMessage => MailUid(folder.getUID(m)) -> m }
+            .toMap
         }
       }
   }
 
   def byUid[F[_]: Sync](
       folder: MailFolder,
-      uids: List[MailUid]
-  ): MailOp[F, JavaMailImapConnection, List[MimeMessage]] = MailOp {
+      uids: Set[MailUid]
+  ): MailOp[F, JavaMailImapConnection, Map[MailUid, IMAPMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
         Sync[F].delay {
-          logger.debug(s"About to find mail with $uids")
+          val uidsSorted = uids.toArray.sortBy(_.n)
+          logger.debug(s"About to find mail with $uidsSorted")
           folder
-            .getMessagesByUID(uids.toArray.map(_.n))
-            .collect { case m: MimeMessage => m }
-            .toList
+            .getMessagesByUID(uidsSorted.map(_.n))
+            .collect { case m: IMAPMessage => MailUid(folder.getUID(m)) -> m }
+            .toMap
         }
       }
   }
+
+//  def byUidGmail[F[_]: Sync](
+//      folder: MailFolder,
+//      start: MailUid,
+//      end: MailUid
+//  ): MailOp[
+//    F,
+//    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
+//    Map[GmailMailCompositeId, IMAPMessage]
+//  ] = MailOp {
+//    _.folder[F](folder.id)
+//      .use { folder =>
+//        Sync[F].delay {
+//          logger.debug(s"About to find mail from $start to $end")
+//          folder
+//            .getMessagesByUID(start.n, end.n)
+//            .collect { case m: GmailMessage =>
+//              val mailUid     = MailUid(folder.getUID(m))
+//              val gmailMailId = GmailMailId(m.getMsgId)
+//              GmailMailCompositeId(mailUid, gmailMailId) -> m
+//            }
+//            .toMap
+//        }
+//      }
+//  }
 
   private def findByInternalId(
       conn: JavaMailConnection,

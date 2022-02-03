@@ -31,24 +31,39 @@ object LoadMailRaw {
 
   def byUid[F[_]: Sync](folder: MailFolder, start: MailUid, end: MailUid)(implicit
       cm: Conv[MimeMessage, ByteVector]
-  ): MailOp[F, JavaMailImapConnection, List[ByteVector]] =
-    FindMail.byUid[F](folder, start, end).map { optMime =>
+  ): MailOp[F, JavaMailImapConnection, Map[MailUid, ByteVector]] =
+    FindMail.byUid[F](folder, start, end).map { mimes =>
       logger
         .debug(
-          s"Loaded complete raw mail from '$start' to '$end' from mime messages '$optMime'"
+          s"Loaded complete raw mail from '$start' to '$end' from mime messages: ${mimes.size}"
         )
-      optMime.map(cm.convert)
+      mimes.map { case (uid, mime) => uid -> cm.convert(mime) }
     }
 
-  def byUid[F[_]: Sync](folder: MailFolder, uids: List[MailUid])(implicit
+  def byUid[F[_]: Sync](folder: MailFolder, uids: Set[MailUid])(implicit
       cm: Conv[MimeMessage, ByteVector]
-  ): MailOp[F, JavaMailImapConnection, List[ByteVector]] =
-    FindMail.byUid[F](folder, uids).map { optMime =>
+  ): MailOp[F, JavaMailImapConnection, Map[MailUid, ByteVector]] =
+    FindMail.byUid[F](folder, uids).map { mimes =>
       logger
         .debug(
-          s"Loaded complete raw mail for '$uids' from mime messages '$optMime'"
+          s"Loaded complete raw mail for '$uids' from mime messages: ${mimes.size}"
         )
-      optMime.map(cm.convert)
+      mimes.map { case (uid, mime) => uid -> cm.convert(mime) }
     }
+
+//  def byUidGmail[F[_]: Sync](folder: MailFolder, start: MailUid, end: MailUid)(implicit
+//      cm: Conv[MimeMessage, ByteVector]
+//  ): MailOp[
+//    F,
+//    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
+//    Map[GmailMailCompositeId, ByteVector]
+//  ] =
+//    FindMail.byUidGmail[F](folder, start, end).map { mimes =>
+//      logger
+//        .debug(
+//          s"Loaded complete raw mail from '$start' to '$end' from mime messages: ${mimes.size}"
+//        )
+//      mimes.map { case (uid, mime) => uid -> cm.convert(mime) }
+//    }
 
 }

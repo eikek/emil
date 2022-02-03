@@ -1,12 +1,18 @@
 package emil.javamail.internal.ops
 
 import cats.effect.Sync
+import com.sun.mail.gimap.{GmailFolder, GmailMessage, GmailStore}
 import emil._
 import emil.javamail.conv.Conv
-import emil.javamail.internal.{JavaMailConnection, Logger}
+import emil.javamail.internal.{
+  GmailLabel,
+  JavaMailConnection,
+  JavaMailConnectionGeneric,
+  Logger
+}
 import jakarta.mail.internet.MimeMessage
 import jakarta.mail.search.SearchTerm
-import jakarta.mail.{Flags, Folder}
+import jakarta.mail.{Flags, Folder, Transport}
 
 object SearchMails {
   private[this] val logger = Logger(getClass)
@@ -68,4 +74,21 @@ object SearchMails {
         )
     )
 
+  def getGmailLabels[F[_]: Sync](folder: MailFolder, uid: MailUid): MailOp[
+    F,
+    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
+    Set[GmailLabel]
+  ] = MailOp {
+    _.folder[F](folder.id)
+      .use { folder =>
+        Sync[F].delay {
+          logger.debug(s"About to get labels in for mail $uid in folder $folder")
+          Option(folder.getMessageByUID(uid.n))
+            .collect { case m: GmailMessage => m }
+            .toList
+            .flatMap(m => m.getLabels.map(GmailLabel))
+            .toSet
+        }
+      }
+  }
 }

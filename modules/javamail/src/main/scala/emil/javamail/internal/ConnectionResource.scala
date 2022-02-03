@@ -1,15 +1,14 @@
 package emil.javamail.internal
 
-import java.security.NoSuchProviderException
-import java.util.Properties
-
-import scala.concurrent.duration.Duration
-
 import cats.effect.{Resource, Sync}
 import cats.implicits._
 import emil.javamail.Settings
 import emil.{MailConfig, SSLType}
 import jakarta.mail._
+
+import java.security.NoSuchProviderException
+import java.util.Properties
+import scala.concurrent.duration.Duration
 
 object ConnectionResource {
   private[this] val logger = Logger(getClass)
@@ -27,8 +26,9 @@ object ConnectionResource {
 
   def make[F[_]: Sync](mc: MailConfig, settings: Settings): F[JavaMailConnection] =
     Sync[F].delay {
-      val session = createSession(mc, settings)
-      if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
+      val session  = createSession(mc, settings)
+      val protocol = mc.urlParts.protocol.toLowerCase
+      if (protocol.startsWith("imap") || protocol.startsWith("gimap")) {
         val store = createImapStore(session, mc)
         JavaMailConnectionGeneric(mc, session, Some(store), None)
       } else {
