@@ -37,32 +37,32 @@ class AccessImapImpl[F[_]: Sync: ContextShift](blocker: Blocker)
       folder: MailFolder,
       start: MailUid,
       end: MailUid
-  ): MailOp[F, JavaMailImapConnection, Map[MailUid, Mail[F]]] =
+  ): MailOp[F, JavaMailImapConnection, List[Mail[F]]] =
     LoadMail.byUid[F](folder, start, end).blockOn(blocker)
 
   def loadMail(
       folder: MailFolder,
       uids: Set[MailUid]
-  ): MailOp[F, JavaMailImapConnection, Map[MailUid, Mail[F]]] =
+  ): MailOp[F, JavaMailImapConnection, List[Mail[F]]] =
     LoadMail.byUid[F](folder, uids).blockOn(blocker)
 
   def loadMailRaw(
       folder: MailFolder,
       uid: MailUid
-  ): MailOp[F, JavaMailImapConnection, Option[ByteVector]] =
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     LoadMailRaw.byUid[F](folder, uid).blockOn(blocker)
 
   def loadMailRaw(
       folder: MailFolder,
       start: MailUid,
       end: MailUid
-  ): MailOp[F, JavaMailImapConnection, Map[MailUid, ByteVector]] =
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     LoadMailRaw.byUid[F](folder, start, end).blockOn(blocker)
 
   def loadMailRaw(
       folder: MailFolder,
       uids: Set[MailUid]
-  ): MailOp[F, JavaMailImapConnection, Map[MailUid, ByteVector]] =
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     LoadMailRaw.byUid[F](folder, uids).blockOn(blocker)
 
 }

@@ -74,21 +74,14 @@ object SearchMails {
         )
     )
 
-  def getGmailLabels[F[_]: Sync](folder: MailFolder, uid: MailUid): MailOp[
+  def getGmailLabels[F[_]: Sync](mh: MailHeader): MailOp[
     F,
     JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
     Set[GmailLabel]
-  ] = MailOp {
-    _.folder[F](folder.id)
-      .use { folder =>
-        Sync[F].delay {
-          logger.debug(s"About to get labels in for mail $uid in folder $folder")
-          Option(folder.getMessageByUID(uid.n))
-            .collect { case m: GmailMessage => m }
-            .toList
-            .flatMap(m => m.getLabels.map(GmailLabel))
-            .toSet
-        }
-      }
-  }
+  ] = FindMail(mh).map(
+    _.map(_.asInstanceOf[GmailMessage]).toList
+      .flatMap(m => m.getLabels.map(GmailLabel))
+      .toSet
+  )
+
 }

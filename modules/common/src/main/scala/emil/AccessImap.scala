@@ -14,23 +14,26 @@ trait AccessImap[F[_], -C] extends Access[F, C] {
       folder: MailFolder,
       start: MailUid,
       end: MailUid
-  ): MailOp[F, C, Map[MailUid, Mail[F]]]
+  ): MailOp[F, C, List[Mail[F]]]
 
   def loadMail(
       folder: MailFolder,
       uids: Set[MailUid]
-  ): MailOp[F, C, Map[MailUid, Mail[F]]]
+  ): MailOp[F, C, List[Mail[F]]]
 
-  def loadMailRaw(folder: MailFolder, uid: MailUid): MailOp[F, C, Option[ByteVector]]
+  def loadMailRaw(
+      folder: MailFolder,
+      uid: MailUid
+  ): MailOp[F, C, Map[MailHeader, ByteVector]]
 
   def loadMailRaw(
       folder: MailFolder,
       start: MailUid,
       end: MailUid
-  ): MailOp[F, C, Map[MailUid, ByteVector]]
+  ): MailOp[F, C, Map[MailHeader, ByteVector]]
 
   def loadMailRaw(
       folder: MailFolder,
       uids: Set[MailUid]
-  ): MailOp[F, C, Map[MailUid, ByteVector]]
+  ): MailOp[F, C, Map[MailHeader, ByteVector]]
 }

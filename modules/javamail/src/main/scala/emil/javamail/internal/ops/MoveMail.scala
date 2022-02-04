@@ -75,25 +75,30 @@ object MoveMail {
     }
 
   def setGmailLabels[F[_]: Sync](
-      folder: MailFolder,
-      uid: MailUid,
+      mh: MailHeader,
       labels: Set[GmailLabel],
       set: Boolean
   ): MailOp[
     F,
     JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
     Unit
-  ] = MailOp {
-    _.folder[F](folder.id, Folder.READ_WRITE)
-      .use { folder =>
+  ] =
+    FindMail(mh).flatMap { mime =>
+      MailOp { _ =>
         Sync[F].delay {
-          logger.debug(s"About to set labels in for mail $uid in folder $folder")
-          val _ = Option(folder.getMessageByUID(uid.n))
-            .collect { case m: GmailMessage =>
-              m.setLabels(labels.toArray.map(_.value), set)
-            }
-          ()
+          mime match {
+            case Some(mime: GmailMessage) =>
+              Util.withWriteFolder(mime.getFolder) { _ =>
+                mime.setLabels(labels.toArray.map(_.value), set)
+              }
+            case Some(mime) =>
+              sys.error(
+                s"Cannot set labels on non-Gmail message. header: $mh, message: $mime"
+              )
+            case None =>
+              sys.error(s"Message not found. header: $mh")
+          }
         }
       }
-  }
+    }
 }

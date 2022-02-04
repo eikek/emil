@@ -21,34 +21,37 @@ object LoadMailRaw {
     }
 
   def byUid[F[_]: Sync](folder: MailFolder, uid: MailUid)(implicit
-      cm: Conv[MimeMessage, ByteVector]
-  ): MailOp[F, JavaMailImapConnection, Option[ByteVector]] =
+      cm: Conv[MimeMessage, MailHeader],
+      cb: Conv[MimeMessage, ByteVector]
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     FindMail.byUid[F](folder, uid).map { optMime =>
       logger
         .debug(s"Loaded complete raw mail for '$uid' from mime message '$optMime'")
-      optMime.map(cm.convert)
+      optMime.map(mime => cm.convert(mime) -> cb.convert(mime)).toList.toMap
     }
 
   def byUid[F[_]: Sync](folder: MailFolder, start: MailUid, end: MailUid)(implicit
-      cm: Conv[MimeMessage, ByteVector]
-  ): MailOp[F, JavaMailImapConnection, Map[MailUid, ByteVector]] =
+      cm: Conv[MimeMessage, MailHeader],
+      cb: Conv[MimeMessage, ByteVector]
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     FindMail.byUid[F](folder, start, end).map { mimes =>
       logger
         .debug(
           s"Loaded complete raw mail from '$start' to '$end' from mime messages: ${mimes.size}"
         )
-      mimes.map { case (uid, mime) => uid -> cm.convert(mime) }
+      mimes.map(mime => cm.convert(mime) -> cb.convert(mime)).toMap
     }
 
   def byUid[F[_]: Sync](folder: MailFolder, uids: Set[MailUid])(implicit
-      cm: Conv[MimeMessage, ByteVector]
-  ): MailOp[F, JavaMailImapConnection, Map[MailUid, ByteVector]] =
+      cm: Conv[MimeMessage, MailHeader],
+      cb: Conv[MimeMessage, ByteVector]
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     FindMail.byUid[F](folder, uids).map { mimes =>
       logger
         .debug(
           s"Loaded complete raw mail for '$uids' from mime messages: ${mimes.size}"
         )
-      mimes.map { case (uid, mime) => uid -> cm.convert(mime) }
+      mimes.map(mime => cm.convert(mime) -> cb.convert(mime)).toMap
     }
 
 //  def byUidGmail[F[_]: Sync](folder: MailFolder, start: MailUid, end: MailUid)(implicit

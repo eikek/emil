@@ -4,34 +4,22 @@ import cats.effect.{Blocker, ContextShift, Sync}
 import com.sun.mail.gimap.{GmailFolder, GmailStore}
 import emil.javamail.internal.BlockingSyntax._
 import emil.javamail.internal.ops.{MoveMail, SearchMails}
-import emil.{AccessImap, MailFolder, MailOp, MailUid}
+import emil.{AccessImap, MailHeader, MailOp}
 import jakarta.mail.Transport
 
 class AccessGimapImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     extends AccessImapImpl[F](blocker)
     with AccessImap[F, JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder]] {
 
-//  def loadMailRawGmail(
-//      folder: MailFolder,
-//      start: MailUid,
-//      end: MailUid
-//  ): MailOp[
-//    F,
-//    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
-//    Map[GmailMailCompositeId, ByteVector]
-//  ] =
-//    LoadMailRaw.byUidGmail[F](folder, start, end).blockOn(blocker)
-
-  def getGmailLabels(folder: MailFolder, uid: MailUid): MailOp[
+  def getGmailLabels(mh: MailHeader): MailOp[
     F,
     JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
     Set[GmailLabel]
   ] =
-    SearchMails.getGmailLabels(folder, uid).blockOn(blocker)
+    SearchMails.getGmailLabels(mh).blockOn(blocker)
 
-  def changeGmailLabels(
-      folder: MailFolder,
-      uid: MailUid,
+  def setGmailLabels(
+      mh: MailHeader,
       labels: Set[GmailLabel],
       set: Boolean
   ): MailOp[
@@ -39,6 +27,6 @@ class AccessGimapImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
     Unit
   ] =
-    MoveMail.setGmailLabels(folder, uid, labels, set).blockOn(blocker)
+    MoveMail.setGmailLabels(mh, labels, set).blockOn(blocker)
 
 }
