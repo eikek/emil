@@ -78,10 +78,16 @@ object SearchMails {
     F,
     JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
     Set[GmailLabel]
-  ] = FindMail(mh).map(
-    _.map(_.asInstanceOf[GmailMessage]).toList
-      .flatMap(m => m.getLabels.map(GmailLabel))
-      .toSet
-  )
+  ] = FindMail(mh).flatMapF {
+    case Some(mime) =>
+      Sync[F].delay {
+        logger.debug(s"Getting labels for email. header: $mh")
+        mime.asInstanceOf[GmailMessage].getLabels.map(GmailLabel).toSet
+      }
+    case None =>
+      Sync[F].raiseError(
+        new RuntimeException(s"No mail with given header found. header: $mh")
+      )
+  }
 
 }

@@ -54,19 +54,4 @@ object LoadMailRaw {
       mimes.map(mime => cm.convert(mime) -> cb.convert(mime)).toMap
     }
 
-//  def byUidGmail[F[_]: Sync](folder: MailFolder, start: MailUid, end: MailUid)(implicit
-//      cm: Conv[MimeMessage, ByteVector]
-//  ): MailOp[
-//    F,
-//    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
-//    Map[GmailMailCompositeId, ByteVector]
-//  ] =
-//    FindMail.byUidGmail[F](folder, start, end).map { mimes =>
-//      logger
-//        .debug(
-//          s"Loaded complete raw mail from '$start' to '$end' from mime messages: ${mimes.size}"
-//        )
-//      mimes.map { case (uid, mime) => uid -> cm.convert(mime) }
-//    }
-
 }

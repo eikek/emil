@@ -87,14 +87,15 @@ object MoveMail {
       MailOp { _ =>
         Sync[F].delay {
           mime match {
-            case Some(mime: GmailMessage) =>
-              Util.withWriteFolder(mime.getFolder) { _ =>
-                mime.setLabels(labels.toArray.map(_.value), set)
-              }
             case Some(mime) =>
-              sys.error(
-                s"Cannot set labels on non-Gmail message. header: $mh, message: $mime"
+              logger.debug(
+                s"Setting labels on message. header: $mh, labels: $labels"
               )
+              Util.withWriteFolder(mime.getFolder) { _ =>
+                mime
+                  .asInstanceOf[GmailMessage]
+                  .setLabels(labels.toArray.map(_.value), set)
+              }
             case None =>
               sys.error(s"Message not found. header: $mh")
           }
