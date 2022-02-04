@@ -40,6 +40,7 @@ object Dependencies {
 
   val javaxMail = Seq(
     "com.sun.mail" % "imap"  % javaxMailVersion,
+    "com.sun.mail" % "smtp"  % javaxMailVersion,
     "com.sun.mail" % "gimap" % javaxMailVersion
   )
 
