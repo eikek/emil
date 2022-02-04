@@ -1,14 +1,15 @@
 package emil.javamail.internal
 
+import java.security.NoSuchProviderException
+import java.util.Properties
+
+import scala.concurrent.duration.Duration
+
 import cats.effect.{Resource, Sync}
 import cats.implicits._
 import emil.javamail.Settings
 import emil.{MailConfig, SSLType}
 import jakarta.mail._
-
-import java.security.NoSuchProviderException
-import java.util.Properties
-import scala.concurrent.duration.Duration
 
 object ConnectionResource {
   private[this] val logger = Logger(getClass)

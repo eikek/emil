@@ -4,12 +4,7 @@ import cats.effect.Sync
 import com.sun.mail.gimap.{GmailFolder, GmailMessage, GmailStore}
 import emil._
 import emil.javamail.conv.Conv
-import emil.javamail.internal.{
-  GmailLabel,
-  JavaMailConnection,
-  JavaMailConnectionGeneric,
-  Logger
-}
+import emil.javamail.internal._
 import jakarta.mail.internet.MimeMessage
 import jakarta.mail.search.SearchTerm
 import jakarta.mail.{Flags, Folder, Transport}
