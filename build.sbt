@@ -113,8 +113,8 @@ lazy val javamail = project
   .settings(scalafixSettings)
   .settings(
     name := "emil-javamail",
-    // consider this option, if there are non-deterministic test outcomes
-    //    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
+// consider this option, if there are non-deterministic test outcomes
+//    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     Test / fork := true,
     libraryDependencies ++=
       Dependencies.fs2 ++
@@ -123,21 +123,6 @@ lazy val javamail = project
         Dependencies.loggingApi
   )
   .dependsOn(common % "compile->compile;test->test")
-
-//lazy val javamailGmail = project
-//  .in(file("modules/javamail-gmail"))
-//  .settings(sharedSettings)
-//  .settings(testSettings)
-//  .settings(scalafixSettings)
-//  .settings(
-//    name := "emil-javamail-gmail",
-//    // consider this option, if there are non-deterministic test outcomes
-//    //    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
-//    Test / fork := true,
-//    libraryDependencies ++=
-//      Dependencies.javaxMailGmail
-//  )
-//  .dependsOn(javamail % "compile->compile;test->test")
 
 lazy val tnef = project
   .in(file("modules/tnef"))
