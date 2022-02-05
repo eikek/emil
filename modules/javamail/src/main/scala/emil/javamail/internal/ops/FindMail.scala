@@ -1,7 +1,8 @@
 package emil.javamail.internal.ops
 
 import cats.effect.Sync
-import com.sun.mail.imap.IMAPFolder
+import cats.syntax.all._
+import com.sun.mail.imap._
 import emil._
 import emil.javamail.internal._
 import jakarta.mail.internet.MimeMessage
@@ -22,13 +23,12 @@ object FindMail {
   def byUid[F[_]: Sync](
       folder: MailFolder,
       uid: MailUid
-  ): MailOp[F, JavaMailImapConnection, Option[MimeMessage]] = MailOp {
+  ): MailOp[F, JavaMailImapConnection, Option[IMAPMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
         Sync[F].delay {
           logger.debug(s"About to find mail $uid")
-          Option(folder.getMessageByUID(uid.n))
-            .collect { case m: MimeMessage => m }
+          Option(folder.getMessageByUID(uid.n)).map(_.asInstanceOf[IMAPMessage])
         }
       }
   }
@@ -37,14 +37,14 @@ object FindMail {
       folder: MailFolder,
       start: MailUid,
       end: MailUid
-  ): MailOp[F, JavaMailImapConnection, List[MimeMessage]] = MailOp {
+  ): MailOp[F, JavaMailImapConnection, List[IMAPMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
         Sync[F].delay {
           logger.debug(s"About to find mail from $start to $end")
           folder
             .getMessagesByUID(start.n, end.n)
-            .collect { case m: MimeMessage => m }
+            .map(_.asInstanceOf[IMAPMessage])
             .toList
         }
       }
@@ -52,15 +52,16 @@ object FindMail {
 
   def byUid[F[_]: Sync](
       folder: MailFolder,
-      uids: List[MailUid]
-  ): MailOp[F, JavaMailImapConnection, List[MimeMessage]] = MailOp {
+      uids: Set[MailUid]
+  ): MailOp[F, JavaMailImapConnection, List[IMAPMessage]] = MailOp {
     _.folder[F](folder.id)
       .use { folder =>
         Sync[F].delay {
-          logger.debug(s"About to find mail with $uids")
+          val uidsSorted = uids.toArray.sortBy(_.n)
+          logger.debug(s"About to find mail with ${uidsSorted.toList}")
           folder
-            .getMessagesByUID(uids.toArray.map(_.n))
-            .collect { case m: MimeMessage => m }
+            .getMessagesByUID(uidsSorted.map(_.n))
+            .map(_.asInstanceOf[IMAPMessage])
             .toList
         }
       }

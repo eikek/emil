@@ -3,9 +3,10 @@ package emil.javamail.internal.ops
 import cats.data.Kleisli
 import cats.effect.Sync
 import cats.implicits._
+import com.sun.mail.gimap.{GmailFolder, GmailMessage, GmailStore}
 import com.sun.mail.imap.IMAPFolder
 import emil._
-import emil.javamail.internal.{JavaMailConnection, Logger, Util}
+import emil.javamail.internal._
 import jakarta.mail._
 import jakarta.mail.internet.MimeMessage
 
@@ -71,5 +72,34 @@ object MoveMail {
       source.setFlags(Array[Message](msg), new Flags(Flags.Flag.DELETED), true)
       source.expunge()
       ()
+    }
+
+  def setGmailLabels[F[_]: Sync](
+      mh: MailHeader,
+      labels: Set[GmailLabel],
+      set: Boolean
+  ): MailOp[
+    F,
+    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
+    Unit
+  ] =
+    FindMail(mh).flatMap { mime =>
+      MailOp { _ =>
+        Sync[F].delay {
+          mime match {
+            case Some(mime) =>
+              logger.debug(
+                s"Setting labels on message. header: $mh, labels: $labels"
+              )
+              Util.withWriteFolder(mime.getFolder) { _ =>
+                mime
+                  .asInstanceOf[GmailMessage]
+                  .setLabels(labels.toArray.map(_.value), set)
+              }
+            case None =>
+              sys.error(s"Message not found. header: $mh")
+          }
+        }
+      }
     }
 }
