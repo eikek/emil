@@ -41,6 +41,6 @@ object SendMail {
 
   private def infoLine(mh: MailHeader): String =
     s"${mh.subject}:${mh.from.map(_.address).getOrElse("<no-from>")}->${mh.recipients.to
-      .map(_.address)}"
+        .map(_.address)}"
 
 }
