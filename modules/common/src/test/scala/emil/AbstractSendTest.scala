@@ -50,7 +50,19 @@ abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
       .unsafeRunSync()
     val actual = new String(mail2raw.toArray, StandardCharsets.UTF_8)
     val expected =
-      """------=_Part_1_272299100.1642183145458
+      """Return-Path: <joe@test.com>
+        |Received: from ... (HELO ...); Thu Feb  :: CET 
+        |Date: Thu,  Feb  :: + (CET)
+        |From: joe@test.com
+        |To: joan@test.com
+        |Message-ID: <..@[...]>
+        |Subject: Hello!
+        |MIME-Version: .
+        |Content-Type: multipart/mixed; 
+        |	boundary="----=_Part__."
+        |User-Agent: my-email-client
+        |
+        |------=_Part_1_272299100.1642183145458
         |Content-Type: multipart/alternative; 
         |	boundary="----=_Part_0_2060779434.1642183145447"
         |
@@ -78,7 +90,14 @@ abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
         |hello world!
         |------=_Part_1_272299100.1642183145458--""".stripMargin
     def normalize(s: String): String =
-      s.replaceAll("\\d+", "").replace("\r\n", "\n")
+      s.split("\n")
+        .filterNot(x =>
+          x.startsWith("Received") || x.startsWith("Date") || x.startsWith("Message-ID")
+        )
+        .mkString("\n")
+        .replaceAll("\\d+", "")
+        .replaceAll("\\s+", "")
+        .replace("\r\n", "\n")
     val actualNormalized   = normalize(actual)
     val expectedNormalized = normalize(expected)
     assertEquals(actualNormalized, expectedNormalized)

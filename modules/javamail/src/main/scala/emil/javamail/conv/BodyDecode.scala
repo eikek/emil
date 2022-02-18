@@ -1,7 +1,6 @@
 package emil.javamail.conv
 
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
+import java.io.{ByteArrayOutputStream, InputStream}
 import java.nio.charset.Charset
 
 import cats.Applicative
@@ -133,9 +132,11 @@ trait BodyDecode {
     Conv { msg =>
       ThreadClassLoader {
         Util.withReadFolder(msg) { _ =>
-          val in = msg.getRawInputStream
-          try BodyDecode.loadBytes(in)
-          finally in.close()
+          val out = new ByteArrayOutputStream()
+          try {
+            msg.writeTo(out)
+            ByteVector.view(out.toByteArray)
+          } finally out.close()
         }
       }
     }
