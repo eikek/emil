@@ -2,6 +2,7 @@ package emil.javamail.conv
 
 import java.io.{ByteArrayOutputStream, InputStream}
 import java.nio.charset.Charset
+
 import cats.Applicative
 import cats.effect.Sync
 import cats.implicits._
@@ -135,8 +136,7 @@ trait BodyDecode {
           try {
             msg.writeTo(out)
             ByteVector.view(out.toByteArray)
-          }
-          finally out.close()
+          } finally out.close()
         }
       }
     }
