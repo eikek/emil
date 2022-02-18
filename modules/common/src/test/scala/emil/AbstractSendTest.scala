@@ -91,13 +91,13 @@ abstract class AbstractSendTest[A] extends GreenmailTestSuite[A] {
         |------=_Part_1_272299100.1642183145458--""".stripMargin
     def normalize(s: String): String =
       s.split("\n")
-        .filterNot(x => x.startsWith("Received") || x.startsWith("Date"))
+        .filterNot(x =>
+          x.startsWith("Received") || x.startsWith("Date") || x.startsWith("Message-ID")
+        )
         .mkString("\n")
         .replaceAll("\\d+", "")
         .replaceAll("\\s+", "")
         .replace("\r\n", "\n")
-        .stripTrailing()
-        .stripLeading()
     val actualNormalized   = normalize(actual)
     val expectedNormalized = normalize(expected)
     assertEquals(actualNormalized, expectedNormalized)
