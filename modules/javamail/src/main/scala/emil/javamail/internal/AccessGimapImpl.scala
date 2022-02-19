@@ -1,14 +1,13 @@
 package emil.javamail.internal
 
-import cats.effect.{Blocker, ContextShift, Sync}
+import cats.effect.Sync
 import com.sun.mail.gimap.{GmailFolder, GmailStore}
-import emil.javamail.internal.BlockingSyntax._
 import emil.javamail.internal.ops.{MoveMail, SearchMails}
 import emil.{AccessImap, MailHeader, MailOp}
 import jakarta.mail.Transport
 
-class AccessGimapImpl[F[_]: Sync: ContextShift](blocker: Blocker)
-    extends AccessImapImpl[F](blocker)
+class AccessGimapImpl[F[_]: Sync]
+    extends AccessImapImpl[F]
     with AccessImap[F, JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder]] {
 
   def getGmailLabels(mh: MailHeader): MailOp[
@@ -16,7 +15,7 @@ class AccessGimapImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
     Set[GmailLabel]
   ] =
-    SearchMails.getGmailLabels(mh).blockOn(blocker)
+    SearchMails.getGmailLabels(mh)
 
   def setGmailLabels(
       mh: MailHeader,
@@ -27,6 +26,6 @@ class AccessGimapImpl[F[_]: Sync: ContextShift](blocker: Blocker)
     JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
     Unit
   ] =
-    MoveMail.setGmailLabels(mh, labels, set).blockOn(blocker)
+    MoveMail.setGmailLabels(mh, labels, set)
 
 }
