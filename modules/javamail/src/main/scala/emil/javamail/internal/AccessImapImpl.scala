@@ -41,27 +41,27 @@ class AccessImapImpl[F[_]: Sync]
 
   def loadMail(
       folder: MailFolder,
-      uids: List[MailUid]
+      uids: Set[MailUid]
   ): MailOp[F, JavaMailImapConnection, List[Mail[F]]] =
     LoadMail.byUid[F](folder, uids)
 
   def loadMailRaw(
       folder: MailFolder,
       uid: MailUid
-  ): MailOp[F, JavaMailImapConnection, Option[ByteVector]] =
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     LoadMailRaw.byUid[F](folder, uid)
 
   def loadMailRaw(
       folder: MailFolder,
       start: MailUid,
       end: MailUid
-  ): MailOp[F, JavaMailImapConnection, List[ByteVector]] =
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     LoadMailRaw.byUid[F](folder, start, end)
 
   def loadMailRaw(
       folder: MailFolder,
-      uids: List[MailUid]
-  ): MailOp[F, JavaMailImapConnection, List[ByteVector]] =
+      uids: Set[MailUid]
+  ): MailOp[F, JavaMailImapConnection, Map[MailHeader, ByteVector]] =
     LoadMailRaw.byUid[F](folder, uids)
 
 }

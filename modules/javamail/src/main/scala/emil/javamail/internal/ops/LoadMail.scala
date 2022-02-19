@@ -31,22 +31,22 @@ object LoadMail {
   def byUid[F[_]: Sync](folder: MailFolder, start: MailUid, end: MailUid)(implicit
       cm: Conv[MimeMessage, Mail[F]]
   ): MailOp[F, JavaMailImapConnection, List[Mail[F]]] =
-    FindMail.byUid[F](folder, start, end).map { optMime =>
+    FindMail.byUid[F](folder, start, end).map { mimes =>
       logger
         .debug(
-          s"Loaded complete raw mail from '$start' to '$end' from mime messages '$optMime'"
+          s"Loaded complete raw mail from '$start' to '$end' from mime messages: ${mimes.size}"
         )
-      optMime.map(cm.convert)
+      mimes.map(cm.convert)
     }
 
-  def byUid[F[_]: Sync](folder: MailFolder, uids: List[MailUid])(implicit
+  def byUid[F[_]: Sync](folder: MailFolder, uids: Set[MailUid])(implicit
       cm: Conv[MimeMessage, Mail[F]]
   ): MailOp[F, JavaMailImapConnection, List[Mail[F]]] =
-    FindMail.byUid[F](folder, uids).map { optMime =>
+    FindMail.byUid[F](folder, uids).map { mimes =>
       logger
         .debug(
-          s"Loaded complete raw mail for '$uids' from mime messages '$optMime'"
+          s"Loaded complete raw mail for '$uids' from mime messages: ${mimes.size}"
         )
-      optMime.map(cm.convert)
+      mimes.map(cm.convert)
     }
 }

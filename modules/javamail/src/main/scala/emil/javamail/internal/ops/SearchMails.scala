@@ -1,12 +1,13 @@
 package emil.javamail.internal.ops
 
 import cats.effect.Sync
+import com.sun.mail.gimap.{GmailFolder, GmailMessage, GmailStore}
 import emil._
 import emil.javamail.conv.Conv
-import emil.javamail.internal.{JavaMailConnection, Logger}
+import emil.javamail.internal._
 import jakarta.mail.internet.MimeMessage
 import jakarta.mail.search.SearchTerm
-import jakarta.mail.{Flags, Folder}
+import jakarta.mail.{Flags, Folder, Transport}
 
 object SearchMails {
   private[this] val logger = Logger(getClass)
@@ -67,5 +68,21 @@ object SearchMails {
           }
         )
     )
+
+  def getGmailLabels[F[_]: Sync](mh: MailHeader): MailOp[
+    F,
+    JavaMailConnectionGeneric[GmailStore, Transport, GmailFolder],
+    Set[GmailLabel]
+  ] = FindMail(mh).flatMapF {
+    case Some(mime) =>
+      Sync[F].delay {
+        logger.debug(s"Getting labels for email. header: $mh")
+        mime.asInstanceOf[GmailMessage].getLabels.map(GmailLabel).toSet
+      }
+    case None =>
+      Sync[F].raiseError(
+        new RuntimeException(s"No mail with given header found. header: $mh")
+      )
+  }
 
 }
