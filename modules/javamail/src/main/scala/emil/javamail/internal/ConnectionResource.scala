@@ -28,7 +28,8 @@ object ConnectionResource {
   def make[F[_]: Sync](mc: MailConfig, settings: Settings): F[JavaMailConnection] =
     Sync[F].blocking {
       val session = createSession(mc, settings)
-      if (mc.urlParts.protocol.toLowerCase.startsWith("imap")) {
+      val protocol = mc.urlParts.protocol.toLowerCase
+      if (protocol.startsWith("imap") || protocol.startsWith("gimap")) {
         val store = createImapStore(session, mc)
         JavaMailConnectionGeneric(mc, session, Some(store), None)
       } else {
