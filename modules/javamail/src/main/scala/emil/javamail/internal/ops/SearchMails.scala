@@ -77,7 +77,7 @@ object SearchMails {
     case Some(mime) =>
       Sync[F].delay {
         logger.debug(s"Getting labels for email. header: $mh")
-        mime.asInstanceOf[GmailMessage].getLabels.map(GmailLabel).toSet
+        mime.asInstanceOf[GmailMessage].getLabels.map(GmailLabel(_)).toSet
       }
     case None =>
       Sync[F].raiseError(
