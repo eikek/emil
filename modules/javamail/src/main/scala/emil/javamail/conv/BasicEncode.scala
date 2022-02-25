@@ -11,8 +11,10 @@ import emil.javamail.internal.{EmilMimeMessage, ThreadClassLoader}
 import jakarta.activation.{DataHandler, DataSource}
 import jakarta.mail._
 import jakarta.mail.internet._
+import org.log4s.getLogger
 
 trait BasicEncode {
+  private val logger = getLogger
 
   implicit def flagEncode: Conv[Flag, Flags.Flag] =
     Conv { case Flag.Flagged =>
@@ -20,7 +22,24 @@ trait BasicEncode {
     }
 
   implicit def mailAddressEncode: Conv[MailAddress, InternetAddress] =
-    Conv(mailAddress => new InternetAddress(mailAddress.displayString))
+    Conv { mailAddress =>
+      Either.catchNonFatal(new InternetAddress(mailAddress.displayString)) match {
+        case Right(a) => a
+        case Left(ex) =>
+          logger.warn(ex)(s"Error converting MailAddress '${mailAddress}' to javamail!")
+          Either.catchNonFatal(new InternetAddress(mailAddress.address)) match {
+            case Right(a) =>
+              logger.warn("Using address without name part.")
+              a
+            case Left(ex2) =>
+              logger.warn(
+                s"Using address without name '${mailAddress.address}' also failed: ${ex2.getMessage}"
+              )
+              ex.addSuppressed(ex2)
+              throw ex
+          }
+      }
+    }
 
   implicit def attachmentEncode[F[_]: Sync]: Conv[Attachment[F], F[MimeBodyPart]] =
     Conv { attach =>

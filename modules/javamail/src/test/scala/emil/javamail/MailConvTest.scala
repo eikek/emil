@@ -7,7 +7,9 @@ import cats.effect._
 import cats.effect.unsafe.implicits.global
 import emil._
 import emil.builder._
+import emil.javamail.conv._
 import emil.javamail.syntax._
+import jakarta.mail.internet.InternetAddress
 import munit._
 
 class MailConvTest extends FunSuite {
@@ -21,6 +23,21 @@ class MailConvTest extends FunSuite {
       html => MailBody.html(mkString(html.html)),
       both => MailBody.both(mkString(both.text), mkString(both.html))
     )
+  }
+
+  test("write mail address") {
+    val ma1 = MailAddress.unsafe(Some("a;b;c"), "me@localhost")
+    val ma2 = MailAddress.unsafe(Some("a;b;c"), "me<@localhost")
+    val ma3 = MailAddress.unsafe(Some("Company name"), "some.name@some.domain.com")
+    val addrConv = encode.mailAddressEncode
+
+    assertEquals(addrConv.convert(ma1), new InternetAddress("me@localhost"))
+    intercept[Exception](addrConv.convert(ma2))
+    assertEquals(
+      addrConv.convert(ma3),
+      new InternetAddress("\"Company name\" <some.name@some.domain.com>")
+    )
+    assertEquals(addrConv.convert(ma3), new InternetAddress(ma3.displayString))
   }
 
   test("write text mail") {
