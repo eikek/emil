@@ -75,7 +75,7 @@ which can be further modified. It is also possible to go from an
 existing <code class="language-plaintext highlighter-rouge">Mail</code> to a <code class="language-plaintext highlighter-rouge">MailBuilder</code> to change certain parts:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">builder</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">asBuilder</span>
-<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@73da7f08</span>
+<span class="c1">// builder: MailBuilder[IO] = emil.builder.MailBuilder@2c674d58</span>
 <span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="n">builder</span><span class="o">.</span>
   <span class="n">clearRecipients</span><span class="o">.</span>
   <span class="nf">add</span><span class="o">(</span><span class="nc">To</span><span class="o">(</span><span class="s">"me2@test.com"</span><span class="o">)).</span>
