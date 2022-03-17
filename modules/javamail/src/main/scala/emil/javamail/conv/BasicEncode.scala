@@ -48,7 +48,15 @@ trait BasicEncode {
         .map { inData =>
           val part = new MimeBodyPart()
           part.addHeader("Content-Type", attach.mimeType.asString)
-          attach.filename.foreach(fn => part.setFileName(MimeUtility.encodeText(fn)))
+          attach.filename match {
+            case Some(fn) =>
+              part.setFileName(MimeUtility.encodeText(fn))
+              // With a filename we need a Content-Disposition
+              part.setDisposition(attach.disposition.getOrElse(Disposition.Attachment).name)
+
+            case None => part.setDisposition(attach.disposition.map(d => d.name).orNull)
+          }
+          attach.contentId.foreach(cid => part.addHeader("Content-ID", "<" + cid + ">"))
           part.setDescription("attachment")
           part.setDataHandler(new DataHandler(new DataSource {
             def getInputStream: InputStream =
@@ -154,7 +162,8 @@ trait BasicEncode {
         .filter(h => h.noneOf("Content-Type", "MIME-Version"))
         .foreach(h => h.value.toList.foreach(v => msg.addHeader(h.name, v)))
       if (attachments.nonEmpty) {
-        val content = new MimeMultipart()
+        val inlines = attachments.flatMap(mbp => Disposition.withName(mbp.getDisposition)).contains(Disposition.Inline)
+        val content = if (inlines) new MimeMultipart("related") else new MimeMultipart()
         content.addBodyPart(body)
         attachments.foreach(content.addBodyPart)
         msg.setContent(content)
