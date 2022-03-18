@@ -160,6 +160,24 @@ package builder {
 
     def withLength(len: F[Long]): Attach[F] =
       copy(attach = attach.copy(length = len))
+
+    def withDisposition(disp: Disposition): Attach[F] =
+      copy(attach = attach.copy(disposition = Some(disp)))
+
+    def withDisposition(disp: Option[Disposition]): Attach[F] =
+      copy(attach = attach.copy(disposition = disp))
+
+    def withContentId(cid: String): Attach[F] =
+      copy(attach = attach.copy(contentId = Some(cid)))
+
+    def withContentId(cid: Option[String]): Attach[F] =
+      copy(attach = attach.copy(contentId = cid))
+
+    def withInlinedContentId(cid: String): Attach[F] =
+      copy(attach =
+        attach.copy(contentId = Some(cid), disposition = Some(Disposition.Inline))
+      )
+
   }
 
   object Attach {
@@ -207,15 +225,17 @@ package builder {
       filename: Option[String] = None,
       mimeType: MimeType = MimeType.octetStream,
       length: Option[F[Long]] = None,
-      chunkSize: Int = 8 * 1024
+      chunkSize: Int = 8 * 1024,
+      disposition: Option[Disposition] = None,
+      contentId: Option[String] = None
   ) extends Trans[F] {
 
     def apply(mail: Mail[F]): Mail[F] = {
       val data = readInputStream(is, chunkSize)
       Attach(
         length
-          .map(len => Attachment(filename, mimeType, data, len))
-          .getOrElse(Attachment(filename, mimeType, data))
+          .map(len => Attachment(filename, mimeType, data, len, disposition, contentId))
+          .getOrElse(Attachment(filename, mimeType, data, disposition, contentId))
       ).apply(mail)
     }
 
@@ -233,6 +253,15 @@ package builder {
 
     def withChunkSize(size: Int): AttachInputStream[F] =
       copy(chunkSize = size)
+
+    def withDisposition(disp: Disposition): AttachInputStream[F] =
+      copy(disposition = Some(disp))
+
+    def withContentId(cid: String): AttachInputStream[F] =
+      copy(contentId = Some(cid))
+
+    def withInlinedContentId(cid: String): AttachInputStream[F] =
+      copy(contentId = Some(cid), disposition = Some(Disposition.Inline))
   }
 
   object AttachUrl {

@@ -13,7 +13,9 @@ final case class Attachment[F[_]](
     filename: Option[String],
     mimeType: MimeType,
     content: Stream[F, Byte],
-    length: F[Long]
+    length: F[Long],
+    disposition: Option[Disposition] = None,
+    contentId: Option[String] = None
 ) {
 
   def withMimeType(mt: MimeType): Attachment[F] =
@@ -27,6 +29,15 @@ final case class Attachment[F[_]](
 
   def withLength(len: Long)(implicit ev: Applicative[F]): Attachment[F] =
     withLength(len.pure[F])
+
+  def withDisposition(disp: Disposition): Attachment[F] =
+    copy(disposition = Some(disp))
+
+  def withContentId(cid: String): Attachment[F] =
+    copy(contentId = Some(cid))
+
+  def withInlinedContentId(cid: String): Attachment[F] =
+    copy(contentId = Some(cid), disposition = Some(Disposition.Inline))
 }
 
 object Attachment {
@@ -34,10 +45,21 @@ object Attachment {
   def apply[F[_]: Sync](
       filename: Option[String],
       mimeType: MimeType,
+      content: Stream[F, Byte],
+      disposition: Option[Disposition],
+      contentId: Option[String]
+  ): Attachment[F] = {
+    val len: F[Long] = content.compile.foldChunks(0L)((n, ch) => n + ch.size)
+    Attachment(filename, mimeType, content, len, disposition, contentId)
+  }
+
+  def apply[F[_]: Sync](
+      filename: Option[String],
+      mimeType: MimeType,
       content: Stream[F, Byte]
   ): Attachment[F] = {
     val len: F[Long] = content.compile.foldChunks(0L)((n, ch) => n + ch.size)
-    Attachment(filename, mimeType, content, len)
+    Attachment(filename, mimeType, content, len, None, None)
   }
 
   def text[F[_]: Applicative](cnt: String, mimeType: MimeType): Attachment[F] = {
@@ -46,7 +68,9 @@ object Attachment {
       None,
       mimeType,
       Stream.chunk(Chunk.byteVector(ByteVector.view(bytes))),
-      bytes.length.toLong.pure[F]
+      bytes.length.toLong.pure[F],
+      None,
+      None
     )
   }
   def textPlain[F[_]: Applicative](cnt: String): Attachment[F] =
