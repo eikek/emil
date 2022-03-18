@@ -183,8 +183,10 @@ class MailConvTest extends FunSuite {
     val str = mail.serialize.unsafeRunSync()
     assert(str.nonEmpty)
     assert(str.contains("Content-Disposition: attachment; filename=test.txt"))
-    assert(str.contains("Content-Type: multipart/mixed;"),
-      clue = "Without inlined attachments the content-type should be multipart/mixed")
+    assert(
+      str.contains("Content-Type: multipart/mixed;"),
+      clue = "Without inlined attachments the content-type should be multipart/mixed"
+    )
 
   }
 
@@ -208,7 +210,8 @@ class MailConvTest extends FunSuite {
   }
 
   test("Write attachment with filename and declared content disposition with ID") {
-    val htmlBody = """<h1>Hello!</h1><p>This <b>is</b> a mail from Emil!</p><br/><img src="cid:img01.png@42342343"/>"""
+    val htmlBody =
+      """<h1>Hello!</h1><p>This <b>is</b> a mail from Emil!</p><br/><img src="cid:img01.png@42342343"/>"""
     val mail: Mail[IO] = MailBuilder.build(
       From("emil@example.com"),
       To("to@example.com"),
@@ -216,22 +219,34 @@ class MailConvTest extends FunSuite {
       UserAgent("my-emil-client"),
       TextBody("Hello!\n\nThis is a mail from Emil."),
       HtmlBody(htmlBody),
-      AttachUrl[IO](getClass.getResource( "/attachments/logo.png"), mimeType = MimeType("image", "png"))
+      AttachUrl[IO](
+        getClass.getResource("/attachments/logo.png"),
+        mimeType = MimeType("image", "png")
+      )
         .withFilename("img01.png")
         .withInlinedContentId("img01.png@42342343"),
-      AttachUrl[IO](getClass.getResource( "/attachments/logo.png"), mimeType = MimeType("image", "png"))
+      AttachUrl[IO](
+        getClass.getResource("/attachments/logo.png"),
+        mimeType = MimeType("image", "png")
+      )
         .withFilename("emil-logo.png")
         .withDisposition(Disposition.Attachment)
     )
 
     val str = mail.serialize.unsafeRunSync()
     assert(str.nonEmpty)
-    assert(str.contains("Content-Type: multipart/related;"),
-      clue = "Inlined attachment should change the content-type to multipart/related")
-    assert(str.contains("Content-Disposition: inline; filename=img01.png"),
-      clue = "We should have an inlined image (visible in the HTML text)")
-    assert(str.contains("Content-Disposition: attachment; filename=emil-logo.png"),
-      clue = "We should have an attached logo image (visible as dedicated attachment)")
+    assert(
+      str.contains("Content-Type: multipart/related;"),
+      clue = "Inlined attachment should change the content-type to multipart/related"
+    )
+    assert(
+      str.contains("Content-Disposition: inline; filename=img01.png"),
+      clue = "We should have an inlined image (visible in the HTML text)"
+    )
+    assert(
+      str.contains("Content-Disposition: attachment; filename=emil-logo.png"),
+      clue = "We should have an attached logo image (visible as dedicated attachment)"
+    )
     assert(str.contains("Content-ID: <img01.png@42342343>"))
   }
 
@@ -269,7 +284,6 @@ class MailConvTest extends FunSuite {
     assert(str.nonEmpty)
     assert(!str.contains("Content-Disposition:"))
   }
-
 
   test("read text mail") {
     val mail = MailBuilder.build[IO](
@@ -433,11 +447,17 @@ class MailConvTest extends FunSuite {
     assertEquals(mail.attachments.size, 3)
 
     // filter the single inlined attachment
-    val inlined = mail.attachments.all.filter(a => a.disposition.contains(Disposition.Inline))
+    val inlined =
+      mail.attachments.all.filter(a => a.disposition.contains(Disposition.Inline))
     assertEquals(inlined.size, 1, "Only a single attachment should be inlined")
-    assertEquals(inlined(0).filename, Some("image001.png"), "The inline image should be 'image001.png'")
+    assertEquals(
+      inlined(0).filename,
+      Some("image001.png"),
+      "The inline image should be 'image001.png'"
+    )
 
-    val attached = mail.attachments.all.filter(a => a.disposition.contains(Disposition.Attachment))
+    val attached =
+      mail.attachments.all.filter(a => a.disposition.contains(Disposition.Attachment))
     assertEquals(attached.size, 2, "We should have 2 real attachments")
   }
 

@@ -30,8 +30,8 @@ final case class Attachment[F[_]](
   def withLength(len: Long)(implicit ev: Applicative[F]): Attachment[F] =
     withLength(len.pure[F])
 
-  def withDisposition (disp: Disposition): Attachment[F] =
-    copy (disposition = Some(disp))
+  def withDisposition(disp: Disposition): Attachment[F] =
+    copy(disposition = Some(disp))
 
   def withContentId(cid: String): Attachment[F] =
     copy(contentId = Some(cid))
@@ -69,7 +69,8 @@ object Attachment {
       mimeType,
       Stream.chunk(Chunk.byteVector(ByteVector.view(bytes))),
       bytes.length.toLong.pure[F],
-      None, None
+      None,
+      None
     )
   }
   def textPlain[F[_]: Applicative](cnt: String): Attachment[F] =

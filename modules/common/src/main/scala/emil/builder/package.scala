@@ -173,11 +173,10 @@ package builder {
     def withContentId(cid: Option[String]): Attach[F] =
       copy(attach = attach.copy(contentId = cid))
 
-    def withInlinedContentId(cid: Option[String]): Attach[F] =
-      copy(attach = attach.copy(contentId = cid, disposition = Some(Disposition.Inline)))
-
     def withInlinedContentId(cid: String): Attach[F] =
-      copy(attach = attach.copy(contentId = Some(cid), disposition = Some(Disposition.Inline)))
+      copy(attach =
+        attach.copy(contentId = Some(cid), disposition = Some(Disposition.Inline))
+      )
 
   }
 

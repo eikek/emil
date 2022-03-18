@@ -39,12 +39,16 @@ trait BodyDecode {
         val (len, dataAsStream) = (bytes.length, Stream.chunk(Chunk.byteVector(bytes)))
         val contentId = Option(bp.getHeader("Content-ID"))
           .flatMap(a => a.headOption)
-          // All IDs (content, mail, ...) are wrapped in '<' '>'
+          .filter(s => s.startsWith("<") && s.endsWith(">"))
           .map(s => s.drop(1).dropRight(1))
-        val disposition = Disposition.withName(bp.getDisposition)
+        val disposition = Disposition
+          .fromString(bp.getDisposition)
+          .toOption
           // The existence of a Content-ID implies Disposition.Inline
           .orElse(if (contentId.isDefined) Some(Disposition.Inline) else None)
-        Attachments(Attachment(filename, mt, dataAsStream, len.pure[F], disposition, contentId))
+        Attachments(
+          Attachment(filename, mt, dataAsStream, len.pure[F], disposition, contentId)
+        )
       }
     }
 

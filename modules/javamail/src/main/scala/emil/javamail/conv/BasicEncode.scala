@@ -52,7 +52,9 @@ trait BasicEncode {
             case Some(fn) =>
               part.setFileName(MimeUtility.encodeText(fn))
               // With a filename we need a Content-Disposition
-              part.setDisposition(attach.disposition.getOrElse(Disposition.Attachment).name)
+              part.setDisposition(
+                attach.disposition.getOrElse(Disposition.Attachment).name
+              )
 
             case None => part.setDisposition(attach.disposition.map(d => d.name).orNull)
           }
@@ -162,7 +164,9 @@ trait BasicEncode {
         .filter(h => h.noneOf("Content-Type", "MIME-Version"))
         .foreach(h => h.value.toList.foreach(v => msg.addHeader(h.name, v)))
       if (attachments.nonEmpty) {
-        val inlines = attachments.flatMap(mbp => Disposition.withName(mbp.getDisposition)).contains(Disposition.Inline)
+        val inlines = attachments.exists(mbp =>
+          Disposition.fromString(mbp.getDisposition).contains(Disposition.Inline)
+        )
         val content = if (inlines) new MimeMultipart("related") else new MimeMultipart()
         content.addBodyPart(body)
         attachments.foreach(content.addBodyPart)
