@@ -143,7 +143,7 @@ trait BodyDecode {
     Conv { msg =>
       ThreadClassLoader {
         Util.withReadFolder(msg) { _ =>
-          val out = new ByteArrayOutputStream()
+          val out = new ByteArrayOutputStream
           try {
             msg.writeTo(out)
             ByteVector.view(out.toByteArray)
@@ -238,7 +238,7 @@ object BodyDecode {
       .exists(mt => mt.sub.equalsIgnoreCase("alternative"))
 
   private def streamToByteVector(in: InputStream): ByteVector = {
-    val bout = new java.io.ByteArrayOutputStream()
+    val bout = new java.io.ByteArrayOutputStream
     val buffer = Array.ofDim[Byte](64 * 1024)
     var len = -1
     while ({ len = in.read(buffer); len } > -1)

@@ -52,11 +52,11 @@ object JavaMailEmil {
       mail: Mail[F]
   )(implicit cm: MsgConv[Mail[F], F[MimeMessage]]): F[Array[Byte]] =
     ThreadClassLoader {
-      val session = Session.getInstance(new Properties())
+      val session = Session.getInstance(new Properties)
       cm.convert(session, MessageIdEncode.GivenOrRandom, mail)
         .map(msg =>
           ThreadClassLoader {
-            val out = new ByteArrayOutputStream()
+            val out = new ByteArrayOutputStream
             msg.writeTo(out)
             out.toByteArray
           }
@@ -85,7 +85,7 @@ object JavaMailEmil {
   )(implicit cm: Conv[MimeMessage, Mail[F]]): F[Mail[F]] =
     Sync[F].delay {
       ThreadClassLoader {
-        val session = Session.getInstance(new Properties())
+        val session = Session.getInstance(new Properties)
         val msg =
           new MimeMessage(
             session,

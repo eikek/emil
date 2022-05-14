@@ -67,7 +67,7 @@ object ConnectionResource {
     val port = mc.urlParts.port
     val proto = mc.urlParts.protocol
 
-    val props = new Properties()
+    val props = new Properties
 
     if (mc.user.nonEmpty) {
       props.put(s"mail.$proto.auth", "true");
@@ -129,7 +129,7 @@ object ConnectionResource {
       logger.debug(s"Creating session with authenticator and props: $props")
       Session.getInstance(
         props,
-        new Authenticator() {
+        new Authenticator {
           override def getPasswordAuthentication: PasswordAuthentication =
             new PasswordAuthentication(mc.user, mc.password)
         }

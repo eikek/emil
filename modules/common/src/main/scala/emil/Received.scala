@@ -49,10 +49,10 @@ object Received {
       def ~[B](n: P[B]): P[(A, B)] =
         in =>
           p(in) match {
-            case Right((rest, a)) =>
+            case Right(rest, a) =>
               n(rest) match {
-                case Right((r2, b)) => Right((r2, (a, b)))
-                case Left(err)      => Left(err)
+                case Right(r2, b) => Right((r2, (a, b)))
+                case Left(err)    => Left(err)
               }
             case Left(err) => Left(err)
           }
@@ -69,16 +69,16 @@ object Received {
       def opt: P[Option[A]] =
         in =>
           p(in) match {
-            case Right((rest, a)) => Right(rest -> a.some)
-            case Left(_)          => Right((in, None))
+            case Right(rest, a) => Right(rest -> a.some)
+            case Left(_)        => Right((in, None))
           }
 
       def rep: P[Vector[A]] = {
         @annotation.tailrec
         def go(result: Vector[A], in: String): Either[String, (String, Vector[A])] =
           p(in) match {
-            case Right((rest, a)) => go(result :+ a, rest)
-            case Left(_)          => Right(in -> result)
+            case Right(rest, a) => go(result :+ a, rest)
+            case Left(_)        => Right(in -> result)
           }
 
         str => go(Vector.empty, str)

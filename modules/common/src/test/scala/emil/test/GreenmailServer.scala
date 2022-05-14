@@ -89,7 +89,7 @@ object GreenmailServer {
   private def randomPort(tries: Int): Int = {
     if (tries == 0)
       throw new IllegalStateException("Cannot obtain an unused port.");
-    val random = new SecureRandom();
+    val random = new SecureRandom;
     val port = random.nextInt(20000) + 1024;
     try {
       val socket = new Socket(null: String, port)

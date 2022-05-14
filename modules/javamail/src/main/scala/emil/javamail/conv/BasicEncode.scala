@@ -46,7 +46,7 @@ trait BasicEncode {
       attach.content.compile.toVector
         .map(_.toArray)
         .map { inData =>
-          val part = new MimeBodyPart()
+          val part = new MimeBodyPart
           part.addHeader("Content-Type", attach.mimeType.asString)
           attach.filename match {
             case Some(fn) =>
@@ -79,13 +79,13 @@ trait BasicEncode {
 
   implicit def bodyEncode[F[_]: Monad]: Conv[MailBody[F], F[MimeBodyPart]] = {
     def mkTextPart(str: BodyContent): MimeBodyPart = {
-      val part = new MimeBodyPart()
+      val part = new MimeBodyPart
       val cs = str.charsetOrUtf8.name
       part.setText(str.asString, cs.toLowerCase(), "plain")
       part
     }
     def mkHtmlPart(str: BodyContent): MimeBodyPart = {
-      val part = new MimeBodyPart()
+      val part = new MimeBodyPart
       val cs = str.charsetOrUtf8.name
       part.setText(str.asString, cs.toLowerCase(), "html")
       part
@@ -94,7 +94,7 @@ trait BasicEncode {
       val p = new MimeMultipart("alternative")
       p.addBodyPart(mkTextPart(txt))
       p.addBodyPart(mkHtmlPart(html))
-      val b = new MimeBodyPart()
+      val b = new MimeBodyPart
       b.setContent(p)
       b
     }
@@ -140,7 +140,7 @@ trait BasicEncode {
       )
 
       if (header.flags.nonEmpty) {
-        val flags = new Flags()
+        val flags = new Flags
         header.flags.map(cf.convert).foreach(flags.add)
         msg.setFlags(flags, true)
       }
@@ -167,7 +167,7 @@ trait BasicEncode {
         val inlines = attachments.exists(mbp =>
           Disposition.fromString(mbp.getDisposition).contains(Disposition.Inline)
         )
-        val content = if (inlines) new MimeMultipart("related") else new MimeMultipart()
+        val content = if (inlines) new MimeMultipart("related") else new MimeMultipart
         content.addBodyPart(body)
         attachments.foreach(content.addBodyPart)
         msg.setContent(content)

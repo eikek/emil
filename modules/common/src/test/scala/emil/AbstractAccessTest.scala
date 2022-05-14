@@ -108,10 +108,10 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     import SearchQuery._
 
     assertSearch(ReceivedDate > Instant.now.minusSeconds(2), 5)
-    assertSearch((ReceivedDate > Instant.now.minusSeconds(3)) && Flagged, 0)
+    assertSearch(ReceivedDate > Instant.now.minusSeconds(3) && Flagged, 0)
     assertSearch(Subject =*= "hello", 5)
     assertSearch(Subject =*= "hello 2", 1)
-    assertSearch((Subject =*= "hello 1") || (Subject =*= "hello 3"), 2)
+    assertSearch(Subject =*= "hello 1" || Subject =*= "hello 3", 2)
   }
 
   test("load mail") {
@@ -233,7 +233,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     val delete2 = for {
       inbox <- emil.access.getInbox
       n <- emil.access.searchDelete(inbox, 10)(
-        (Subject =*= "hello 1") || (Subject =*= "hello 2")
+        Subject =*= "hello 1" || Subject =*= "hello 2"
       )
     } yield n.count
 
