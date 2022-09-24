@@ -19,7 +19,6 @@ pull_request_rules:
       - author=eikek-scala-steward
       - base=master
       - status-success=ci
-      - "body~=(labels: library-update, early-semver-minor)|(labels: library-update, early-semver-patch)|(labels: sbt-plugin-update, early-semver-minor)|(labels: sbt-plugin-update, early-semver-patch)|(labels: scalafix-rule-update)|(labels: test-library-update)"
     actions:
       merge:
         method: squash
