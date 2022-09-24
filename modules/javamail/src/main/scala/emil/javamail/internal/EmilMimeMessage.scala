@@ -10,7 +10,7 @@ private[javamail] trait EmilMimeMessage extends MimeMessage {
 
   def messageIdEncode: MessageIdEncode
 
-  var messageId: Option[String] = None
+  def messageId: Option[String]
 
   override def updateMessageID(): Unit =
     messageIdEncode match {
@@ -30,17 +30,24 @@ private[javamail] trait EmilMimeMessage extends MimeMessage {
 
 object EmilMimeMessage {
 
-  def apply(session: Session, midEncode: MessageIdEncode): EmilMimeMessage =
+  def apply(
+      session: Session,
+      midEncode: MessageIdEncode,
+      mid: Option[String]
+  ): EmilMimeMessage =
     new MimeMessage(session) with EmilMimeMessage {
       val messageIdEncode = midEncode
+      val messageId = mid
     }
 
   def apply(
       session: Session,
       midEncode: MessageIdEncode,
-      is: InputStream
+      is: InputStream,
+      mid: Option[String]
   ): EmilMimeMessage =
     new MimeMessage(session, is) with EmilMimeMessage {
       val messageIdEncode = midEncode
+      val messageId = mid
     }
 }
