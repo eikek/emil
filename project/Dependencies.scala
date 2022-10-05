@@ -4,7 +4,7 @@ object Dependencies {
 
   val doobieVersion = "1.0.0-RC2"
   val flexmarkVersion = "0.62.2"
-  val fs2Version = "3.2.14"
+  val fs2Version = "3.3.0"
   val greenmailVersion = "2.0.0-alpha-2"
   val h2Version = "2.1.214"
   val munitVersion = "0.7.29"
@@ -13,7 +13,7 @@ object Dependencies {
   val log4sVersion = "1.10.0"
   val logbackVersion = "1.2.11"
   val miniTestVersion = "2.9.6"
-  val poiVersion = "5.2.2"
+  val poiVersion = "5.2.3"
 
   val munit = Seq(
     "org.scalameta" %% "munit" % munitVersion,

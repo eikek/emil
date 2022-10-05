@@ -119,13 +119,12 @@ trait BasicEncode {
       cf: Conv[Flag, Flags.Flag]
   ): MsgConv[MailHeader, MimeMessage] =
     MsgConv { (session, midEncode, header) =>
-      val msg = EmilMimeMessage(session, midEncode)
+      val msg = EmilMimeMessage(session, midEncode, header.messageId)
 
       header.from.map(ca.convert).foreach(msg.setFrom)
       header.sender.map(ca.convert).foreach(msg.setSender)
       msg.setSubject(header.subject)
       header.originationDate.foreach(i => msg.setSentDate(Date.from(i)))
-      msg.messageId = header.messageId
       msg.setRecipients(
         Message.RecipientType.TO,
         header.recipients.to.map(ca.convert).map(a => a.asInstanceOf[Address]).toArray
