@@ -1,7 +1,7 @@
 pull_request_rules:
   - name: assign and label eikek-scala-steward's PRs
     conditions:
-      - author=eikek-scala-steward
+      - author=eikek-scala-steward[bot]
     actions:
       assign:
         users: [eikek]
@@ -9,14 +9,14 @@ pull_request_rules:
         add: ["type: dependencies"]
   - name: label eikek-scala-steward's breaking PRs
     conditions:
-      - author=eikek-scala-steward
+      - author=eikek-scala-steward[bot]
       - "body~=(labels: library-update, early-semver-major)|(labels: sbt-plugin-update, early-semver-major)"
     actions:
       label:
         add: ["type: breaking"]
   - name: automatically merge Scala Steward PRs on CI success
     conditions:
-      - author=eikek-scala-steward
+      - author=eikek-scala-steward[bot]
       - base=master
       - status-success=ci
     actions:
