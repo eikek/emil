@@ -59,7 +59,7 @@ trait BasicEncode {
             case None => part.setDisposition(attach.disposition.map(d => d.name).orNull)
           }
           attach.contentId.foreach(cid => part.addHeader("Content-ID", "<" + cid + ">"))
-          part.setDescription("attachment")
+          attach.filename.foreach(part.setDescription)
           part.setDataHandler(new DataHandler(new DataSource {
             def getInputStream: InputStream =
               new ByteArrayInputStream(inData)

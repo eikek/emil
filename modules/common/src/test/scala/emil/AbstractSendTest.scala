@@ -85,7 +85,7 @@ abstract class AbstractSendTest(val emil: Emil[IO]) extends GreenmailTestSuite {
         |Content-Type: text/plain; charset=UTF-8
         |Content-Transfer-Encoding: 7bit
         |Content-Disposition: attachment; filename=test.txt
-        |Content-Description: attachment
+        |Content-Description: test.txt
         |
         |hello world!
         |------=_Part_1_272299100.1642183145458--""".stripMargin
