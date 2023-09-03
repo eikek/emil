@@ -40,16 +40,15 @@ val sharedSettings = Seq(
          List(
            "-explain",
            "-explain-types",
-           "-indent",
-           "-print-lines",
-           "-Ykind-projector",
-           "-Xmigration",
            "-Xfatal-warnings"
          )
        else
          Nil),
   crossScalaVersions := Seq(scala212, scala213, scala3),
   Compile / console / scalacOptions := Seq(),
+  Compile / packageDoc / publishArtifact := {
+    scalaBinaryVersion.value != "3" // deactivate when typelevel/fs2#3293 is resolved
+  },
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
   homepage := Some(url("https://github.com/eikek/emil")),
   versionScheme := Some("early-semver")
@@ -98,8 +97,7 @@ val buildInfoSettings = Seq(
 
 val scalafixSettings = Seq(
   semanticdbEnabled := true, // enable SemanticDB
-  semanticdbVersion := scalafixSemanticdb.revision, // use Scalafix compatible version
-  ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
+  semanticdbVersion := scalafixSemanticdb.revision // use Scalafix compatible version
 )
 
 lazy val common = project
