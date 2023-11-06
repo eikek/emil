@@ -46,9 +46,6 @@ val sharedSettings = Seq(
          Nil),
   crossScalaVersions := Seq(scala212, scala213, scala3),
   Compile / console / scalacOptions := Seq(),
-  Compile / packageDoc / publishArtifact := {
-    scalaBinaryVersion.value != "3" // deactivate when typelevel/fs2#3293 is resolved
-  },
   licenses := Seq("MIT" -> url("http://spdx.org/licenses/MIT")),
   homepage := Some(url("https://github.com/eikek/emil")),
   versionScheme := Some("early-semver")
