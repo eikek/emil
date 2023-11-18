@@ -82,7 +82,7 @@
 necessary and a concrete emil:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">]()</span>
-<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@3ab8f900</span>
+<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@11c80834</span>
 <span class="k">val</span> <span class="nv">smtpConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"smtp://devmail:25"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// smtpConf: MailConfig = MailConfig(</span>
 <span class="c1">//   url = "smtp://devmail:25",</span>
@@ -99,7 +99,7 @@ necessary and a concrete emil:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">sendIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">smtpConf</span><span class="o">).</span><span class="py">send</span><span class="o">(</span><span class="n">mail</span><span class="o">)</span>
 <span class="c1">// sendIO: IO[cats.data.NonEmptyList[String]] = Uncancelable(</span>
-<span class="c1">//   body = cats.effect.IO$$$Lambda$1341/823653225@621508de,</span>
+<span class="c1">//   body = cats.effect.IO$$$Lambda$1486/0x00000008017023c0@22b771d1,</span>
 <span class="c1">//   event = cats.effect.tracing.TracingEvent$StackTrace</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
@@ -125,12 +125,12 @@ connection to an imap server is necessary:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">readIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nv">myemil</span><span class="o">.</span><span class="py">access</span><span class="o">.</span><span class="py">getInbox</span><span class="o">)</span>
 <span class="c1">// readIO: IO[MailFolder] = Uncancelable(</span>
-<span class="c1">//   body = cats.effect.IO$$$Lambda$1341/823653225@404c8c9d,</span>
+<span class="c1">//   body = cats.effect.IO$$$Lambda$1486/0x00000008017023c0@3fd006e8,</span>
 <span class="c1">//   event = cats.effect.tracing.TracingEvent$StackTrace</span>
 <span class="c1">// )</span>
 </code></pre></div></div>
 </div></div></section></main><footer id="site-footer"><div class="container"><div class="row"><p>Emil is designed and developed by <a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer">eikek</a></p></div><div class="row"><div>
-<p>&copy; 2020- <a href="https://github.com/eikek/emil">Emil v0.11.2</a></p>
+<p>&copy; 2020- <a href="https://github.com/eikek/emil">Emil v0.15.0</a></p>
 </div></div></div></footer><script src="/emil/highlight/highlight.pack.js"></script><script src="/emil/lunr/lunr.js"></script><script>
 // For all code blocks, copy the language from the containing div
 // to the inner code tag (where hljs expects it to be)

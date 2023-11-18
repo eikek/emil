@@ -87,7 +87,7 @@ needs a corresponding connection to some imap server and the
 <span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext</span>
 
 <span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">]()</span>
-<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@2e214d39</span>
+<span class="c1">// myemil: Emil[IO] = emil.javamail.JavaMailEmil@1621264e</span>
 <span class="k">val</span> <span class="nv">imapConf</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span><span class="s">"imap://devmail:143"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="s">"dev"</span><span class="o">,</span> <span class="nv">SSLType</span><span class="o">.</span><span class="py">NoEncryption</span><span class="o">)</span>
 <span class="c1">// imapConf: MailConfig = MailConfig(</span>
 <span class="c1">//   url = "imap://devmail:143",</span>
@@ -101,7 +101,7 @@ needs a corresponding connection to some imap server and the
 
 <span class="k">val</span> <span class="nv">moveIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">imapConf</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nf">moveToTrash</span><span class="o">(</span><span class="nv">myemil</span><span class="o">.</span><span class="py">access</span><span class="o">))</span>
 <span class="c1">// moveIO: IO[Unit] = Uncancelable(</span>
-<span class="c1">//   body = cats.effect.IO$$$Lambda$1341/823653225@43a9988a,</span>
+<span class="c1">//   body = cats.effect.IO$$$Lambda$1486/0x00000008017023c0@5392c0a7,</span>
 <span class="c1">//   event = cats.effect.tracing.TracingEvent$StackTrace</span>
 <span class="c1">// )</span>
 </code></pre></div></div>

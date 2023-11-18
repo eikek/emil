@@ -101,10 +101,10 @@ reading/writing e-mail.</p>
 <span class="k">import</span> <span class="nn">emil.javamail.syntax._</span>
 
 <span class="k">val</span> <span class="nv">mailStr</span> <span class="k">=</span> <span class="nv">mail</span><span class="o">.</span><span class="py">serialize</span><span class="o">.</span><span class="py">unsafeRunSync</span><span class="o">()</span>
-<span class="c1">// mailStr: String = """Date: Fri, 11 Mar 2022 19:41:18 +0000 (GMT)</span>
+<span class="c1">// mailStr: String = """Date: Sat, 18 Nov 2023 12:56:18 +0100 (CET)</span>
 <span class="c1">// From: test@test.com</span>
 <span class="c1">// To: test@test.com</span>
-<span class="c1">// Message-ID: &lt;1455216359.0.1647027678928@kalamos&gt;</span>
+<span class="c1">// Message-ID: &lt;1821892477.0.1700308578568@kalamos&gt;</span>
 <span class="c1">// Subject: Hello</span>
 <span class="c1">// MIME-Version: 1.0</span>
 <span class="c1">// Content-Type: text/html; charset=utf-8</span>
@@ -118,8 +118,8 @@ reading/writing e-mail.</p>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">mail2</span> <span class="k">=</span> <span class="nv">Mail</span><span class="o">.</span><span class="py">deserialize</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="n">mailStr</span><span class="o">).</span><span class="py">unsafeRunSync</span><span class="o">()</span>
 <span class="c1">// mail2: Mail[IO] = Mail(</span>
 <span class="c1">//   header = MailHeader(</span>
-<span class="c1">//     id = "messageId:&lt;1455216359.0.1647027678928@kalamos&gt;",</span>
-<span class="c1">//     messageId = Some(value = "&lt;1455216359.0.1647027678928@kalamos&gt;"),</span>
+<span class="c1">//     id = "messageId:&lt;1821892477.0.1700308578568@kalamos&gt;",</span>
+<span class="c1">//     messageId = Some(value = "&lt;1821892477.0.1700308578568@kalamos&gt;"),</span>
 <span class="c1">//     folder = None,</span>
 <span class="c1">//     recipients = Recipients(</span>
 <span class="c1">//       to = List(MailAddress(name = None, address = "test@test.com")),</span>
@@ -129,7 +129,7 @@ reading/writing e-mail.</p>
 <span class="c1">//     sender = None,</span>
 <span class="c1">//     from = Some(value = MailAddress(name = None, address = "test@test.com")),</span>
 <span class="c1">//     replyTo = None,</span>
-<span class="c1">//     originationDate = Some(value = 2022-03-11T19:41:18Z),</span>
+<span class="c1">//     originationDate = Some(value = 2023-11-18T11:56:18Z),</span>
 <span class="c1">//     subject = "Hello",</span>
 <span class="c1">//     received = List(),</span>
 <span class="c1">//     flags = Set()</span>
@@ -155,7 +155,7 @@ reading/writing e-mail.</p>
 <span class="c1">//       value = ByteContent(</span>
 <span class="c1">//         bytes = Chunk(</span>
 <span class="c1">//           bytes = View(</span>
-<span class="c1">//             at = scodec.bits.ByteVector$AtArray@23195ebe,</span>
+<span class="c1">//             at = scodec.bits.ByteVector$AtArray@b9286ad,</span>
 <span class="c1">//             offset = 0L,</span>
 <span class="c1">//             size = 19L</span>
 <span class="c1">//           )</span>
