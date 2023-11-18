@@ -38,8 +38,8 @@ Write your e-mail related code once and then decide how to execute.
 With [sbt](https://scala-sbt.org), add the dependencies:
 
 ```
-"com.github.eikek" %% "emil-common" % "0.14.0"  // the core library
-"com.github.eikek" %% "emil-javamail" % "0.14.0" // implementation module
+"com.github.eikek" %% "emil-common" % "0.15.0"  // the core library
+"com.github.eikek" %% "emil-javamail" % "0.15.0" // implementation module
 // … optionally, other modules analog
 ```
 
