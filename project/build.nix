@@ -8,7 +8,7 @@ in
 buildFHSUserEnv {
   name = "emil-sbt";
   targetPkgs = pkgs: with pkgs; [
-    netcat jdk8 wget which zsh dpkg sbt git ncurses mc jekyll
+    netcat jdk11 wget which zsh dpkg sbt git ncurses mc jekyll
   ];
   runScript = initScript;
 }
