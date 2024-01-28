@@ -6,14 +6,14 @@ on:
     types: [ published ]
 jobs:
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           fetch-depth: 0
       - uses: olafurpg/setup-scala@v14
         with:
-          java-version: openjdk@1.11
+          java-version: 11
       - name: Coursier cache
         uses: coursier/cache-action@v6
       - name: sbt ci-release ${{ github.ref }}
