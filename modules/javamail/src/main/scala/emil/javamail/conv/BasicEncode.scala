@@ -137,6 +137,9 @@ trait BasicEncode {
         Message.RecipientType.BCC,
         header.recipients.bcc.map(ca.convert).map(a => a.asInstanceOf[Address]).toArray
       )
+      msg.setReplyTo(
+        header.replyTo.map(ca.convert).map(a => a.asInstanceOf[Address]).toArray
+      )
 
       if (header.flags.nonEmpty) {
         val flags = new Flags()
