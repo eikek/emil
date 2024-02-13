@@ -57,6 +57,13 @@ package builder {
       mail.mapMailHeader(_.mapRecipients(_.addBccs(mas)))
   }
 
+  case class ReplyTo[F[_]](ma: MailAddress) extends Trans[F] {
+    def apply(mail: Mail[F]): Mail[F] =
+      mail.mapMailHeader(_.copy(replyTo = Some(ma)))
+  }
+
+  object ReplyTo extends MailAddressHelper[ReplyTo]
+
   case class Subject[F[_]](text: String) extends Trans[F] {
     def apply(mail: Mail[F]): Mail[F] =
       mail.mapMailHeader(_.withSubject(text))

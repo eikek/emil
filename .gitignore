@@ -2,3 +2,9 @@ target/
 local/
 _site/
 result
+.bloop
+project/**/project
+metals.sbt
+.vscode
+.metals
+.bsp
