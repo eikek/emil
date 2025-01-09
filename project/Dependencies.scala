@@ -13,7 +13,7 @@ object Dependencies {
   val log4sVersion = "1.10.0"
   val logbackVersion = "1.5.16"
   val miniTestVersion = "2.9.6"
-  val poiVersion = "5.3.0"
+  val poiVersion = "5.4.0"
 
   val munit = Seq(
     "org.scalameta" %% "munit" % munitVersion,
