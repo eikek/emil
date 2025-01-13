@@ -54,13 +54,13 @@ trait BasicDecode {
   implicit def mailAddressParseNameAndAddress
       : Conv[(Option[String], String), Either[String, MailAddress]] =
     mailAddressParse.contraMap[(Option[String], String)](
-      MailAddress.twoPartDisplay _ tupled
+      (MailAddress.twoPartDisplay _).tupled
     )
 
   implicit def mailAddressParseNameAndAddressValidated
       : Conv[(Option[String], String), ValidatedNec[AddressException, MailAddress]] =
     mailAddressParseValidated.contraMap[(Option[String], String)](
-      MailAddress.twoPartDisplay _ tupled
+      (MailAddress.twoPartDisplay _).tupled
     )
 
   implicit def recipientsDecode(implicit
