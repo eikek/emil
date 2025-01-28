@@ -8,7 +8,7 @@ import jakarta.mail.Folder
 import jakarta.mail.internet.MimeMessage
 
 object PutMail {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mail: Mail[F], target: MailFolder)(implicit
       cm: MsgConv[Mail[F], F[MimeMessage]]

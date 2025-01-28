@@ -26,8 +26,7 @@ object TnefExtract {
       }
   }
 
-  /** Extracts the winmail.dat file given as a stream of bytes into a list of attachments.
-    */
+  /** Extracts the winmail.dat file given as a stream of bytes into a list of attachments. */
   def fromStream[F[_]: Async](
       data: Stream[F, Byte]
   ): Stream[F, Attachment[F]] =

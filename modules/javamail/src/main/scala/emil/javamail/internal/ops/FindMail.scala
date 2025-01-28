@@ -1,7 +1,6 @@
 package emil.javamail.internal.ops
 
 import cats.effect.Sync
-import cats.syntax.all._
 import com.sun.mail.imap._
 import emil._
 import emil.javamail.internal._
@@ -9,7 +8,7 @@ import jakarta.mail.internet.MimeMessage
 import jakarta.mail.search.MessageIDTerm
 
 object FindMail {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](
       mh: MailHeader

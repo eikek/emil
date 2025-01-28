@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory
 
 class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
 
-  private[this] val logger = LoggerFactory.getLogger(getClass)
+  private val logger = LoggerFactory.getLogger(getClass)
   private val started: AtomicBoolean = new AtomicBoolean(false)
   private val greenMail = {
     val imap = new ServerSetup(imapPort, "localhost", ServerSetup.PROTOCOL_IMAP)
@@ -83,8 +83,8 @@ class GreenmailServer(imapPort: Int, smtpPort: Int, users: List[MailAddress]) {
 
 object GreenmailServer {
 
-  def randomPorts(users: MailAddress*): GreenmailServer =
-    new GreenmailServer(randomPort(10), randomPort(10), users.toList)
+  def randomPorts(users: List[MailAddress]): GreenmailServer =
+    new GreenmailServer(randomPort(10), randomPort(10), users)
 
   private def randomPort(tries: Int): Int = {
     if (tries == 0)

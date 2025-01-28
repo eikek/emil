@@ -47,7 +47,7 @@ final private[javamail] class SafeMimeMessage(msg: MimeMessage) {
 }
 
 private[javamail] object SafeMimeMessage {
-  private[this] val logger = getLogger
+  private val logger = getLogger
 
   def apply(mm: MimeMessage): SafeMimeMessage =
     new SafeMimeMessage(mm)

@@ -6,13 +6,12 @@ import java.util.Properties
 import scala.concurrent.duration.Duration
 
 import cats.effect.{Resource, Sync}
-import cats.implicits._
 import emil.javamail.Settings
 import emil.{MailConfig, SSLType}
 import jakarta.mail._
 
 object ConnectionResource {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](
       mc: MailConfig,

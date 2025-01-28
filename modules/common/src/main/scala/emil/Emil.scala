@@ -20,8 +20,8 @@ trait Emil[F[_]] { self =>
       def run[A](op: MailOp[F, C, A]): F[A] =
         self.connection(mc).use(op.run)
 
-      def send(mail: Mail[F], mails: Mail[F]*): F[NonEmptyList[String]] =
-        run(sender.sendMails(NonEmptyList.of(mail, mails: _*)))
+      def send_(mails: NonEmptyList[Mail[F]]): F[NonEmptyList[String]] =
+        run(sender.sendMails(mails))
     }
 }
 
@@ -31,6 +31,9 @@ object Emil {
 
     def run[A](op: MailOp[F, C, A]): F[A]
 
-    def send(mail: Mail[F], mails: Mail[F]*): F[NonEmptyList[String]]
+    def send(mail: Mail[F], mails: Mail[F]*): F[NonEmptyList[String]] =
+      send_(NonEmptyList(mail, mails.toList))
+
+    def send_(mails: NonEmptyList[Mail[F]]): F[NonEmptyList[String]]
   }
 }

@@ -7,6 +7,7 @@ import _root_.emil.test.GreenmailTestSuite
 import cats.data.NonEmptyList
 import cats.effect._
 import cats.effect.unsafe.implicits.global
+import fs2.hashing.{HashAlgorithm, Hashing}
 
 abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite {
 
@@ -82,7 +83,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     assertEquals(n, 0)
 
     emil(smtpConf(user2))
-      .send(makeMail(1), (2 to 5).map(makeMail): _*)
+      .send_(NonEmptyList(makeMail(1), (2 to 5).map(makeMail).toList))
       .unsafeRunSync()
     server.waitForReceive(5)
 
@@ -92,7 +93,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
   test("search message") {
     emil(smtpConf(user2))
-      .send(makeMail(1), (2 to 5).map(makeMail): _*)
+      .send_(NonEmptyList(makeMail(1), (2 to 5).map(makeMail).toList))
       .unsafeRunSync()
     server.waitForReceive(5)
 
@@ -145,8 +146,8 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     assertEquals(mail.attachments.all.head.filename, Some("Test.pdf"))
     assertEquals(mail.attachments.all.head.mimeType.baseType, MimeType.pdf)
     val checksum = mail.attachments.all.head.content
-      .through(fs2.hash.sha256)
-      .chunks
+      .through(Hashing.forSync[IO].hash(HashAlgorithm.SHA256))
+      .map(_.bytes)
       .map(_.toByteVector.toHex)
       .compile
       .lastOrError
@@ -224,7 +225,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
   test("search delete") {
     emil(smtpConf(user2))
-      .send(makeMail(1), (2 to 5).map(makeMail): _*)
+      .send_(NonEmptyList(makeMail(1), (2 to 5).map(makeMail).toList))
       .unsafeRunSync()
     server.waitForReceive(5)
 

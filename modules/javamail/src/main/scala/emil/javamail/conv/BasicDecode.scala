@@ -1,7 +1,5 @@
 package emil.javamail.conv
 
-import scala.language.postfixOps
-
 import cats.data.{NonEmptyList, Validated, ValidatedNec}
 import cats.implicits._
 import emil._
@@ -53,14 +51,14 @@ trait BasicDecode {
 
   implicit def mailAddressParseNameAndAddress
       : Conv[(Option[String], String), Either[String, MailAddress]] =
-    mailAddressParse.contraMap[(Option[String], String)](
-      MailAddress.twoPartDisplay _ tupled
+    mailAddressParse.contraMap[(Option[String], String)](t =>
+      MailAddress.twoPartDisplay(t._1, t._2)
     )
 
   implicit def mailAddressParseNameAndAddressValidated
       : Conv[(Option[String], String), ValidatedNec[AddressException, MailAddress]] =
-    mailAddressParseValidated.contraMap[(Option[String], String)](
-      MailAddress.twoPartDisplay _ tupled
+    mailAddressParseValidated.contraMap[(Option[String], String)](t =>
+      MailAddress.twoPartDisplay(t._1, t._2)
     )
 
   implicit def recipientsDecode(implicit

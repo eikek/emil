@@ -9,7 +9,7 @@ import emil.javamail.internal.{JavaMailConnection, Logger, ThreadClassLoader}
 import jakarta.mail.internet.MimeMessage
 
 object SendMail {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](
       mails: NonEmptyList[Mail[F]]

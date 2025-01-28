@@ -17,7 +17,7 @@ object Trans {
     (m: Mail[F]) => f(m)
 
   implicit def transMonoid[F[_]]: Monoid[Trans[F]] =
-    Monoid.instance(id[F], _ andThen _)
+    Monoid.instance(id[F], _.andThen(_))
 
   def combineAll[F[_]](ts: Seq[Trans[F]]): Trans[F] =
     Monoid[Trans[F]].combineAll(ts)
