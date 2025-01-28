@@ -59,7 +59,7 @@ object Markdown {
   private def createParser(): Parser = {
     val opts = new MutableDataSet()
     opts.set(
-      Parser.EXTENSIONS.asInstanceOf[DataKey[util.Collection[_]]],
+      Parser.EXTENSIONS.asInstanceOf[DataKey[util.Collection[?]]],
       util.Arrays.asList(TablesExtension.create(), StrikethroughExtension.create())
     );
 

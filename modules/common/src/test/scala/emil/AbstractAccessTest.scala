@@ -82,7 +82,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     assertEquals(n, 0)
 
     emil(smtpConf(user2))
-      .send(makeMail(1), (2 to 5).map(makeMail): _*)
+      .send_(NonEmptyList(makeMail(1), (2 to 5).map(makeMail).toList))
       .unsafeRunSync()
     server.waitForReceive(5)
 
@@ -92,7 +92,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
   test("search message") {
     emil(smtpConf(user2))
-      .send(makeMail(1), (2 to 5).map(makeMail): _*)
+      .send_(NonEmptyList(makeMail(1), (2 to 5).map(makeMail).toList))
       .unsafeRunSync()
     server.waitForReceive(5)
 
@@ -224,7 +224,7 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
 
   test("search delete") {
     emil(smtpConf(user2))
-      .send(makeMail(1), (2 to 5).map(makeMail): _*)
+      .send_(NonEmptyList(makeMail(1), (2 to 5).map(makeMail).toList))
       .unsafeRunSync()
     server.waitForReceive(5)
 

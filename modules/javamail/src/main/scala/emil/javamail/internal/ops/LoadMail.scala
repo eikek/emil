@@ -8,7 +8,7 @@ import emil.javamail.internal.{JavaMailConnection, JavaMailImapConnection, Logge
 import jakarta.mail.internet.MimeMessage
 
 object LoadMail {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](
       mh: MailHeader

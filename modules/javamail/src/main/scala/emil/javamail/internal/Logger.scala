@@ -26,7 +26,7 @@ trait Logger {
 
 object Logger {
 
-  def apply(clazz: Class[_]): Logger =
+  def apply(clazz: Class[?]): Logger =
     apply(org.log4s.getLogger(clazz))
 
   def apply(logger: => org.log4s.Logger): Logger =

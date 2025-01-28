@@ -7,7 +7,7 @@ import emil.javamail.internal.{JavaMailConnection, Logger}
 import jakarta.mail.Folder
 
 object CreateFolder {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](parent: Option[MailFolder], name: String)(implicit
       c: Conv[Folder, MailFolder]

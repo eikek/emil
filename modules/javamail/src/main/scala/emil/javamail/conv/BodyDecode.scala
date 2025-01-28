@@ -155,7 +155,7 @@ trait BodyDecode {
 }
 
 object BodyDecode {
-  private[this] val moreCharsets = Map(
+  private val moreCharsets = Map(
     "win1250" -> "windows-1250",
     "win1252" -> "windows-1252"
   )

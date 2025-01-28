@@ -11,7 +11,7 @@ import jakarta.mail._
 import jakarta.mail.internet.MimeMessage
 
 object MoveMail {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](
       mh: MailHeader,

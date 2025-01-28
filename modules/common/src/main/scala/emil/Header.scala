@@ -24,11 +24,14 @@ final case class Header(name: String, value: NonEmptyList[String]) {
 
 object Header {
   def apply(name: String, value: String, more: String*): Header =
-    Header(name, NonEmptyList.of(value, more: _*))
+    Header(name, NonEmptyList(value, more.toList))
 
   // define some popular ones here
   def inReplyTo(value: String, more: String*): Header =
-    Header("In-Reply-To", NonEmptyList.of(value, more: _*))
+    Header("In-Reply-To", NonEmptyList(value, more.toList))
+
+  def inReplyTo(nel: NonEmptyList[String]): Header =
+    Header("In-Reply-To", nel)
 
   def userAgent(value: String): Header =
     Header("User-Agent", value)

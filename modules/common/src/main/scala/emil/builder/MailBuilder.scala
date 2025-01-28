@@ -11,7 +11,7 @@ final class MailBuilder[F[_]](parts: Vector[Trans[F]], initial: Mail[F]) {
     new MailBuilder(parts ++ ps.toVector, initial)
 
   def set(p0: Trans[F], ps: Trans[F]*): MailBuilder[F] =
-    add(p0, ps: _*)
+    addAll(p0 +: ps)
 
   def prepend(p: Trans[F]): MailBuilder[F] =
     new MailBuilder[F](p +: parts, initial)
@@ -41,5 +41,5 @@ object MailBuilder {
     new MailBuilder[F](parts.toVector, Mail.empty[F])
 
   def build[F[_]](parts: Trans[F]*): Mail[F] =
-    apply(parts: _*).build
+    fromSeq(parts).build
 }

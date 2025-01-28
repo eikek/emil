@@ -6,7 +6,7 @@ import munit._
 
 abstract class GreenmailTestSuite extends FunSuite {
 
-  var context: Context = _
+  var context: Context = null
 
   def users: List[MailAddress]
 
@@ -40,5 +40,5 @@ object GreenmailTestSuite {
   case class Context(server: GreenmailServer)
 
   def createContext(users: List[MailAddress]): Context =
-    Context(GreenmailServer.randomPorts(users: _*))
+    Context(GreenmailServer.randomPorts(users))
 }

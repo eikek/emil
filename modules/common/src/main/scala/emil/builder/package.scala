@@ -111,7 +111,7 @@ package builder {
   }
   object CustomHeader {
     def apply[F[_]](name: String, value: String, more: String*): CustomHeader[F] =
-      CustomHeader[F](Header(name, NonEmptyList.of(value, more: _*)))
+      CustomHeader[F](Header(name, NonEmptyList(value, more.toList)))
 
     def apply[F[_]](name: String, value: Option[String]): Trans[F] =
       value.map(v => apply[F](name, v)).getOrElse(Trans.id[F])
@@ -143,7 +143,7 @@ package builder {
   }
   object InReplyTo {
     def apply[F[_]](value: String, more: String*): Trans[F] =
-      CustomHeader[F](Header.inReplyTo(value, more: _*))
+      CustomHeader[F](Header.inReplyTo(NonEmptyList(value, more.toList)))
   }
 
   case class Attach[F[_]](attach: Attachment[F]) extends Trans[F] {

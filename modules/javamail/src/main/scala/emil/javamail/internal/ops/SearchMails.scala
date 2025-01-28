@@ -10,7 +10,7 @@ import jakarta.mail.search.SearchTerm
 import jakarta.mail.{Flags, Folder, Transport}
 
 object SearchMails {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](folder: MailFolder, q: SearchQuery, max: Int)(implicit
       cq: Conv[SearchQuery, SearchTerm],

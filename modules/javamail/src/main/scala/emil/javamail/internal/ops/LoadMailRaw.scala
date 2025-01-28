@@ -9,7 +9,7 @@ import jakarta.mail.internet.MimeMessage
 import scodec.bits.ByteVector
 
 object LoadMailRaw {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](
       mh: MailHeader

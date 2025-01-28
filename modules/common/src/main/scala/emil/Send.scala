@@ -8,6 +8,6 @@ trait Send[F[_], -C] {
   def sendMails(mails: NonEmptyList[Mail[F]]): MailOp[F, C, NonEmptyList[String]]
 
   def send(mail: Mail[F], mails: Mail[F]*): MailOp[F, C, NonEmptyList[String]] =
-    sendMails(NonEmptyList.of(mail, mails: _*))
+    sendMails(NonEmptyList(mail, mails.toList))
 
 }

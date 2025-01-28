@@ -11,7 +11,7 @@ sealed trait InternalId {
 }
 
 object InternalId {
-  private[this] val logger = getLogger
+  private val logger = getLogger
 
   case class MessageId(id: String) extends InternalId {
     val asString = s"messageId:$id"

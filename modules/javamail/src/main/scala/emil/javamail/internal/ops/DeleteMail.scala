@@ -8,7 +8,7 @@ import jakarta.mail.internet.MimeMessage
 import jakarta.mail.{Flags, Folder, Message}
 
 object DeleteMail {
-  private[this] val logger = Logger(getClass)
+  private val logger = Logger(getClass)
 
   def apply[F[_]: Sync](mh: MailHeader): MailOp[F, JavaMailConnection, Int] =
     FindMail(mh).andThen(opt =>
