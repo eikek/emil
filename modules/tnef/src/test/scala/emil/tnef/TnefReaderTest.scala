@@ -3,6 +3,7 @@ package emil.tnef
 import cats.effect._
 import cats.effect.unsafe.implicits.global
 import emil.builder._
+import fs2.hashing.{HashAlgorithm, Hashing}
 import munit._
 import scodec.bits.ByteVector
 
@@ -20,8 +21,8 @@ class TnefReaderTest extends FunSuite {
       .evalMap { a =>
         val file = a.filename.getOrElse(sys.error("no filename"))
         val sha = a.content
-          .through(fs2.hash.sha256[IO])
-          .chunks
+          .through(Hashing.forSync[IO].hash(HashAlgorithm.SHA256))
+          .map(_.bytes)
           .compile
           .fold(ByteVector.empty)((bv, c) => bv ++ c.toByteVector)
           .map(_.toHex)

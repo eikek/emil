@@ -7,6 +7,7 @@ import _root_.emil.test.GreenmailTestSuite
 import cats.data.NonEmptyList
 import cats.effect._
 import cats.effect.unsafe.implicits.global
+import fs2.hashing.{HashAlgorithm, Hashing}
 
 abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite {
 
@@ -145,8 +146,8 @@ abstract class AbstractAccessTest(val emil: Emil[IO]) extends GreenmailTestSuite
     assertEquals(mail.attachments.all.head.filename, Some("Test.pdf"))
     assertEquals(mail.attachments.all.head.mimeType.baseType, MimeType.pdf)
     val checksum = mail.attachments.all.head.content
-      .through(fs2.hash.sha256)
-      .chunks
+      .through(Hashing.forSync[IO].hash(HashAlgorithm.SHA256))
+      .map(_.bytes)
       .map(_.toByteVector.toHex)
       .compile
       .lastOrError
