@@ -62,7 +62,7 @@ abstract class AbstractSendTest(val emil: Emil[IO]) extends GreenmailTestSuite {
         |User-Agent: my-email-client
         |
         |------=_Part_1_272299100.1642183145458
-        |Content-Type: multipart/alternative; 
+        |Content-Type: multipart/alternative;
         |	boundary="----=_Part_0_2060779434.1642183145447"
         |
         |------=_Part_0_2060779434.1642183145447
