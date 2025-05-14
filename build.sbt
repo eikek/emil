@@ -2,7 +2,7 @@ import com.github.sbt.git.SbtGit.GitKeys._
 
 val scala212 = "2.12.20"
 val scala213 = "2.13.16"
-val scala3 = "3.3.5"
+val scala3 = "3.3.6"
 val updateReadme = inputKey[Unit]("Update readme")
 
 addCommandAlias("ci", "; lint; +test; readme/updateReadme ;microsite/mdoc; +publishLocal")
