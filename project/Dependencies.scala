@@ -5,7 +5,7 @@ object Dependencies {
   val doobieVersion = "1.0.0-RC9"
   val flexmarkVersion = "0.64.8"
   val fs2Version = "3.12.0"
-  val greenmailVersion = "2.0.1"
+  val greenmailVersion = "2.1.5"
   val h2Version = "2.3.232"
   val munitVersion = "1.1.0"
   val javaxMailVersion = "2.0.1"
