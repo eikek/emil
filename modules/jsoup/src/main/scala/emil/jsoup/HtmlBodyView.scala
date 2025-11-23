@@ -63,7 +63,7 @@ object HtmlBodyView {
     def mails(mas: List[MailAddress]): String =
       mas match {
         case Nil => "-"
-        case _ =>
+        case _   =>
           mas
             .map(_.displayString)
             .map(Entities.escape)
