@@ -14,7 +14,7 @@ object DeleteMail {
     FindMail(mh).andThen(opt =>
       opt match {
         case Some(msg) => delete(msg, mh)
-        case _ =>
+        case _         =>
           logger.infoF(s"Cannot delete message '$mh', it was not found.") *> 0.pure[F]
       }
     )
