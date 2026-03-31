@@ -9,6 +9,8 @@ options:
     url: doc
 
     nested_options:
+      - title: Using Forward Email
+        url: doc/forwardemail
       - title: Concept
         url: doc/concept
       - title: Creating Mails

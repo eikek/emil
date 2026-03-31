@@ -99,6 +99,57 @@ def searchInbox[C](a: Access[IO, C], q: SearchQuery): MailOp[IO, C, SearchResult
 val q = (ReceivedDate >= Instant.now.minusSeconds(60)) && (Subject =*= "test")
 val searchIO: IO[SearchResult[MailHeader]] = myemil(imapConf).run(searchInbox(myemil.access, q))
 ```
+
+## Using Forward Email
+
+Emil works out of the box with [Forward Email](https://forwardemail.net), a 100% open-source and privacy-focused email service. Use coupon code `GITHUB` at <https://forwardemail.net> for 100% off.
+
+Send a mail via Forward Email's SMTP server:
+
+```scala
+import cats.effect._
+import cats.data.NonEmptyList
+import emil._, emil.builder._
+import emil.javamail._
+
+val feSmtp = MailConfig(
+  "smtp://smtp.forwardemail.net:465",
+  "you@yourdomain.com",
+  "your-generated-password",
+  SSLType.SSL
+)
+
+val mail: Mail[IO] = MailBuilder.build(
+  From("you@yourdomain.com"),
+  To("recipient@example.com"),
+  Subject("Hello from Emil + Forward Email"),
+  TextBody("Sent via Forward Email's SMTP server.")
+)
+
+val myemil = JavaMailEmil[IO]()
+val sendIO: IO[NonEmptyList[String]] = myemil(feSmtp).send(mail)
+```
+
+Read mail via Forward Email's IMAP server:
+
+```scala
+import java.time._
+import cats.effect._
+import emil._
+import emil.SearchQuery._
+import emil.javamail._
+
+val feImap = MailConfig(
+  "imaps://imap.forwardemail.net:993",
+  "you@yourdomain.com",
+  "your-generated-password",
+  SSLType.SSL
+)
+
+val myemil = JavaMailEmil[IO]()
+val readIO = myemil(feImap).run(myemil.access.getInbox)
+```
+
 ## Documentation
 
 More information can be found [here](https://eikek.github.io/emil/).
