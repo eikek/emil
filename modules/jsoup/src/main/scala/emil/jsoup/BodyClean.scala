@@ -78,7 +78,6 @@ object BodyClean {
     doc => {
       doc.head.getElementsByAttributeValue("http-equiv", "content-type").remove()
       doc.head.getElementsByAttribute("charset").remove()
-      doc.updateMetaCharsetElement(true)
       doc.charset(cs)
       doc.outputSettings(
         doc.outputSettings
