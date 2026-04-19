@@ -15,6 +15,8 @@
       pkgs = nixpkgs.legacyPackages.${system};
       devshellPkgs = with pkgs; [
         devshell-tools.packages.${system}.sbt17
+        metals
+        jekyll
       ];
     in {
       formatter = pkgs.alejandra;
