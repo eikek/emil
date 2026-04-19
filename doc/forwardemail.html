@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><title>Emil: Using Forward Email</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="eikek" /><meta name="description" content="Emil – E-Mail library for Scala" /><meta name="og:image" content="/emil/img/poster.png" /><meta name="image" property="og:image" content="/emil/img/poster.png" /><meta name="og:title" content="Emil: Using Forward Email" /><meta name="title" property="og:title" content="Emil: Using Forward Email" /><meta name="og:site_name" content="Emil" /><meta name="og:url" content="https://github.com/eikek/emil" /><meta name="og:type" content="website" /><meta name="og:description" content="Emil – E-Mail library for Scala" /><link rel="icon" type="image/png" href="/emil/img/favicon.png" /><meta name="twitter:title" content="Emil: Using Forward Email" /><meta name="twitter:image" content="/emil/img/poster.png" /><meta name="twitter:description" content="Emil – E-Mail library for Scala" /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="35x35" href="/emil/img/favicon.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/emil/highlight/styles/vs.css" /><link rel="stylesheet" href="/emil/css/light-style.css" /><link rel="stylesheet" href="/emil/css/emil.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><div id="sidebar-brand"><a href="/emil/" class="brand"><div class="brand-wrapper"></div><span>Emil</span></a><button id="main-toggle" class="sidebar-toggle"><span class="close"></span></button></div><div class="sidebar-nav"> <div class="sidebar-nav-item  "><a href="/emil/index.html" title="Home" class="">Home</a></div> <div class="sidebar-nav-item  "><a href="/emil/examples" title="Examples" class="">Examples</a></div> <div class="sidebar-nav-item  open"><a href="/emil/doc" title="Documentation" class="drop-nested">Documentation</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/doc/forwardemail" title="Using Forward Email" class="active">Using Forward Email</a> <a href="/emil/doc/concept" title="Concept" class="">Concept</a> <a href="/emil/doc/building" title="Creating Mails" class="">Creating Mails</a> <a href="/emil/doc/reading" title="Obtaining Mails" class="">Obtaining Mails</a> <a href="/emil/doc/syntax" title="Syntax Utilities" class="">Syntax Utilities</a></div></div> <div class="sidebar-nav-item  "><a href="/emil/extensions" title="Extension Modules" class="drop-nested">Extension Modules</a><i class="fa fa-angle-right"></i><div class="sub-section"> <a href="/emil/ext/tnef" title="Extract TNEF" class="">Extract TNEF</a> <a href="/emil/ext/doobie" title="Doobie Integration" class="">Doobie Integration</a> <a href="/emil/ext/markdown" title="Markdown Bodies" class="">Markdown Bodies</a> <a href="/emil/ext/jsoup" title="Jsoup" class="">Jsoup</a></div></div></div></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li class="search-nav"><div id="search-dropdown"><label><i class="fa fa-search"></i>Search</label><input id="search-bar" type="text" placeholder="Enter keywords here..." onclick="displayToggleSearch(event)" /><ul id="search-dropdown-content" class="dropdown dropdown-content"></ul></div></li><li id="gh-eyes-item" class="hidden-xs to-uppercase"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-eye"></i><span>Watchers<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs to-uppercase"><a href="https://github.com/eikek/emil" target="_blank" rel="noopener noreferrer"><i class="fa fa-star-o"></i><span>Stars<span id="stars" class="label label-default">--</span></span></a></li></ul></div></div></div></div><div id="content" data-github-owner="eikek" data-github-repo="emil"><div class="content-wrapper"><section><h1 id="using-forward-email">Using Forward Email</h1>
+
+<p><a href="https://forwardemail.net">Forward Email</a> is a 100% open-source and
+privacy-focused email service. It provides SMTP for sending and IMAP
+for reading mail, making it a drop-in provider for Emil.</p>
+
+<blockquote>
+  <p>Use coupon code <code class="language-plaintext highlighter-rouge">GITHUB</code> at <a href="https://forwardemail.net">https://forwardemail.net</a> for 100% off.</p>
+</blockquote>
+
+<h2 id="sending-mail">Sending Mail</h2>
+
+<p>Configure Emil to send via Forward Email’s SMTP server:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">cats.effect._</span>
+<span class="k">import</span> <span class="nn">cats.data.NonEmptyList</span>
+<span class="k">import</span> <span class="nn">emil._</span><span class="o">,</span> <span class="nv">emil</span><span class="o">.</span><span class="py">builder</span><span class="o">.</span><span class="py">_</span>
+<span class="k">import</span> <span class="nn">emil.javamail._</span>
+
+<span class="k">val</span> <span class="nv">feSmtp</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span>
+  <span class="s">"smtp://smtp.forwardemail.net:465"</span><span class="o">,</span>
+  <span class="s">"you@yourdomain.com"</span><span class="o">,</span>
+  <span class="s">"your-generated-password"</span><span class="o">,</span>
+  <span class="nv">SSLType</span><span class="o">.</span><span class="py">SSL</span>
+<span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">mail</span><span class="k">:</span> <span class="kt">Mail</span><span class="o">[</span><span class="kt">IO</span><span class="o">]</span> <span class="k">=</span> <span class="nv">MailBuilder</span><span class="o">.</span><span class="py">build</span><span class="o">(</span>
+  <span class="nc">From</span><span class="o">(</span><span class="s">"you@yourdomain.com"</span><span class="o">),</span>
+  <span class="nc">To</span><span class="o">(</span><span class="s">"recipient@example.com"</span><span class="o">),</span>
+  <span class="nc">Subject</span><span class="o">(</span><span class="s">"Hello from Emil + Forward Email"</span><span class="o">),</span>
+  <span class="nc">TextBody</span><span class="o">(</span><span class="s">"Sent via Forward Email's SMTP server."</span><span class="o">)</span>
+<span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">]()</span>
+<span class="k">val</span> <span class="nv">sendIO</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">NonEmptyList</span><span class="o">[</span><span class="kt">String</span><span class="o">]]</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">feSmtp</span><span class="o">).</span><span class="py">send</span><span class="o">(</span><span class="n">mail</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Replace <code class="language-plaintext highlighter-rouge">you@yourdomain.com</code> with your alias and
+<code class="language-plaintext highlighter-rouge">your-generated-password</code> with the password generated in your Forward
+Email dashboard.</p>
+
+<h2 id="reading-mail">Reading Mail</h2>
+
+<p>Configure Emil to read via Forward Email’s IMAP server:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.time._</span>
+<span class="k">import</span> <span class="nn">cats.effect._</span>
+<span class="k">import</span> <span class="nn">emil._</span>
+<span class="k">import</span> <span class="nn">emil.SearchQuery._</span>
+<span class="k">import</span> <span class="nn">emil.javamail._</span>
+
+<span class="k">val</span> <span class="nv">feImap</span> <span class="k">=</span> <span class="nc">MailConfig</span><span class="o">(</span>
+  <span class="s">"imaps://imap.forwardemail.net:993"</span><span class="o">,</span>
+  <span class="s">"you@yourdomain.com"</span><span class="o">,</span>
+  <span class="s">"your-generated-password"</span><span class="o">,</span>
+  <span class="nv">SSLType</span><span class="o">.</span><span class="py">SSL</span>
+<span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">myemil</span> <span class="k">=</span> <span class="nc">JavaMailEmil</span><span class="o">[</span><span class="kt">IO</span><span class="o">]()</span>
+
+<span class="k">def</span> <span class="nf">recentMails</span><span class="o">[</span><span class="kt">C</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">Access</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">C</span><span class="o">])</span><span class="k">:</span> <span class="kt">MailOp</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">C</span>, <span class="kt">SearchResult</span><span class="o">[</span><span class="kt">MailHeader</span><span class="o">]]</span> <span class="k">=</span>
+  <span class="k">for</span> <span class="o">{</span>
+    <span class="n">inbox</span> <span class="k">&lt;-</span> <span class="nv">a</span><span class="o">.</span><span class="py">getInbox</span>
+    <span class="n">mails</span> <span class="k">&lt;-</span> <span class="nv">a</span><span class="o">.</span><span class="py">search</span><span class="o">(</span><span class="n">inbox</span><span class="o">,</span> <span class="mi">20</span><span class="o">)(</span><span class="nc">ReceivedDate</span> <span class="o">&gt;=</span> <span class="nv">Instant</span><span class="o">.</span><span class="py">now</span><span class="o">.</span><span class="py">minusSeconds</span><span class="o">(</span><span class="mi">3600</span><span class="o">))</span>
+  <span class="o">}</span> <span class="k">yield</span> <span class="n">mails</span>
+
+<span class="k">val</span> <span class="nv">readIO</span> <span class="k">=</span> <span class="nf">myemil</span><span class="o">(</span><span class="n">feImap</span><span class="o">).</span><span class="py">run</span><span class="o">(</span><span class="nf">recentMails</span><span class="o">(</span><span class="nv">myemil</span><span class="o">.</span><span class="py">access</span><span class="o">))</span>
+</code></pre></div></div>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+  <li><a href="https://forwardemail.net/en/faq">Forward Email documentation</a></li>
+  <li><a href="https://github.com/forwardemail">Forward Email source code</a></li>
+</ul>
+</section></div></div></div></div><script src="/emil/highlight/highlight.pack.js"></script><script src="/emil/lunr/lunr.js"></script><script>
+// For all code blocks, copy the language from the containing div
+// to the inner code tag (where hljs expects it to be)
+const langPrefix = 'language-';
+document.querySelectorAll(`div[class^='${langPrefix}']`).forEach(function(div) {
+  div.classList.forEach(function(cssClass) {
+    if (cssClass.startsWith(langPrefix)) {
+      const lang = cssClass.substring(langPrefix.length);
+      div.querySelectorAll('pre code').forEach(function(code) {
+        code.classList.add(lang);
+      });
+    }
+  });
+});
+
+hljs.configure({languages:['scala','java','bash']});
+hljs.initHighlightingOnLoad();
+      </script><script src="/emil/js/fathom.js"></script><script>console.info('\x57\x65\x62\x73\x69\x74\x65\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x3a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x5f\x5f\x0a\x20\x20\x20\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x5f\x20\x20\x2f\x20\x2f\x5f\x20\x20\x20\x20\x20\x20\x5f\x5f\x5f\x5f\x20\x5f\x5f\x5f\x20\x20\x28\x5f\x29\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x28\x5f\x29\x20\x2f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x0a\x20\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x60\x5f\x5f\x20\x5c\x2f\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x20\x2f\x20\x5f\x5f\x2f\x20\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x0a\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x5f\x2f\x20\x2f\x20\x2f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x5f\x5f\x2f\x20\x2f\x20\x20\x2f\x20\x2f\x5f\x2f\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x20\x2f\x5f\x2f\x20\x20\x5f\x5f\x28\x5f\x5f\x20\x20\x29\x0a\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2e\x5f\x5f\x5f\x2f\x5c\x5f\x5f\x2f\x20\x20\x20\x20\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x2f\x20\x20\x20\x5c\x5f\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x0a\x0a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x34\x37\x64\x65\x67\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x62\x74\x2d\x6d\x69\x63\x72\x6f\x73\x69\x74\x65\x73')</script><script src="/emil/js/search.js"></script><script src="/emil/js/docs.js"></script></body></html>
